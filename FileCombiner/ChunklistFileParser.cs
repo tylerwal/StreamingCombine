@@ -10,6 +10,8 @@ namespace FileCombiner
 	public class ChunklistFileParser
 	{
 		private const char NewLineCharacter = '\n';
+		private const char ForwardSlash = '/';
+		private const string MetaDataLine = "#EXT";
 		
 		public Uri BaseAddress
 		{
@@ -34,14 +36,14 @@ namespace FileCombiner
 
 		public ChunklistFileParser(string chunkListUrl)
 		{
-			int lastSlashLocation = chunkListUrl.LastIndexOf('/');
+			int lastSlashLocation = chunkListUrl.LastIndexOf(ForwardSlash);
 			string baseAddress = chunkListUrl.Remove(lastSlashLocation + 1);
 
 			BaseAddress = new Uri(baseAddress);
 
 			WebClient webClient = new WebClient();
 
-			var allFileLines = webClient.DownloadString(chunkListUrl).Split('\n');
+			var allFileLines = webClient.DownloadString(chunkListUrl).Split(NewLineCharacter);
 			
 			ProcessUnparsedFileIntoUris(allFileLines);
 		}
@@ -84,7 +86,7 @@ namespace FileCombiner
 		/// <returns>Just the streaming file url lines.</returns>
 		private IEnumerable<string> ParseStreamFiles(IEnumerable<string> unparsedLines)
 		{
-			return unparsedLines.Where(i => !i.StartsWith("#EXT"));
+			return unparsedLines.Where(i => !i.StartsWith(MetaDataLine));
 		}
 
 		#endregion Helper Methods

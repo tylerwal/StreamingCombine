@@ -18,7 +18,9 @@ namespace FileCombiner
 
 			string outputDirectory = @"C:\Programming\TheLongScream\";
 			string outputFilePrepend = "TheLongScream";
-			string outputFileExtension = ".ts";
+			string outputStreamingFileExtension = ".ts";
+
+			string outputCombinedFileExtension = ".ts";
 
 			if (!Directory.Exists(outputDirectory))
 			{
@@ -31,21 +33,40 @@ namespace FileCombiner
 			
 			for (int i = 0; i < numberOfUris; i++)
 			{
-				Console.WriteLine("Downloading File #{0}", i);
+				Uri currentUri = chunklistFileParser.StreamingFileUris.Dequeue();
+				
+				StringBuilder streamingFilePathBuilder = new StringBuilder();
+				streamingFilePathBuilder.Append(outputDirectory);
+				streamingFilePathBuilder.Append(outputFilePrepend);
+				streamingFilePathBuilder.Append('_');
+				streamingFilePathBuilder.Append(i.ToString().PadLeft(3, '0'));
+				streamingFilePathBuilder.Append(outputStreamingFileExtension);
 
-				var currentUri = chunklistFileParser.StreamingFileUris.Dequeue();
+				string filePath = streamingFilePathBuilder.ToString();
 
-				StringBuilder pathBuilder = new StringBuilder();
-				pathBuilder.Append(outputDirectory);
-				pathBuilder.Append(outputFilePrepend);
-				pathBuilder.Append('_');
-				pathBuilder.Append(i);
-				pathBuilder.Append(outputFileExtension);
+				if (File.Exists(filePath))
+				{
+					Console.WriteLine("Skipping File #{0} - Already Found", i);
+					continue;
+				}
+				else
+				{
+					Console.WriteLine("Downloading File #{0}", i);
+				}
 
 				byte[] data = webClient.DownloadData(currentUri);
 
-				File.WriteAllBytes(pathBuilder.ToString(), data);
+				File.WriteAllBytes(filePath, data);
 			}
+
+			ChunkCombiner chunkCombiner = new ChunkCombiner(outputDirectory);
+
+			StringBuilder combinedFilePathBuilder = new StringBuilder();
+			combinedFilePathBuilder.Append(outputDirectory);
+			combinedFilePathBuilder.Append(outputFilePrepend);
+			combinedFilePathBuilder.Append(outputCombinedFileExtension);
+
+			chunkCombiner.CombineStreamFiles(combinedFilePathBuilder.ToString());
 		}
 	}
 }
