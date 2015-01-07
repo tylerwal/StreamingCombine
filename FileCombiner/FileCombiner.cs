@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FileCombiner
 {
-	public class ChunkCombiner
+	public class FileCombiner
 	{
 		public string DirectoryPath
 		{
@@ -13,7 +13,7 @@ namespace FileCombiner
 			set;
 		}
 
-		public ChunkCombiner(string directoryPath)
+		public FileCombiner(string directoryPath)
 		{
 			DirectoryPath = directoryPath;
 		}
@@ -54,38 +54,6 @@ namespace FileCombiner
 					fileStream.Write(byteArray, 0, byteArray.Length);
 				}
 			}
-
-			/*int sumeOfByteArraysLength = byteArrays.Sum(ba => ba.Length);
-
-			int offset = 0;
-
-			int iterator = 0;
-
-			using (FileStream fileStream = File.Create(outputFilePath))
-			{
-				foreach (byte[] currentByteArray in byteArrays)
-				{
-					Console.WriteLine(iterator++);
-
-					fileStream.Write(currentByteArray, offset, currentByteArray.Length);
-
-					offset += currentByteArray.Length;
-				}
-			}*/
-
-			/*byte[] combinedArray = new byte[sumeOfByteArraysLength];
-
-			int offset = 0;
-
-			foreach (byte[] currentByteArray in byteArrays)
-			{
-				Buffer.BlockCopy(currentByteArray, 0, combinedArray, offset, currentByteArray.Length);
-				offset += currentByteArray.Length;
-			}*/
-
-			/*byte[] combinedArray = new byte[10];
-
-			return combinedArray;*/
 		}
 	}
 }
