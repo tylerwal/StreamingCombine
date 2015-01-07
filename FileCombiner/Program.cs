@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
+using FileCombiner.Contracts;
+
 namespace FileCombiner
 {
 	class Program
@@ -14,7 +16,7 @@ namespace FileCombiner
 		{
 			string chunkListFilePath = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w2086349083_b2400000.m3u8?timestamp=1420335686&stream=TheScream&signature=bed48b215c9ddf4653503e9f5ff8c77c467ecd4f00132d732f6fb6af58497968";
 
-			ChunklistFileParser chunklistFileParser = new ChunklistFileParser(chunkListFilePath);
+			IParser chunklistFileParser = new ChunklistFileParser(chunkListFilePath);
 
 			string outputDirectory = @"C:\Programming\TheLongScream\";
 			string outputFilePrepend = "TheLongScream";
@@ -59,14 +61,14 @@ namespace FileCombiner
 				File.WriteAllBytes(filePath, data);
 			}
 
-			ChunkCombiner chunkCombiner = new ChunkCombiner(outputDirectory);
+			FileCombiner fileCombiner = new FileCombiner(outputDirectory);
 
 			StringBuilder combinedFilePathBuilder = new StringBuilder();
 			combinedFilePathBuilder.Append(outputDirectory);
 			combinedFilePathBuilder.Append(outputFilePrepend);
 			combinedFilePathBuilder.Append(outputCombinedFileExtension);
 
-			chunkCombiner.CombineStreamFiles(combinedFilePathBuilder.ToString());
+			fileCombiner.CombineStreamFiles(combinedFilePathBuilder.ToString());
 		}
 	}
 }

@@ -3,20 +3,47 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using FileCombiner.Contracts;
+
 namespace FileCombiner
 {
-	public class FileCombiner
+	public class FileCombiner : ICombiner
 	{
+		#region Fields
+		
+		private IParser _parser;
+
+		#endregion Fields
+
+		#region Constructor
+
+		public FileCombiner(string directoryPath)
+		{
+			DirectoryPath = directoryPath;
+		}		 
+
+		#endregion Constructor
+
+		#region Properties
+
 		public string DirectoryPath
 		{
 			get;
 			set;
 		}
 
-		public FileCombiner(string directoryPath)
+		#endregion Properties
+
+		#region Methods
+
+		public void SetParser(IParser parser)
 		{
-			DirectoryPath = directoryPath;
-		}
+			_parser = parser;
+		}		 
+
+		#endregion Methods
+
+		#region Helper Methods
 
 		public void CombineStreamFiles(string outputFilePath)
 		{
@@ -42,8 +69,8 @@ namespace FileCombiner
 			CombineByteArrays(byteArrays, outputFilePath);
 			
 			Console.WriteLine("File Done - {0}", outputFilePath);
-		}
-
+		}		
+ 
 		private void CombineByteArrays(List<byte[]> byteArrays, string outputFilePath)
 		{
 			
@@ -55,5 +82,7 @@ namespace FileCombiner
 				}
 			}
 		}
+
+		#endregion Helper Methods
 	}
 }
