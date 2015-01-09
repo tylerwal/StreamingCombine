@@ -45,6 +45,7 @@
     <Compile Include="Contracts\IParser.cs" />
     <Compile Include="FileCombiner.cs" />
     <Compile Include="ChunklistFileParser.cs" />
+    <Compile Include="Media.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -9,6 +9,6 @@ namespace FileCombiner.Contracts
 		{
 			get;
 			set;
-		} 
+		}
 	}
 }

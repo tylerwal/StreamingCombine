@@ -14,61 +14,26 @@ namespace FileCombiner
 	{
 		static void Main(string[] args)
 		{
-			string chunkListFilePath = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w2086349083_b2400000.m3u8?timestamp=1420335686&stream=TheScream&signature=bed48b215c9ddf4653503e9f5ff8c77c467ecd4f00132d732f6fb6af58497968";
-
-			IParser chunklistFileParser = new ChunklistFileParser(chunkListFilePath);
-
-			string outputDirectory = @"C:\Programming\TheLongScream\";
-			string outputFilePrepend = "TheLongScream";
-			string outputStreamingFileExtension = ".ts";
-
-			string outputCombinedFileExtension = ".ts";
-
-			if (!Directory.Exists(outputDirectory))
+			Media media = new Media
 			{
-				Directory.CreateDirectory(outputDirectory);
+				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w632022093_b2400000.m3u8?timestamp=1420854476&stream=TheScream&signature=f30ecf506f41c9e87ae261dde4fc3b4f556b31da95b42d374f615cb344f686fc",
+				Name = "The Long Scream",
+				OutputDirectory = @"C:\Programming\TheLongScreamTest\"
+			};
+
+			IParser chunklistFileParser = new ChunklistFileParser(media.ChunkListFileUrl);
+			
+			if (!Directory.Exists(media.OutputDirectory))
+			{
+				Directory.CreateDirectory(media.OutputDirectory);
 			}
 
 			WebClient webClient = new WebClient();
-
-			int numberOfUris = chunklistFileParser.StreamingFileUris.Count;
 			
-			for (int i = 0; i < numberOfUris; i++)
-			{
-				Uri currentUri = chunklistFileParser.StreamingFileUris.Dequeue();
-				
-				StringBuilder streamingFilePathBuilder = new StringBuilder();
-				streamingFilePathBuilder.Append(outputDirectory);
-				streamingFilePathBuilder.Append(outputFilePrepend);
-				streamingFilePathBuilder.Append('_');
-				streamingFilePathBuilder.Append(i.ToString().PadLeft(3, '0'));
-				streamingFilePathBuilder.Append(outputStreamingFileExtension);
+			FileCombiner fileCombiner = new FileCombiner();
+			fileCombiner.Initialize(chunklistFileParser, media, webClient);
 
-				string filePath = streamingFilePathBuilder.ToString();
-
-				if (File.Exists(filePath))
-				{
-					Console.WriteLine("Skipping File #{0} - Already Found", i);
-					continue;
-				}
-				else
-				{
-					Console.WriteLine("Downloading File #{0}", i);
-				}
-
-				byte[] data = webClient.DownloadData(currentUri);
-
-				File.WriteAllBytes(filePath, data);
-			}
-
-			FileCombiner fileCombiner = new FileCombiner(outputDirectory);
-
-			StringBuilder combinedFilePathBuilder = new StringBuilder();
-			combinedFilePathBuilder.Append(outputDirectory);
-			combinedFilePathBuilder.Append(outputFilePrepend);
-			combinedFilePathBuilder.Append(outputCombinedFileExtension);
-
-			fileCombiner.CombineStreamFiles(combinedFilePathBuilder.ToString());
+			fileCombiner.CreateCombinedFile();
 		}
 	}
 }
