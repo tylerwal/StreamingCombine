@@ -1,8 +1,10 @@
 ﻿using System.Text;
 
+using FileCombiner.Contracts;
+
 namespace FileCombiner
 {
-	public class Media
+	public class Media : IMedia
 	{
 		#region Fields
 
@@ -30,7 +32,7 @@ namespace FileCombiner
 
 		#region PublicMethods
 
-		public string GetCleansedName()
+		public string GetFilePathCorrectedName()
 		{
 			return Name.Replace(" ", string.Empty);
 		}
@@ -39,7 +41,7 @@ namespace FileCombiner
 		{
 			StringBuilder combinedFilePathBuilder = new StringBuilder();
 			combinedFilePathBuilder.Append(OutputDirectory);
-			combinedFilePathBuilder.Append(GetCleansedName());
+			combinedFilePathBuilder.Append(GetFilePathCorrectedName());
 			combinedFilePathBuilder.Append(_outputCombinedFileExtension);
 
 			return combinedFilePathBuilder.ToString();

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\ICombiner.cs" />
+    <Compile Include="Contracts\IMedia.cs" />
     <Compile Include="Contracts\IParser.cs" />
     <Compile Include="FileCombiner.cs" />
     <Compile Include="ChunklistFileParser.cs" />

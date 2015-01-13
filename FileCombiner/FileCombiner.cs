@@ -15,9 +15,13 @@ namespace FileCombiner
 
 		private const string _outputStreamFileExtension = ".ts";
 
+		private const string _tempDirectory = "Temp/";
+
+		private string _tempDirectoryPath;
+
 		private IParser _parser;
 
-		private Media _media;
+		private IMedia _media;
 
 		private WebClient _webClient;
 
@@ -37,7 +41,7 @@ namespace FileCombiner
 
 		#region ICombiner Methods
 
-		public void Initialize(IParser parser, Media media, WebClient webClient)
+		public void Initialize(IParser parser, IMedia media, WebClient webClient)
 		{
 			_parser = parser;
 			_media = media;
@@ -46,26 +50,39 @@ namespace FileCombiner
 
 		public void CreateCombinedFile()
 		{
-			DownloadChunkFiles();
+			_tempDirectoryPath = Path.Combine(_media.OutputDirectory, _tempDirectory);
+
+			DownloadChunkFiles(_tempDirectoryPath);
 
 			CombineStreamFiles(_media.CreateOutputFileName());
+
+			DeleteChunkFiles(_tempDirectoryPath);
 		}
 
 		#endregion ICombiner Methods
 
 		#region Helper Methods
 
-		private void DownloadChunkFiles()
+		private void DownloadChunkFiles(string tempDirectoryPath)
 		{
 			int numberOfUris = _parser.StreamingFileUris.Count;
 
 			StringBuilder streamingFilePathBuilder = new StringBuilder();
+			
+			if (!Directory.Exists(tempDirectoryPath))
+			{
+				Directory.CreateDirectory(tempDirectoryPath);
+			}
 
 			for (int i = 0; i < numberOfUris; i++)
 			{
 				Uri currentUri = _parser.StreamingFileUris.Dequeue();
 
-				string filePath = CreateChunkFileName(i, streamingFilePathBuilder);
+				string filePath = CreateChunkFileName(
+					i, 
+					numberOfUris.ToString().Length, 
+					streamingFilePathBuilder
+					);
 
 				if (File.Exists(filePath))
 				{
@@ -90,7 +107,7 @@ namespace FileCombiner
 				throw new DirectoryNotFoundException();
 			}
 
-			DirectoryInfo streamFileDirectory = new DirectoryInfo(_media.OutputDirectory);
+			DirectoryInfo streamFileDirectory = new DirectoryInfo(_tempDirectoryPath);
 
 			FileInfo[] streamFiles = streamFileDirectory.GetFiles();
 
@@ -120,26 +137,34 @@ namespace FileCombiner
 			}
 		}
 
+		private void DeleteChunkFiles(string tempDirectoryPath)
+		{
+			Directory.Delete(tempDirectoryPath, true);
+		}
+
 		/// <summary>
 		/// Creates the 'small' chunk file names that are incremented by 1.
-		/// Output name => %outputDirectory%/Temp/%nameWithoutSpaces%_%padding%%increment$.ts
+		/// Output name = %outputDirectory%/Temp/%nameWithoutSpaces%_%padding%%increment$.ts
 		/// </summary>
 		/// <param name="uniqueIteration">the iteration in the for loop</param>
+		/// <param name="requiredPadding">The required padding.</param>
 		/// <param name="streamingFilePathBuilder">a StringBuilder that is being reused</param>
-		/// <returns>The name of the file.</returns>
-		private string CreateChunkFileName(int uniqueIteration, StringBuilder streamingFilePathBuilder)
+		/// <returns>
+		/// The name of the file.
+		/// </returns>
+		private string CreateChunkFileName(int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
 		{
-			int requiredPadding = 3; //(_parser.StreamingFileUris.Count % 100) + 1;
-
 			streamingFilePathBuilder.Clear();
-			streamingFilePathBuilder.Append(_media.OutputDirectory);
-			//streamingFilePathBuilder.Append("Temp/");
-			streamingFilePathBuilder.Append(_media.GetCleansedName());
+			streamingFilePathBuilder.Append(_media.GetFilePathCorrectedName());
 			streamingFilePathBuilder.Append('_');
 			streamingFilePathBuilder.Append(uniqueIteration.ToString().PadLeft(requiredPadding, '0'));
 			streamingFilePathBuilder.Append(_outputStreamFileExtension);
-			
-			return streamingFilePathBuilder.ToString();
+
+			return Path.Combine(
+				_media.OutputDirectory, 
+				_tempDirectory, 
+				streamingFilePathBuilder.ToString()
+				);
 		}
 		
 		#endregion Helper Methods

@@ -16,9 +16,9 @@ namespace FileCombiner
 		{
 			Media media = new Media
 			{
-				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w632022093_b2400000.m3u8?timestamp=1420854476&stream=TheScream&signature=f30ecf506f41c9e87ae261dde4fc3b4f556b31da95b42d374f615cb344f686fc",
+				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w775134912_b300000.m3u8?timestamp=1420858556&stream=TheScream&signature=f97ebc28696bb49543c1130d558d075bc1c518a609254f756d0033bf53b39f7b",
 				Name = "The Long Scream",
-				OutputDirectory = @"C:\Programming\TheLongScreamTest\"
+				OutputDirectory = @"C:\Programming\TheLongScreamTestSmall\"
 			};
 
 			IParser chunklistFileParser = new ChunklistFileParser(media.ChunkListFileUrl);
@@ -30,7 +30,7 @@ namespace FileCombiner
 
 			WebClient webClient = new WebClient();
 			
-			FileCombiner fileCombiner = new FileCombiner();
+			ICombiner fileCombiner = new FileCombiner();
 			fileCombiner.Initialize(chunklistFileParser, media, webClient);
 
 			fileCombiner.CreateCombinedFile();
