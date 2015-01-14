@@ -8,7 +8,7 @@
 			set;
 		}
 
-		string CreateOutputFileName();
+		string CreateOutputFilePath();
 
 		string GetFilePathCorrectedName();
 	}

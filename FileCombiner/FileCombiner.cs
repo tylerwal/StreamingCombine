@@ -48,15 +48,17 @@ namespace FileCombiner
 			_webClient = webClient;
 		}
 
-		public void CreateCombinedFile()
+		public FileInfo CreateCombinedFile()
 		{
 			_tempDirectoryPath = Path.Combine(_media.OutputDirectory, _tempDirectory);
 
 			DownloadChunkFiles(_tempDirectoryPath);
 
-			CombineStreamFiles(_media.CreateOutputFileName());
+			CombineStreamFiles(_media.CreateOutputFilePath());
 
 			DeleteChunkFiles(_tempDirectoryPath);
+
+			return new FileInfo(_media.CreateOutputFilePath());
 		}
 
 		#endregion ICombiner Methods

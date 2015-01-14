@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FileCombiner.Contracts;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-using FileCombiner.Contracts;
+using MediaToolkit;
+using MediaToolkit.Model;
 
 namespace FileCombiner
 {
@@ -16,9 +13,9 @@ namespace FileCombiner
 		{
 			Media media = new Media
 			{
-				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheScream.smil/chunklist_w775134912_b300000.m3u8?timestamp=1420858556&stream=TheScream&signature=f97ebc28696bb49543c1130d558d075bc1c518a609254f756d0033bf53b39f7b",
-				Name = "The Long Scream",
-				OutputDirectory = @"C:\Programming\TheLongScreamTestSmall\"
+				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheHunted.smil/chunklist_w1830659387_b2400000.m3u8?timestamp=1421291531&stream=TheHunted&signature=2819938e1423e409e3d3b640d4ad694ccc6da668166e44db4c601e2b0ce44a6d",
+				Name = "Sufferfest - The Hunted",
+				OutputDirectory = @"C:\Programming\TheHunted\"
 			};
 
 			IParser chunklistFileParser = new ChunklistFileParser(media.ChunkListFileUrl);
@@ -33,7 +30,18 @@ namespace FileCombiner
 			ICombiner fileCombiner = new FileCombiner();
 			fileCombiner.Initialize(chunklistFileParser, media, webClient);
 
-			fileCombiner.CreateCombinedFile();
+			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
+
+			MediaFile unconvertedMediaFile = new MediaFile(initialOutputFile.FullName);
+
+			string newFilePath = Path.ChangeExtension(initialOutputFile.FullName, ".mk4");
+
+			MediaFile convertedMediaFile = new MediaFile(newFilePath);
+
+			using (var engine = new Engine())
+			{
+				engine.Convert(unconvertedMediaFile, convertedMediaFile);
+			}
 		}
 	}
 }

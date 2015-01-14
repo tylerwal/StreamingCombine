@@ -37,7 +37,7 @@ namespace FileCombiner
 			return Name.Replace(" ", string.Empty);
 		}
 
-		public string CreateOutputFileName()
+		public string CreateOutputFilePath()
 		{
 			StringBuilder combinedFilePathBuilder = new StringBuilder();
 			combinedFilePathBuilder.Append(OutputDirectory);

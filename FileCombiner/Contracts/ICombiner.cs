@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 
 namespace FileCombiner.Contracts
 {
@@ -6,6 +7,6 @@ namespace FileCombiner.Contracts
 	{
 		void Initialize(IParser parser, IMedia media, WebClient webClient);
 
-		void CreateCombinedFile();
+		FileInfo CreateCombinedFile();
 	}
 }
