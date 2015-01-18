@@ -4,18 +4,19 @@ using System.Net;
 
 using MediaToolkit;
 using MediaToolkit.Model;
+using MediaToolkit.Options;
 
 namespace FileCombiner
 {
-	class Program
+	class CreateFile
 	{
 		static void Main(string[] args)
 		{
 			Media media = new Media
 			{
-				ChunkListFileUrl = @"http://media.strava.com/vod/smil:TheHunted.smil/chunklist_w1830659387_b2400000.m3u8?timestamp=1421291531&stream=TheHunted&signature=2819938e1423e409e3d3b640d4ad694ccc6da668166e44db4c601e2b0ce44a6d",
-				Name = "Sufferfest - The Hunted",
-				OutputDirectory = @"C:\Programming\TheHunted\"
+				ChunkListFileUrl = @"",
+				Name = "",
+				OutputDirectory = @"C:\Programming\\"
 			};
 
 			IParser chunklistFileParser = new ChunklistFileParser(media.ChunkListFileUrl);
@@ -32,15 +33,27 @@ namespace FileCombiner
 
 			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
 
-			MediaFile unconvertedMediaFile = new MediaFile(initialOutputFile.FullName);
+			return;
 
-			string newFilePath = Path.ChangeExtension(initialOutputFile.FullName, ".mk4");
+			string fileName = @"C:\Programming\TheHunted\Sufferfest-TheHunted.ts";
+
+			MediaFile unconvertedMediaFile = new MediaFile(fileName);
+
+			string newFilePath = Path.ChangeExtension(fileName, ".mk4");
 
 			MediaFile convertedMediaFile = new MediaFile(newFilePath);
+			
+			var conversionOptions = new ConversionOptions
+			{
+				VideoSize = VideoSize.Hd720,
+				AudioSampleRate = AudioSampleRate.Hz44100
+			};
 
 			using (var engine = new Engine())
 			{
-				engine.Convert(unconvertedMediaFile, convertedMediaFile);
+				engine.GetMetadata(unconvertedMediaFile);
+
+				engine.Convert(unconvertedMediaFile, convertedMediaFile, conversionOptions);
 			}
 		}
 	}

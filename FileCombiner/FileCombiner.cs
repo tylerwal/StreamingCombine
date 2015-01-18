@@ -96,9 +96,15 @@ namespace FileCombiner
 					Console.WriteLine("Downloading File #{0}", i);
 				}
 
-				byte[] data = _webClient.DownloadData(currentUri);
-
-				File.WriteAllBytes(filePath, data);
+				try
+				{
+					byte[] data = _webClient.DownloadData(currentUri);
+					File.WriteAllBytes(filePath, data);
+				}
+				catch (Exception)
+				{
+					Console.WriteLine("Exception caught");
+				}
 			}
 		}
 
@@ -111,30 +117,24 @@ namespace FileCombiner
 
 			DirectoryInfo streamFileDirectory = new DirectoryInfo(_tempDirectoryPath);
 
-			FileInfo[] streamFiles = streamFileDirectory.GetFiles();
-
-			List<byte[]> byteArrays = new List<byte[]>(streamFiles.Count());
-
-			foreach (FileInfo streamFile in streamFiles)
-			{
-				Console.WriteLine("Getting Bytes - {0}", streamFile.Name);
-				byteArrays.Add(File.ReadAllBytes(streamFile.FullName));
-			}
+			FileInfo[] chunkFiles = streamFileDirectory.GetFiles();
 
 			Console.WriteLine("Creating concatenated file...");
 
-			CombineByteArrays(byteArrays, outputFilePath);
+			CombineChunkFiles(chunkFiles, outputFilePath);
 			
 			Console.WriteLine("File Done - {0}", outputFilePath);
-		}		
- 
-		private void CombineByteArrays(IEnumerable<byte[]> byteArrays, string outputFilePath)
+		}
+
+		private void CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath)
 		{
-			foreach (byte[] byteArray in byteArrays)
+			foreach (FileInfo chunkFile in chunkFiles)
 			{
 				using (FileStream fileStream = new FileStream(outputFilePath, FileMode.Append))
 				{
-					fileStream.Write(byteArray, 0, byteArray.Length);
+					byte[] chunkBytes = File.ReadAllBytes(chunkFile.FullName);
+
+					fileStream.Write(chunkBytes, 0, chunkBytes.Length);
 				}
 			}
 		}
