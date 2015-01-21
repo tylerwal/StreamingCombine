@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Frapper
 {
@@ -74,13 +73,14 @@ namespace Frapper
             oInfo.RedirectStandardError = true;
 
             //Create the output and streamreader to get the output
-            string output = null; StreamReader srOutput = null;
+            string output = null; 
+		  StreamReader srOutput = null;
 
             //try the process
             try
             {
                 //run the process
-                Process proc = System.Diagnostics.Process.Start(oInfo);
+                Process proc = Process.Start(oInfo);
 
                 //proc.WaitForExit();
 
