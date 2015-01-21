@@ -1,10 +1,10 @@
-﻿using FileCombiner.Contracts;
+﻿using System;
+
+using FileCombiner.Contracts;
 using System.IO;
 using System.Net;
 
-using MediaToolkit;
-using MediaToolkit.Model;
-using MediaToolkit.Options;
+using Frapper;
 
 namespace FileCombiner
 {
@@ -33,28 +33,19 @@ namespace FileCombiner
 
 			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
 
-			return;
+			string unconvertedFileName = initialOutputFile.FullName;
 
-			string fileName = @"C:\Programming\TheHunted\Sufferfest-TheHunted.ts";
+			string convertedFileName = Path.ChangeExtension(unconvertedFileName, ".mkv");
 
-			MediaFile unconvertedMediaFile = new MediaFile(fileName);
+			FFMPEG ffmpeg = new FFMPEG();
 
-			string newFilePath = Path.ChangeExtension(fileName, ".mk4");
+			string ffmpegCommand = string.Format("-i {0} -vcodec copy -acodec copy -f matroska {1}", unconvertedFileName, convertedFileName);
 
-			MediaFile convertedMediaFile = new MediaFile(newFilePath);
+			Console.WriteLine("Converting file...\nCommand Executing: {0}", ffmpegCommand);
+
+			string something = ffmpeg.RunCommand(ffmpegCommand);
 			
-			var conversionOptions = new ConversionOptions
-			{
-				VideoSize = VideoSize.Hd720,
-				AudioSampleRate = AudioSampleRate.Hz44100
-			};
-
-			using (var engine = new Engine())
-			{
-				engine.GetMetadata(unconvertedMediaFile);
-
-				engine.Convert(unconvertedMediaFile, convertedMediaFile, conversionOptions);
-			}
+			Console.WriteLine(something);
 		}
 	}
 }

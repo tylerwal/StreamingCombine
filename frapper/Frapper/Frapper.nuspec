@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Frapper</id>
+    <version>1.0.4</version>
+    <title>Frapper</title>
+    <authors>Pedro Souza</authors>
+    <owners>Pedro Souza</owners>
+    <licenseUrl>https://github.com/Predoff/Frapper</licenseUrl>
+    <projectUrl>https://github.com/Predoff/Frapper</projectUrl>
+    <iconUrl>https://github.com/Predoff/Frapper</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Minimalist ffmpeg wrapper C#</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>FFMPEG Wrapper C# Video Audio Multimedia</tags>
+  </metadata>
+  <files>
+    <file src="bin\Debug\Frapper.dll" target="lib\net35\Frapper.dll" />
+  </files>
+</package>
