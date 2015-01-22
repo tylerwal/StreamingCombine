@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38CD0D1C-C56F-438A-BDFB-092A57AEB1D5}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{15D80364-601D-4531-BD04-5B3A09126129}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileCombiner</RootNamespace>
-    <AssemblyName>FileCombiner</AssemblyName>
+    <RootNamespace>StreamingFileCombineInterface</RootNamespace>
+    <AssemblyName>StreamingFileCombineInterface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,40 +31,58 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\ICombiner.cs" />
-    <Compile Include="Contracts\IConversionMetaData.cs" />
-    <Compile Include="Contracts\IParser.cs" />
-    <Compile Include="FileCombiner.cs" />
-    <Compile Include="ChunklistFileParser.cs" />
-    <Compile Include="ConversionMetaData.cs" />
-    <Compile Include="CreateCombinedFile.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\DataSources\FileCombiner.ConversionMetaData.datasource" />
+    <None Include="Properties\DataSources\FileCombiner.Media.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FfmpegCommander\FfmpegCommander.csproj">
-      <Project>{8546a028-cf39-48fb-bc0f-55e4239102ac}</Project>
-      <Name>FfmpegCommander</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
-      <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>
-      <Name>Frapper</Name>
+    <ProjectReference Include="..\FileCombiner\FileCombiner.csproj">
+      <Project>{38cd0d1c-c56f-438a-bdfb-092a57aeb1d5}</Project>
+      <Name>FileCombiner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

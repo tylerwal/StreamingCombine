@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38CD0D1C-C56F-438A-BDFB-092A57AEB1D5}</ProjectGuid>
+    <ProjectGuid>{8546A028-CF39-48FB-BC0F-55E4239102AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileCombiner</RootNamespace>
-    <AssemblyName>FileCombiner</AssemblyName>
+    <RootNamespace>FfmpegCommander</RootNamespace>
+    <AssemblyName>FfmpegCommander</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,12 +29,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,22 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\ICombiner.cs" />
-    <Compile Include="Contracts\IConversionMetaData.cs" />
-    <Compile Include="Contracts\IParser.cs" />
-    <Compile Include="FileCombiner.cs" />
-    <Compile Include="ChunklistFileParser.cs" />
-    <Compile Include="ConversionMetaData.cs" />
-    <Compile Include="CreateCombinedFile.cs" />
+    <Compile Include="BitStreamFilterEnum.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="FfmpegCommandBuilder.cs" />
+    <Compile Include="FfmpegConversionCommand.cs" />
+    <Compile Include="FrapperWrapper.cs" />
+    <Compile Include="Contracts\IFfmpegCommand.cs" />
+    <Compile Include="Contracts\IFfmpegCommandBuilder.cs" />
+    <Compile Include="Contracts\IFfmpegInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\StringBuilderUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FfmpegCommander\FfmpegCommander.csproj">
-      <Project>{8546a028-cf39-48fb-bc0f-55e4239102ac}</Project>
-      <Name>FfmpegCommander</Name>
+    <ProjectReference Include="..\EnumUtilities\EnumUtilities.csproj">
+      <Project>{73f0d388-a089-4c9d-8e3b-4098271e505d}</Project>
+      <Name>EnumUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
       <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>

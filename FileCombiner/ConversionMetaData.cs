@@ -4,7 +4,7 @@ using FileCombiner.Contracts;
 
 namespace FileCombiner
 {
-	public class Media : IMedia
+	public class ConversionMetaData : IConversionMetaData
 	{
 		#region Fields
 

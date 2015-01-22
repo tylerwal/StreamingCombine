@@ -1,6 +1,6 @@
 ﻿namespace FileCombiner.Contracts
 {
-	public interface IMedia
+	public interface IConversionMetaData
 	{
 		string OutputDirectory
 		{

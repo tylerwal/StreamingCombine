@@ -21,7 +21,7 @@ namespace FileCombiner
 
 		private IParser _parser;
 
-		private IMedia _media;
+		private IConversionMetaData _conversionMetaData;
 
 		private WebClient _webClient;
 
@@ -41,24 +41,24 @@ namespace FileCombiner
 
 		#region ICombiner Methods
 
-		public void Initialize(IParser parser, IMedia media, WebClient webClient)
+		public void Initialize(IParser parser, IConversionMetaData conversionMetaData, WebClient webClient)
 		{
 			_parser = parser;
-			_media = media;
+			_conversionMetaData = conversionMetaData;
 			_webClient = webClient;
 		}
 
 		public FileInfo CreateCombinedFile()
 		{
-			_tempDirectoryPath = Path.Combine(_media.OutputDirectory, _tempDirectory);
+			_tempDirectoryPath = Path.Combine(_conversionMetaData.OutputDirectory, _tempDirectory);
 
 			DownloadChunkFiles(_tempDirectoryPath);
 
-			CombineStreamFiles(_media.CreateOutputFilePath());
+			CombineStreamFiles(_conversionMetaData.CreateOutputFilePath());
 
 			DeleteChunkFiles(_tempDirectoryPath);
 
-			return new FileInfo(_media.CreateOutputFilePath());
+			return new FileInfo(_conversionMetaData.CreateOutputFilePath());
 		}
 
 		#endregion ICombiner Methods
@@ -110,7 +110,7 @@ namespace FileCombiner
 
 		private void CombineStreamFiles(string outputFilePath)
 		{
-			if (!Directory.Exists(_media.OutputDirectory))
+			if (!Directory.Exists(_conversionMetaData.OutputDirectory))
 			{
 				throw new DirectoryNotFoundException();
 			}
@@ -157,13 +157,13 @@ namespace FileCombiner
 		private string CreateChunkFileName(int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
 		{
 			streamingFilePathBuilder.Clear();
-			streamingFilePathBuilder.Append(_media.GetFilePathCorrectedName());
+			streamingFilePathBuilder.Append(_conversionMetaData.GetFilePathCorrectedName());
 			streamingFilePathBuilder.Append('_');
 			streamingFilePathBuilder.Append(uniqueIteration.ToString().PadLeft(requiredPadding, '0'));
 			streamingFilePathBuilder.Append(_outputStreamFileExtension);
 
 			return Path.Combine(
-				_media.OutputDirectory, 
+				_conversionMetaData.OutputDirectory, 
 				_tempDirectory, 
 				streamingFilePathBuilder.ToString()
 				);

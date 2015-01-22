@@ -4,16 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38CD0D1C-C56F-438A-BDFB-092A57AEB1D5}</ProjectGuid>
+    <ProjectGuid>{73F0D388-A089-4C9D-8E3B-4098271E505D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileCombiner</RootNamespace>
-    <AssemblyName>FileCombiner</AssemblyName>
+    <RootNamespace>EnumUtilities</RootNamespace>
+    <AssemblyName>EnumUtilities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,16 +26,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,27 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\ICombiner.cs" />
-    <Compile Include="Contracts\IConversionMetaData.cs" />
-    <Compile Include="Contracts\IParser.cs" />
-    <Compile Include="FileCombiner.cs" />
-    <Compile Include="ChunklistFileParser.cs" />
-    <Compile Include="ConversionMetaData.cs" />
-    <Compile Include="CreateCombinedFile.cs" />
+    <Compile Include="Configuration\ConfigurationSettings.cs" />
+    <Compile Include="Configuration\TheMovieDbConfiguration.cs" />
+    <Compile Include="Configuration\OpenSubtitlesConfiguration.cs" />
+    <Compile Include="EnumUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FfmpegCommander\FfmpegCommander.csproj">
-      <Project>{8546a028-cf39-48fb-bc0f-55e4239102ac}</Project>
-      <Name>FfmpegCommander</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
-      <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>
-      <Name>Frapper</Name>
-    </ProjectReference>
+    <Compile Include="StringValueAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
