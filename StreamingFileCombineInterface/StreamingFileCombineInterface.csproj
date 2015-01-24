@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IStreamingCombinePresenter.cs" />
+    <Compile Include="Contracts\IStreamingCombineView.cs" />
     <Compile Include="StreamingCombineView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamingCombineViewPresenter.cs" />
     <EmbeddedResource Include="StreamingCombineView.resx">
       <DependentUpon>StreamingCombineView.cs</DependentUpon>
     </EmbeddedResource>

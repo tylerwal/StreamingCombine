@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using FileCombiner;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using FileCombiner;
 
 namespace StreamingFileCombineInterface
 {
@@ -18,11 +10,13 @@ namespace StreamingFileCombineInterface
 		public StreamingCombineView()
 		{
 			InitializeComponent();
+			
+			btnGetChunkFiles.Click += GetChunkFiles;
 
 			bsConversionMetaData.DataSource = new ConversionMetaData();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void GetChunkFiles(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = bsConversionMetaData.DataSource as ConversionMetaData;
 			
@@ -35,7 +29,7 @@ namespace StreamingFileCombineInterface
 
 			saveDialog.ShowDialog();
 
-			conversionData.Name = Path.GetFileNameWithoutExtension(saveDialog.FileName);
+			conversionData.MediaName = Path.GetFileNameWithoutExtension(saveDialog.FileName);
 			conversionData.OutputDirectory = Path.GetDirectoryName(saveDialog.FileName);
 
 			ChunkFileCombinerService fileCombinerService = new ChunkFileCombinerService();

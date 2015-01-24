@@ -17,12 +17,10 @@ namespace FileCombiner
 				Directory.CreateDirectory(conversionMetaData.OutputDirectory);
 			}
 
+			// take the chunk files and append them together to one combined ts file
 			WebClient webClient = new WebClient();
-			
 			ICombiner fileCombiner = new FileCombiner();
 			fileCombiner.Initialize(chunklistFileParser, conversionMetaData, webClient);
-
-			// take the chunk files and append them together to one combined ts file
 			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
 
 			// convert from 'ts' to appropriate file
@@ -57,7 +55,7 @@ namespace FileCombiner
 			return frapperWrapper.ExecuteCommand(command);
 		}
 
-		private static IParser GetFileChunks(ConversionMetaData conversionMetaData)
+		public static IParser GetFileChunks(ConversionMetaData conversionMetaData)
 		{
 			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
 			return chunklistFileParser;

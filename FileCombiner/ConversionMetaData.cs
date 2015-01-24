@@ -19,7 +19,13 @@ namespace FileCombiner
 			set;
 		}
 
-		public string Name
+		public int NumberOfChunkFiles
+		{
+			get;
+			set;
+		}
+
+		public string MediaName
 		{
 			get;
 			set;
@@ -31,11 +37,29 @@ namespace FileCombiner
 			set;
 		}
 
+		public string TempDirectory
+		{
+			get;
+			set;
+		}
+
+		public string UnConvertedFilePath
+		{
+			get;
+			set;
+		}
+
+		public string ConvertedFilePath
+		{
+			get;
+			set;
+		}
+
 		#region PublicMethods
 
 		public string GetFilePathCorrectedName()
 		{
-			return Name.Replace(" ", string.Empty);
+			return MediaName.Replace(" ", string.Empty);
 		}
 
 		public string CreateOutputFilePath()
