@@ -85,17 +85,7 @@ namespace FileCombiner
 					numberOfUris.ToString().Length, 
 					streamingFilePathBuilder
 					);
-
-				if (File.Exists(filePath))
-				{
-					Console.WriteLine("Skipping File #{0} - Already Found", i);
-					continue;
-				}
-				else
-				{
-					Console.WriteLine("Downloading File #{0}", i);
-				}
-
+				
 				try
 				{
 					byte[] data = _webClient.DownloadData(currentUri);
@@ -118,12 +108,8 @@ namespace FileCombiner
 			DirectoryInfo streamFileDirectory = new DirectoryInfo(_tempDirectoryPath);
 
 			FileInfo[] chunkFiles = streamFileDirectory.GetFiles();
-
-			Console.WriteLine("Creating concatenated file...");
-
-			CombineChunkFiles(chunkFiles, outputFilePath);
 			
-			Console.WriteLine("File Done - {0}", outputFilePath);
+			CombineChunkFiles(chunkFiles, outputFilePath);
 		}
 
 		private void CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath)

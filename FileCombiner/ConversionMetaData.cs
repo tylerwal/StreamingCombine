@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 
 using FileCombiner.Contracts;
 
@@ -40,11 +41,10 @@ namespace FileCombiner
 		public string CreateOutputFilePath()
 		{
 			StringBuilder combinedFilePathBuilder = new StringBuilder();
-			combinedFilePathBuilder.Append(OutputDirectory);
 			combinedFilePathBuilder.Append(GetFilePathCorrectedName());
 			combinedFilePathBuilder.Append(_outputCombinedFileExtension);
 
-			return combinedFilePathBuilder.ToString();
+			return Path.Combine(OutputDirectory, combinedFilePathBuilder.ToString());
 		}
 
 		#endregion PublicMethods

@@ -1,18 +1,16 @@
-﻿using System.Net;
-
-using FileCombiner.Contracts;
+﻿using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using Frapper;
-using System;
 using System.IO;
+using System.Net;
 
 namespace FileCombiner
 {
-	public class StreamingFileCombiner
+	public class ChunkFileCombinerService
 	{
 		public void CreateCombinedFile(ConversionMetaData conversionMetaData)
 		{
-			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
+			IParser chunklistFileParser = GetFileChunks(conversionMetaData);
 
 			if (!Directory.Exists(conversionMetaData.OutputDirectory))
 			{
@@ -24,8 +22,26 @@ namespace FileCombiner
 			ICombiner fileCombiner = new FileCombiner();
 			fileCombiner.Initialize(chunklistFileParser, conversionMetaData, webClient);
 
+			// take the chunk files and append them together to one combined ts file
 			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
 
+			// convert from 'ts' to appropriate file
+			string output = ConvertFile(initialOutputFile);
+
+			// delete the unconverted 'ts' file
+			DeleteFile(initialOutputFile.FullName);
+		}
+
+		private static void DeleteFile(string filePath)
+		{
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+		}
+		
+		private static string ConvertFile(FileInfo initialOutputFile)
+		{
 			string unconvertedFileName = initialOutputFile.FullName;
 
 			string convertedFileName = Path.ChangeExtension(unconvertedFileName, ".mp4");
@@ -38,11 +54,13 @@ namespace FileCombiner
 				.AddBitStreamFilter(BitStreamFilter.AacAdtstoasc)
 				.GetCommand();
 
-			string output = frapperWrapper.ExecuteCommand(command);
+			return frapperWrapper.ExecuteCommand(command);
+		}
 
-			Console.WriteLine(output);
-
-			Console.ReadKey();
+		private static IParser GetFileChunks(ConversionMetaData conversionMetaData)
+		{
+			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
+			return chunklistFileParser;
 		}
 	}
 }

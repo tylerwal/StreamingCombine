@@ -1,11 +1,9 @@
-﻿using System;
+﻿using FileCombiner.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
-
-using FileCombiner.Contracts;
 
 namespace FileCombiner
 {

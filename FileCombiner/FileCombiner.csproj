@@ -51,7 +51,7 @@
     <Compile Include="FileCombiner.cs" />
     <Compile Include="ChunklistFileParser.cs" />
     <Compile Include="ConversionMetaData.cs" />
-    <Compile Include="CreateCombinedFile.cs" />
+    <Compile Include="ChunkFileCombinerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

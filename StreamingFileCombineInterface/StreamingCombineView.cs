@@ -13,9 +13,9 @@ using FileCombiner;
 
 namespace StreamingFileCombineInterface
 {
-	public partial class Form1 : Form
+	public partial class StreamingCombineView : Form
 	{
-		public Form1()
+		public StreamingCombineView()
 		{
 			InitializeComponent();
 
@@ -38,8 +38,8 @@ namespace StreamingFileCombineInterface
 			conversionData.Name = Path.GetFileNameWithoutExtension(saveDialog.FileName);
 			conversionData.OutputDirectory = Path.GetDirectoryName(saveDialog.FileName);
 
-			StreamingFileCombiner fileCombiner = new StreamingFileCombiner();
-			fileCombiner.CreateCombinedFile(conversionData);
+			ChunkFileCombinerService fileCombinerService = new ChunkFileCombinerService();
+			fileCombinerService.CreateCombinedFile(conversionData);
 		}
 	}
 }
