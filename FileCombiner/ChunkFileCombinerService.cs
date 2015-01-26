@@ -6,7 +6,7 @@ using System.Net;
 
 namespace FileCombiner
 {
-	public class ChunkFileCombinerService
+	public class ChunkFileCombinerService : IChunkFileCombinerService
 	{
 		public void CreateCombinedFile(ConversionMetaData conversionMetaData)
 		{
@@ -55,7 +55,7 @@ namespace FileCombiner
 			return frapperWrapper.ExecuteCommand(command);
 		}
 
-		public static IParser GetFileChunks(ConversionMetaData conversionMetaData)
+		public IParser GetFileChunks(ConversionMetaData conversionMetaData)
 		{
 			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
 			return chunklistFileParser;

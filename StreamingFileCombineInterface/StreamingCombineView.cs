@@ -3,12 +3,18 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
+using StreamingFileCombineInterface.Contracts;
+
 namespace StreamingFileCombineInterface
 {
-	public partial class StreamingCombineView : Form
+	public partial class StreamingCombineView : Form, IStreamingCombineView
 	{
+		private IStreamingCombinePresenter _presenter;
+
 		public StreamingCombineView()
 		{
+			_presenter = new StreamingCombineViewPresenter(this);
+
 			InitializeComponent();
 			
 			btnGetChunkFiles.Click += GetChunkFiles;

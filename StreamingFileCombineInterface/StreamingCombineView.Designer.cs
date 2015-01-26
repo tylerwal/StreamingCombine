@@ -32,13 +32,14 @@
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFiles = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
-			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.lblNumberOfChunks = new System.Windows.Forms.Label();
-			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
-			this.gbxChunkFile.SuspendLayout();
+			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
+			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
+			this.lblNumberOfChunks = new System.Windows.Forms.Label();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
+			this.gbxChunkFile.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -69,6 +70,10 @@
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
 			// 
+			// bsConversionMetaData
+			// 
+			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
+			// 
 			// gbxChunkFile
 			// 
 			this.gbxChunkFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -84,14 +89,15 @@
 			this.gbxChunkFile.Size = new System.Drawing.Size(946, 106);
 			this.gbxChunkFile.TabIndex = 3;
 			this.gbxChunkFile.TabStop = false;
-			this.gbxChunkFile.Text = "Chunk File";
+			this.gbxChunkFile.Text = "Chunk File List";
 			// 
-			// progressBar1
+			// txtNumberOfChunks
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(126, 45);
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(330, 23);
-			this.progressBar1.TabIndex = 3;
+			this.txtNumberOfChunks.Location = new System.Drawing.Point(112, 74);
+			this.txtNumberOfChunks.Name = "txtNumberOfChunks";
+			this.txtNumberOfChunks.ReadOnly = true;
+			this.txtNumberOfChunks.Size = new System.Drawing.Size(100, 20);
+			this.txtNumberOfChunks.TabIndex = 5;
 			// 
 			// lblNumberOfChunks
 			// 
@@ -102,29 +108,36 @@
 			this.lblNumberOfChunks.TabIndex = 4;
 			this.lblNumberOfChunks.Text = "Number Of Chunks:";
 			// 
-			// txtNumberOfChunks
+			// progressBar1
 			// 
-			this.txtNumberOfChunks.Location = new System.Drawing.Point(112, 74);
-			this.txtNumberOfChunks.Name = "txtNumberOfChunks";
-			this.txtNumberOfChunks.ReadOnly = true;
-			this.txtNumberOfChunks.Size = new System.Drawing.Size(100, 20);
-			this.txtNumberOfChunks.TabIndex = 5;
+			this.progressBar1.Location = new System.Drawing.Point(126, 45);
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(330, 23);
+			this.progressBar1.TabIndex = 3;
 			// 
-			// bsConversionMetaData
+			// gbxChunkFiles
 			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
+			this.gbxChunkFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbxChunkFiles.Location = new System.Drawing.Point(12, 125);
+			this.gbxChunkFiles.Name = "gbxChunkFiles";
+			this.gbxChunkFiles.Size = new System.Drawing.Size(946, 100);
+			this.gbxChunkFiles.TabIndex = 4;
+			this.gbxChunkFiles.TabStop = false;
+			this.gbxChunkFiles.Text = "Chunk Files";
 			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(971, 583);
+			this.Controls.Add(this.gbxChunkFiles);
 			this.Controls.Add(this.gbxChunkFile);
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -139,6 +152,7 @@
 		private System.Windows.Forms.TextBox txtNumberOfChunks;
 		private System.Windows.Forms.Label lblNumberOfChunks;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.GroupBox gbxChunkFiles;
 	}
 }
 
