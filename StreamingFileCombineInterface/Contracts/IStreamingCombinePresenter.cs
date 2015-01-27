@@ -5,5 +5,7 @@ namespace StreamingFileCombineInterface.Contracts
 	public interface IStreamingCombinePresenter
 	{
 		void GetChunkFiles(ConversionMetaData conversionMetaData);
+
+		void DoItAll(ConversionMetaData conversionMetaData);
 	}
 }

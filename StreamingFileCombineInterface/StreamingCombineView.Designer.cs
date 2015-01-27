@@ -38,6 +38,7 @@
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
+			this.btnDoItAll = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.gbxChunkFile.SuspendLayout();
 			this.SuspendLayout();
@@ -126,11 +127,21 @@
 			this.gbxChunkFiles.TabStop = false;
 			this.gbxChunkFiles.Text = "Chunk Files";
 			// 
+			// btnDoItAll
+			// 
+			this.btnDoItAll.Location = new System.Drawing.Point(12, 548);
+			this.btnDoItAll.Name = "btnDoItAll";
+			this.btnDoItAll.Size = new System.Drawing.Size(75, 23);
+			this.btnDoItAll.TabIndex = 5;
+			this.btnDoItAll.Text = "Do It All!!";
+			this.btnDoItAll.UseVisualStyleBackColor = true;
+			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(971, 583);
+			this.Controls.Add(this.btnDoItAll);
 			this.Controls.Add(this.gbxChunkFiles);
 			this.Controls.Add(this.gbxChunkFile);
 			this.Name = "StreamingCombineView";
@@ -153,6 +164,7 @@
 		private System.Windows.Forms.Label lblNumberOfChunks;
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.Windows.Forms.GroupBox gbxChunkFiles;
+		private System.Windows.Forms.Button btnDoItAll;
 	}
 }
 

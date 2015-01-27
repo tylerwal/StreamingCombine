@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IChunkFileCombinerService.cs" />
     <Compile Include="Contracts\ICombiner.cs" />
     <Compile Include="Contracts\IConversionMetaData.cs" />
     <Compile Include="Contracts\IParser.cs" />

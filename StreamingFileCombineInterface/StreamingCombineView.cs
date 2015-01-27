@@ -16,16 +16,23 @@ namespace StreamingFileCombineInterface
 			_presenter = new StreamingCombineViewPresenter(this);
 
 			InitializeComponent();
+			bsConversionMetaData.DataSource = new ConversionMetaData();
 			
 			btnGetChunkFiles.Click += GetChunkFiles;
-
-			bsConversionMetaData.DataSource = new ConversionMetaData();
+			btnDoItAll.Click += DoItAll;
 		}
 
 		private void GetChunkFiles(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = bsConversionMetaData.DataSource as ConversionMetaData;
 			
+			_presenter.GetChunkFiles(conversionData);
+		}
+
+		private void DoItAll(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = bsConversionMetaData.DataSource as ConversionMetaData;
+
 			SaveFileDialog saveDialog = new SaveFileDialog
 			{
 				AddExtension = true,
@@ -38,8 +45,7 @@ namespace StreamingFileCombineInterface
 			conversionData.MediaName = Path.GetFileNameWithoutExtension(saveDialog.FileName);
 			conversionData.OutputDirectory = Path.GetDirectoryName(saveDialog.FileName);
 
-			ChunkFileCombinerService fileCombinerService = new ChunkFileCombinerService();
-			fileCombinerService.CreateCombinedFile(conversionData);
+			_presenter.DoItAll(conversionData);
 		}
 	}
 }

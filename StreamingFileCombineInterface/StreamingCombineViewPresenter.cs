@@ -1,4 +1,7 @@
-﻿using FileCombiner;
+﻿using System.IO;
+using System.Windows.Forms;
+
+using FileCombiner;
 using FileCombiner.Contracts;
 
 using StreamingFileCombineInterface.Contracts;
@@ -14,13 +17,20 @@ namespace StreamingFileCombineInterface
 		public StreamingCombineViewPresenter(IStreamingCombineView view)
 		{
 			_streamingCombineView = view;
+
+			_combinerService = new ChunkFileCombinerService();
 		}
 
 		#region IStreamingCombinePresenter Members
 
 		public void GetChunkFiles(ConversionMetaData conversionMetaData)
 		{
-			throw new System.NotImplementedException();
+			IParser fileChunks = _combinerService.GetFileChunks(conversionMetaData);
+		}
+
+		public void DoItAll(ConversionMetaData conversionMetaData)
+		{
+			_combinerService.CreateCombinedFile(conversionMetaData);
 		}
 
 		#endregion
