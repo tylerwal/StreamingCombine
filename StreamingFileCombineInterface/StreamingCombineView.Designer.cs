@@ -39,7 +39,9 @@
 			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
 			this.btnDoItAll = new System.Windows.Forms.Button();
 			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
+			this.btnDownloadChunks = new System.Windows.Forms.Button();
 			this.gbxChunkFile.SuspendLayout();
+			this.gbxChunkFiles.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -54,12 +56,13 @@
 			// 
 			// btnGetChunkFiles
 			// 
+			this.btnGetChunkFiles.BackColor = System.Drawing.SystemColors.Control;
 			this.btnGetChunkFiles.Location = new System.Drawing.Point(9, 45);
 			this.btnGetChunkFiles.Name = "btnGetChunkFiles";
 			this.btnGetChunkFiles.Size = new System.Drawing.Size(111, 23);
 			this.btnGetChunkFiles.TabIndex = 1;
 			this.btnGetChunkFiles.Text = "Get Chunk File";
-			this.btnGetChunkFiles.UseVisualStyleBackColor = true;
+			this.btnGetChunkFiles.UseVisualStyleBackColor = false;
 			// 
 			// txtChunkFileUrl
 			// 
@@ -118,6 +121,7 @@
 			// 
 			this.gbxChunkFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbxChunkFiles.Controls.Add(this.btnDownloadChunks);
 			this.gbxChunkFiles.Location = new System.Drawing.Point(12, 125);
 			this.gbxChunkFiles.Name = "gbxChunkFiles";
 			this.gbxChunkFiles.Size = new System.Drawing.Size(946, 100);
@@ -138,6 +142,15 @@
 			// 
 			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
 			// 
+			// btnDownloadChunks
+			// 
+			this.btnDownloadChunks.Location = new System.Drawing.Point(7, 71);
+			this.btnDownloadChunks.Name = "btnDownloadChunks";
+			this.btnDownloadChunks.Size = new System.Drawing.Size(113, 23);
+			this.btnDownloadChunks.TabIndex = 0;
+			this.btnDownloadChunks.Text = "Download Chunks";
+			this.btnDownloadChunks.UseVisualStyleBackColor = true;
+			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,6 +163,7 @@
 			this.Text = "Streaming Combine";
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
+			this.gbxChunkFiles.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
@@ -167,6 +181,7 @@
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.Windows.Forms.GroupBox gbxChunkFiles;
 		private System.Windows.Forms.Button btnDoItAll;
+		private System.Windows.Forms.Button btnDownloadChunks;
 	}
 }
 
