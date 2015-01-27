@@ -26,7 +26,7 @@ namespace StreamingFileCombineInterface
 		{
 			ConversionMetaData conversionData = bsConversionMetaData.DataSource as ConversionMetaData;
 			
-			_presenter.GetChunkFiles(conversionData);
+			_presenter.GetChunkFiles(ref conversionData);
 		}
 
 		private void DoItAll(object sender, EventArgs e)

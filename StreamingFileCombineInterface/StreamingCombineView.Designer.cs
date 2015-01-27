@@ -32,15 +32,15 @@
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFiles = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
-			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
 			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
 			this.btnDoItAll = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
+			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -71,10 +71,6 @@
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
 			// 
-			// bsConversionMetaData
-			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
-			// 
 			// gbxChunkFile
 			// 
 			this.gbxChunkFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -94,11 +90,13 @@
 			// 
 			// txtNumberOfChunks
 			// 
+			this.txtNumberOfChunks.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "NumberOfChunkFiles", true));
 			this.txtNumberOfChunks.Location = new System.Drawing.Point(112, 74);
 			this.txtNumberOfChunks.Name = "txtNumberOfChunks";
 			this.txtNumberOfChunks.ReadOnly = true;
-			this.txtNumberOfChunks.Size = new System.Drawing.Size(100, 20);
+			this.txtNumberOfChunks.Size = new System.Drawing.Size(86, 20);
 			this.txtNumberOfChunks.TabIndex = 5;
+			this.txtNumberOfChunks.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// lblNumberOfChunks
 			// 
@@ -136,6 +134,10 @@
 			this.btnDoItAll.Text = "Do It All!!";
 			this.btnDoItAll.UseVisualStyleBackColor = true;
 			// 
+			// bsConversionMetaData
+			// 
+			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
+			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,9 +148,9 @@
 			this.Controls.Add(this.gbxChunkFile);
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
 		}

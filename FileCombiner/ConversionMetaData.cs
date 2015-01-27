@@ -1,58 +1,124 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+using FileCombiner.Annotations;
 using FileCombiner.Contracts;
 
 namespace FileCombiner
 {
-	public class ConversionMetaData : IConversionMetaData
+	public class ConversionMetaData : IConversionMetaData, INotifyPropertyChanged
 	{
 		#region Fields
 
-		private const string _outputCombinedFileExtension = ".ts"; 
+		private const string _outputCombinedFileExtension = ".ts";
+
+		private string _chunkListFileUrl;
+
+		private int _numberOfChunkFiles;
+
+		private string _mediaName;
+
+		private string _outputDirectory;
+
+		private string _tempDirectory;
+
+		private string _unconvertedFilePath;
+
+		private string _convertedFilePath;
 
 		#endregion Fields
 
 		public string ChunkListFileUrl
 		{
-			get;
-			set;
+			get
+			{
+				return _chunkListFileUrl;
+			}
+			set
+			{
+				_chunkListFileUrl = value;
+				OnPropertyChanged("ChunkListFileUrl");
+			}
 		}
 
 		public int NumberOfChunkFiles
 		{
-			get;
-			set;
+			get
+			{
+				return _numberOfChunkFiles;
+			}
+			set
+			{
+				_numberOfChunkFiles = value;
+				OnPropertyChanged("NumberOfChunkFiles");
+			}
 		}
 
 		public string MediaName
 		{
-			get;
-			set;
+			get
+			{
+				return _mediaName;
+			}
+			set
+			{
+				_mediaName = value;
+				OnPropertyChanged("MediaName");
+			}
 		}
 
 		public string OutputDirectory
 		{
-			get;
-			set;
+			get
+			{
+				return _outputDirectory;
+			}
+			set
+			{
+				_outputDirectory = value;
+				OnPropertyChanged("OutputDirectory");
+			}
 		}
 
 		public string TempDirectory
 		{
-			get;
-			set;
+			get
+			{
+				return _tempDirectory;
+			}
+			set
+			{
+				_tempDirectory = value;
+				OnPropertyChanged("TempDirectory");
+			}
 		}
 
 		public string UnConvertedFilePath
 		{
-			get;
-			set;
+			get
+			{
+				return _unconvertedFilePath;
+			}
+			set
+			{
+				_unconvertedFilePath = value;
+				OnPropertyChanged("UnConvertedFilePath");
+			}
 		}
 
 		public string ConvertedFilePath
 		{
-			get;
-			set;
+			get
+			{
+				return _convertedFilePath;
+			}
+			set
+			{
+				_convertedFilePath = value;
+				OnPropertyChanged("ConvertedFilePath");
+			}
 		}
 
 		#region PublicMethods
@@ -72,5 +138,17 @@ namespace FileCombiner
 		}
 
 		#endregion PublicMethods
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		[NotifyPropertyChangedInvocator]
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChangedEventHandler handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
 	}
 }

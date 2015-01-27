@@ -14,6 +14,8 @@ namespace StreamingFileCombineInterface
 
 		private IChunkFileCombinerService _combinerService;
 
+		private IParser _fileChunks;
+
 		public StreamingCombineViewPresenter(IStreamingCombineView view)
 		{
 			_streamingCombineView = view;
@@ -23,9 +25,11 @@ namespace StreamingFileCombineInterface
 
 		#region IStreamingCombinePresenter Members
 
-		public void GetChunkFiles(ConversionMetaData conversionMetaData)
+		public void GetChunkFiles(ref ConversionMetaData conversionMetaData)
 		{
-			IParser fileChunks = _combinerService.GetFileChunks(conversionMetaData);
+			_fileChunks = _combinerService.GetFileChunks(conversionMetaData);
+
+			conversionMetaData.NumberOfChunkFiles = _fileChunks.StreamingFileUris.Count;
 		}
 
 		public void DoItAll(ConversionMetaData conversionMetaData)

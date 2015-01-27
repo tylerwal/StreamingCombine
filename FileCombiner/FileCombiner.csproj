@@ -53,6 +53,7 @@
     <Compile Include="ChunklistFileParser.cs" />
     <Compile Include="ConversionMetaData.cs" />
     <Compile Include="ChunkFileCombinerService.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
