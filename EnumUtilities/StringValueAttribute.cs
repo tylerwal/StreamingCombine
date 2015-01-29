@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MediaHandleUtilities
+namespace Utilities
 {
 	public class StringValueAttribute : Attribute
 	{

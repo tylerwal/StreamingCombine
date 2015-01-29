@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCombiner", "FileCombine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frapper", "frapper\Frapper\Frapper.csproj", "{DB80BB06-3C17-43F7-9226-FEF3DE6F7617}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumUtilities", "EnumUtilities\EnumUtilities.csproj", "{73F0D388-A089-4C9D-8E3B-4098271E505D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "EnumUtilities\Utilities.csproj", "{73F0D388-A089-4C9D-8E3B-4098271E505D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FfmpegCommander", "FfmpegCommander\FfmpegCommander.csproj", "{8546A028-CF39-48FB-BC0F-55E4239102AC}"
 EndProject

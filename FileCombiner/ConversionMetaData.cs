@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,9 +17,10 @@ namespace FileCombiner
 
 		private const string _outputCombinedFileExtension = ".ts";
 
+		private Queue<Uri> _parsedChunks;
 		private string _chunkListFileUrl;
-
 		private int _numberOfChunkFiles;
+		private int _percentDoneChunkFileList;
 
 		private string _mediaName;
 
@@ -29,6 +33,23 @@ namespace FileCombiner
 		private string _convertedFilePath;
 
 		#endregion Fields
+
+		#region Properties
+
+		#region Chunk File List
+
+		public Queue<Uri> ParsedChunks
+		{
+			get
+			{
+				return _parsedChunks;
+			}
+			set
+			{
+				_parsedChunks = value;
+				OnPropertyChanged("ParsedChunks");
+			}
+		}
 
 		public string ChunkListFileUrl
 		{
@@ -56,6 +77,21 @@ namespace FileCombiner
 			}
 		}
 
+		public int PercentDoneChunkFileList
+		{
+			get
+			{
+				return _percentDoneChunkFileList;
+			}
+			set
+			{
+				_percentDoneChunkFileList = value;
+				OnPropertyChanged("PercentDoneChunkFileList");
+			}
+		}
+
+		#endregion Chunk File List 
+		
 		public string MediaName
 		{
 			get
@@ -121,6 +157,17 @@ namespace FileCombiner
 			}
 		}
 
+		#endregion Properties
+
+		#region Constructor
+
+		public ConversionMetaData()
+		{
+			//TempDirectory = ConfigurationManager.AppSettings["tempFileLocation"];
+		}
+
+		#endregion Constructor
+
 		#region PublicMethods
 
 		public string GetFilePathCorrectedName()
@@ -139,6 +186,8 @@ namespace FileCombiner
 
 		#endregion PublicMethods
 
+		#region Events
+		
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		[NotifyPropertyChangedInvocator]
@@ -149,6 +198,8 @@ namespace FileCombiner
 			{
 				handler(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
+		} 
+
+		#endregion Events
 	}
 }

@@ -1,4 +1,6 @@
-﻿using FileCombiner.Contracts;
+﻿using System.Threading.Tasks;
+
+using FileCombiner.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,49 +14,43 @@ namespace FileCombiner
 		private const char NewLineCharacter = '\n';
 		private const char ForwardSlash = '/';
 		private const string MetaDataLine = "#EXT";
+
+		private readonly Uri _baseAddress;
+
+		private readonly string _chunkListUrl;
 		
-		public Uri BaseAddress
-		{
-			get;
-			set;
-		}
-
-		public Queue<Uri> StreamingFileUris
-		{
-			get;
-			set;
-		}
-
-		public ChunklistFileParser(FileInfo inputFile, string baseAddress)
-		{
-			BaseAddress = new Uri(baseAddress);
-
-			var allFileLines = File.ReadLines(inputFile.FullName);
-
-			ProcessUnparsedFileIntoUris(allFileLines);
-		}
-
 		public ChunklistFileParser(string chunkListUrl)
 		{
-			int lastSlashLocation = chunkListUrl.LastIndexOf(ForwardSlash);
-			string baseAddress = chunkListUrl.Remove(lastSlashLocation + 1);
+			_chunkListUrl = chunkListUrl;
 
-			BaseAddress = new Uri(baseAddress);
+			int lastSlashLocation = _chunkListUrl.LastIndexOf(ForwardSlash);
+			string baseAddress = _chunkListUrl.Remove(lastSlashLocation + 1);
 
-			WebClient webClient = new WebClient();
-
-			var allFileLines = webClient.DownloadString(chunkListUrl).Split(NewLineCharacter);
-			
-			ProcessUnparsedFileIntoUris(allFileLines);
+			_baseAddress = new Uri(baseAddress);
 		}
 
+		public async Task<Queue<Uri>> GetChunksInOrder()
+		{
+			WebClient webClient = new WebClient();
+
+			string[] allFileLines = webClient.DownloadString(_chunkListUrl).Split(NewLineCharacter);
+
+			/*Task<string> downloadTask = webClient.DownloadStringTaskAsync(_chunkListUrl);
+			
+			string completeDocument = await downloadTask;
+
+			string[] allFileLines = completeDocument.Split(NewLineCharacter);*/
+
+			return ProcessUnparsedFileIntoUris(allFileLines);
+		}
+		
 		#region Helper Methods
 
-		private void ProcessUnparsedFileIntoUris(IEnumerable<string> allFileLines)
+		private Queue<Uri> ProcessUnparsedFileIntoUris(IEnumerable<string> allFileLines)
 		{
 			var streamingFileLines = ParseStreamFiles(allFileLines);
 
-			StreamingFileUris = GetStreamFileUris(streamingFileLines);
+			return GetStreamFileUris(streamingFileLines);
 		}
 
 		private Queue<Uri> GetStreamFileUris(IEnumerable<string> streamingFileLines)
@@ -70,7 +66,7 @@ namespace FileCombiner
 					continue;
 				}
 
-				Uri combinedUri = new Uri(BaseAddress, trimmedLine);
+				Uri combinedUri = new Uri(_baseAddress, trimmedLine);
 
 				orderedStreamFileUris.Enqueue(combinedUri);
 			}

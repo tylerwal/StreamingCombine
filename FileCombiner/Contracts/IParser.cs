@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FileCombiner.Contracts
 {
 	public interface IParser
 	{
-		Queue<Uri> StreamingFileUris
-		{
-			get;
-			set;
-		}
+		Task<Queue<Uri>> GetChunksInOrder();
 	}
 }

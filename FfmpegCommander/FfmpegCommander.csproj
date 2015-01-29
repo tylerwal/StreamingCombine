@@ -51,9 +51,9 @@
     <Compile Include="Utilities\StringBuilderUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EnumUtilities\EnumUtilities.csproj">
+    <ProjectReference Include="..\EnumUtilities\Utilities.csproj">
       <Project>{73f0d388-a089-4c9d-8e3b-4098271e505d}</Project>
-      <Name>EnumUtilities</Name>
+      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
       <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>

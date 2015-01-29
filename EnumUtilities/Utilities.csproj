@@ -44,9 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigurationSettings.cs" />
-    <Compile Include="Configuration\TheMovieDbConfiguration.cs" />
-    <Compile Include="Configuration\OpenSubtitlesConfiguration.cs" />
     <Compile Include="EnumUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringValueAttribute.cs" />

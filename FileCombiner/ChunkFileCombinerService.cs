@@ -1,16 +1,42 @@
 ﻿using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using Frapper;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace FileCombiner
 {
 	public class ChunkFileCombinerService : IChunkFileCombinerService
 	{
+		#region Fields
+
+		private WebClient _webClient; 
+
+		#endregion Fields
+
+		#region Constructors
+
+
+		private ChunkFileCombinerService()
+		{
+		}
+
+		public ChunkFileCombinerService(WebClient webClient)
+		{
+			// add webclient to GetFileChunks
+			_webClient = webClient;
+		}
+		
+		#endregion Constructors
+		
+		#region Methods
+
 		public void CreateCombinedFile(ConversionMetaData conversionMetaData)
 		{
-			IParser chunklistFileParser = GetFileChunks(conversionMetaData);
+			Queue<Uri> chunklistFileParser = GetChunkFileList(conversionMetaData).Result;
 
 			if (!Directory.Exists(conversionMetaData.OutputDirectory))
 			{
@@ -18,9 +44,8 @@ namespace FileCombiner
 			}
 
 			// take the chunk files and append them together to one combined ts file
-			WebClient webClient = new WebClient();
 			ICombiner fileCombiner = new FileCombiner();
-			fileCombiner.Initialize(chunklistFileParser, conversionMetaData, webClient);
+			fileCombiner.Initialize(chunklistFileParser, conversionMetaData, _webClient);
 			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
 
 			// convert from 'ts' to appropriate file
@@ -29,6 +54,17 @@ namespace FileCombiner
 			// delete the unconverted 'ts' file
 			DeleteFile(initialOutputFile.FullName);
 		}
+
+		public async Task<Queue<Uri>> GetChunkFileList(ConversionMetaData conversionMetaData)
+		{
+			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
+			
+			return chunklistFileParser.GetChunksInOrder().Result;
+		}
+		
+		#endregion Methods
+
+		#region Helper Methods
 
 		private static void DeleteFile(string filePath)
 		{
@@ -55,10 +91,6 @@ namespace FileCombiner
 			return frapperWrapper.ExecuteCommand(command);
 		}
 
-		public IParser GetFileChunks(ConversionMetaData conversionMetaData)
-		{
-			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
-			return chunklistFileParser;
-		}
+		#endregion Helper Methods
 	}
 }

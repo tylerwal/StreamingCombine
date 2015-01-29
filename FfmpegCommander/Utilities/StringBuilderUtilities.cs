@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-using MediaHandleUtilities;
+using FileCombiner.Ffmpeg;
 
-namespace FileCombiner.Ffmpeg
+namespace FfmpegCommanderUtilities
 {
 	public static class StringBuilderUtilities
 	{
@@ -28,7 +28,7 @@ namespace FileCombiner.Ffmpeg
 
 		public static StringBuilder addBitStreamFilter(this StringBuilder builder, BitStreamFilter bsf)
 		{
-			return builder.Append(CreateArgument(Constants.BIT_STREAM_FILTER_ARGUMENT, EnumUtilities.GetStringValue(bsf)));
+			return builder.Append(CreateArgument(Constants.BIT_STREAM_FILTER_ARGUMENT, Utilities.EnumUtilities.GetStringValue(bsf)));
 		}
 
 		#region Private Methods

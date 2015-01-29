@@ -19,33 +19,29 @@ namespace FileCombiner
 
 		private string _tempDirectoryPath;
 
-		private IParser _parser;
+		private Queue<Uri> _chunkUrls;
 
 		private IConversionMetaData _conversionMetaData;
 
 		private WebClient _webClient;
 
 		#endregion Fields
-
-		#region Constructor
-
-		public FileCombiner()
-		{
-		}		 
-
-		#endregion Constructor
-
+		
 		#region Properties
 
 		#endregion Properties
 
 		#region ICombiner Methods
 
-		public void Initialize(IParser parser, IConversionMetaData conversionMetaData, WebClient webClient)
+		public void Initialize(Queue<Uri> chunkUrls, IConversionMetaData conversionMetaData, WebClient webClient)
 		{
-			_parser = parser;
+			_chunkUrls = chunkUrls;
 			_conversionMetaData = conversionMetaData;
 			_webClient = webClient;
+		}
+
+		public void DownloadFileChunks(string temporaryDirectory)
+		{
 		}
 
 		public FileInfo CreateCombinedFile()
@@ -67,7 +63,7 @@ namespace FileCombiner
 
 		private void DownloadChunkFiles(string tempDirectoryPath)
 		{
-			int numberOfUris = _parser.StreamingFileUris.Count;
+			int numberOfUris = _chunkUrls.Count;
 
 			StringBuilder streamingFilePathBuilder = new StringBuilder();
 			
@@ -78,7 +74,7 @@ namespace FileCombiner
 
 			for (int i = 0; i < numberOfUris; i++)
 			{
-				Uri currentUri = _parser.StreamingFileUris.Dequeue();
+				Uri currentUri = _chunkUrls.Dequeue();
 
 				string filePath = CreateChunkFileName(
 					i, 
