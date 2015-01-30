@@ -1,15 +1,13 @@
-﻿using System;
+﻿using FileCombiner.Contracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 
-using FileCombiner.Contracts;
-
 namespace FileCombiner
 {
-	public class FileCombiner : ICombiner
+	public class FileCombinerService : IFileCombinerService
 	{
 		#region Fields
 
@@ -26,24 +24,62 @@ namespace FileCombiner
 		private WebClient _webClient;
 
 		#endregion Fields
-		
+
+		#region Constructor
+
+		public FileCombinerService(WebClient webClient)
+		{
+			_webClient = webClient;
+		}
+
+		#endregion Constructor
+
 		#region Properties
 
 		#endregion Properties
 
 		#region ICombiner Methods
 
-		public void Initialize(Queue<Uri> chunkUrls, IConversionMetaData conversionMetaData, WebClient webClient)
+		public void Initialize(IConversionMetaData conversionMetaData)
 		{
-			_chunkUrls = chunkUrls;
+			_chunkUrls = conversionMetaData.ParsedChunks;
 			_conversionMetaData = conversionMetaData;
-			_webClient = webClient;
 		}
 
-		public void DownloadFileChunks(string temporaryDirectory)
+		/// <summary>
+		/// Downloads the indivual chunks files to a directory of choosing.
+		/// </summary>
+		public void DownloadFileChunks()
 		{
+			Directory.CreateDirectory(_conversionMetaData.TempDirectory);
+
+			int numberOfUris = _chunkUrls.Count;
+
+			StringBuilder streamingFilePathBuilder = new StringBuilder();
+
+			for (int i = 0; i < numberOfUris; i++)
+			{
+				Uri currentUri = _chunkUrls.Dequeue();
+
+				string filePath = GetIndividualChunkFileName(
+					i,
+					numberOfUris.ToString().Length,
+					streamingFilePathBuilder
+					);
+
+				try
+				{
+					byte[] data = _webClient.DownloadData(currentUri);
+					File.WriteAllBytes(filePath, data);
+				}
+				catch (Exception)
+				{
+					Console.WriteLine("Exception caught");
+				}
+			}
 		}
 
+		// REFACTOR THIS OUT
 		public FileInfo CreateCombinedFile()
 		{
 			_tempDirectoryPath = Path.Combine(_conversionMetaData.OutputDirectory, _tempDirectory);
@@ -61,6 +97,7 @@ namespace FileCombiner
 
 		#region Helper Methods
 
+		// REFACTOR THIS OUT
 		private void DownloadChunkFiles(string tempDirectoryPath)
 		{
 			int numberOfUris = _chunkUrls.Count;
@@ -136,6 +173,21 @@ namespace FileCombiner
 		/// <returns>
 		/// The name of the file.
 		/// </returns>
+		private string GetIndividualChunkFileName(int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
+		{
+			streamingFilePathBuilder.Clear();
+			streamingFilePathBuilder.Append("chunk");
+			streamingFilePathBuilder.Append('_');
+			streamingFilePathBuilder.Append(uniqueIteration.ToString().PadLeft(requiredPadding, '0'));
+			streamingFilePathBuilder.Append(_outputStreamFileExtension);
+
+			return Path.Combine(
+				_conversionMetaData.TempDirectory,
+				streamingFilePathBuilder.ToString()
+				);
+		}
+
+		// REFACTOR THIS OUT!!
 		private string CreateChunkFileName(int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
 		{
 			streamingFilePathBuilder.Clear();

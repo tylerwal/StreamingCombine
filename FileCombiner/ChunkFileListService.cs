@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FileCombiner
 {
-	public class ChunkFileCombinerService : IChunkFileCombinerService
+	public class ChunkFileListService : IChunkFileListService
 	{
 		#region Fields
 
@@ -18,13 +18,8 @@ namespace FileCombiner
 		#endregion Fields
 
 		#region Constructors
-
-
-		private ChunkFileCombinerService()
-		{
-		}
-
-		public ChunkFileCombinerService(WebClient webClient)
+		
+		public ChunkFileListService(WebClient webClient)
 		{
 			// add webclient to GetFileChunks
 			_webClient = webClient;
@@ -34,7 +29,7 @@ namespace FileCombiner
 		
 		#region Methods
 
-		public void CreateCombinedFile(ConversionMetaData conversionMetaData)
+		public void DoItAll(IConversionMetaData conversionMetaData)
 		{
 			Queue<Uri> chunklistFileParser = GetChunkFileList(conversionMetaData).Result;
 
@@ -44,20 +39,20 @@ namespace FileCombiner
 			}
 
 			// take the chunk files and append them together to one combined ts file
-			ICombiner fileCombiner = new FileCombiner();
-			fileCombiner.Initialize(chunklistFileParser, conversionMetaData, _webClient);
-			FileInfo initialOutputFile = fileCombiner.CreateCombinedFile();
+			IFileCombinerService fileCombinerService = new FileCombinerService(_webClient);
+			fileCombinerService.Initialize(conversionMetaData);
+			FileInfo unconvertedTsOutputFile = fileCombinerService.CreateCombinedFile();
 
 			// convert from 'ts' to appropriate file
-			string output = ConvertFile(initialOutputFile);
+			string output = ConvertFile(unconvertedTsOutputFile);
 
 			// delete the unconverted 'ts' file
-			DeleteFile(initialOutputFile.FullName);
+			DeleteFile(unconvertedTsOutputFile.FullName);
 		}
 
-		public async Task<Queue<Uri>> GetChunkFileList(ConversionMetaData conversionMetaData)
+		public async Task<Queue<Uri>> GetChunkFileList(IConversionMetaData conversionMetaData)
 		{
-			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl);
+			IParser chunklistFileParser = new ChunklistFileParser(conversionMetaData.ChunkListFileUrl, _webClient);
 			
 			return chunklistFileParser.GetChunksInOrder().Result;
 		}

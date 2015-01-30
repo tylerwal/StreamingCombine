@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace FileCombiner.Contracts
 {
-	public interface IChunkFileCombinerService
+	public interface IChunkFileListService
 	{
-		Task<Queue<Uri>> GetChunkFileList(ConversionMetaData conversionMetaData);
+		Task<Queue<Uri>> GetChunkFileList(IConversionMetaData conversionMetaData);
 
 		/// <summary>
 		/// Delete this, refactor it into smaller pieces.
 		/// </summary>
 		/// <param name="conversionMetaData"></param>
-		void CreateCombinedFile(ConversionMetaData conversionMetaData);
+		void DoItAll(IConversionMetaData conversionMetaData);
 	}
 }

@@ -18,9 +18,13 @@ namespace FileCombiner
 		private readonly Uri _baseAddress;
 
 		private readonly string _chunkListUrl;
+
+		private readonly WebClient _webClient;
 		
-		public ChunklistFileParser(string chunkListUrl)
+		public ChunklistFileParser(string chunkListUrl, WebClient webClient)
 		{
+			_webClient = webClient;
+
 			_chunkListUrl = chunkListUrl;
 
 			int lastSlashLocation = _chunkListUrl.LastIndexOf(ForwardSlash);
@@ -31,9 +35,9 @@ namespace FileCombiner
 
 		public async Task<Queue<Uri>> GetChunksInOrder()
 		{
-			WebClient webClient = new WebClient();
+			//WebClient webClient = new WebClient();
 
-			string[] allFileLines = webClient.DownloadString(_chunkListUrl).Split(NewLineCharacter);
+			string[] allFileLines = _webClient.DownloadString(_chunkListUrl).Split(NewLineCharacter);
 
 			/*Task<string> downloadTask = webClient.DownloadStringTaskAsync(_chunkListUrl);
 			

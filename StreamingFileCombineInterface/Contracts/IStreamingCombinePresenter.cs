@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-
-using FileCombiner;
-using FileCombiner.Contracts;
+﻿using FileCombiner.Contracts;
+using System.Threading.Tasks;
 
 namespace StreamingFileCombineInterface.Contracts
 {
@@ -9,8 +7,10 @@ namespace StreamingFileCombineInterface.Contracts
 	{
 		//void GetChunkFiles(ref ConversionMetaData conversionMetaData);
 
-		Task<ConversionMetaData> GetChunkFileList(ConversionMetaData conversionMetaData);
+		Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData);
 
-		void DoItAll(ConversionMetaData conversionMetaData);
+		void DownloadChunkFiles(IConversionMetaData conversionMetaData);
+
+		void DoItAll(IConversionMetaData conversionMetaData);
 	}
 }

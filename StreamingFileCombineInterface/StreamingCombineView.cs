@@ -1,18 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-
-using FileCombiner;
+﻿using FileCombiner;
+using StreamingFileCombineInterface.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-
-using StreamingFileCombineInterface.Contracts;
 
 namespace StreamingFileCombineInterface
 {
 	public partial class StreamingCombineView : Form, IStreamingCombineView
 	{
-		private IStreamingCombinePresenter _presenter;
+		#region Fields
+
+		private readonly IStreamingCombinePresenter _presenter; 
+
+		#endregion Fields
+
+		#region Constructor
 
 		public StreamingCombineView()
 		{
@@ -21,16 +25,45 @@ namespace StreamingFileCombineInterface
 			_presenter = new StreamingCombineViewPresenter(this);
 
 			bsConversionMetaData.DataSource = new ConversionMetaData();
-			
-			btnGetChunkFiles.Click += GetChunkFiles;
+
+			btnGetChunkFileList.Click += DownloadChunkFileListList;
 			btnDoItAll.Click += DoItAll;
-			btnSetTempLocation.Click += BtnSetTempLocationClick;
+			btnSetTempLocation.Click += SetTempLocation;
+			btnDownloadChunkFiles.Click += DownloadChunkFiles;
 			txtChunkFileUrl.TextChanged += TxtChunkFileUrlTextChanged;
 
 			InitializeButtons();
 		}
 
-		private void BtnSetTempLocationClick(object sender, EventArgs e)
+		#endregion Constructor
+		
+		#region Event Handlers
+
+		private void TxtChunkFileUrlTextChanged(object sender, EventArgs e)
+		{
+			if (!string.IsNullOrWhiteSpace((sender as TextBox).Text))
+			{
+				btnGetChunkFileList.Enabled = true;
+			}
+			else
+			{
+				btnGetChunkFileList.Enabled = false;
+			}
+		}
+
+		private void DownloadChunkFileListList(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = GetBoundMetaData();
+			
+			_presenter.GetChunkFileList(conversionData);
+
+			btnGetChunkFileList.ResetBackColor();
+
+			btnDownloadChunkFiles.BackColor = Color.DarkOrange;
+			btnDownloadChunkFiles.Enabled = true;
+		}
+
+		private void SetTempLocation(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 			string tempDirectory = conversionData.TempDirectory;
@@ -53,31 +86,10 @@ namespace StreamingFileCombineInterface
 
 			conversionData.TempDirectory = dialog.SelectedPath;
 		}
-		
-		#region Event Handlers
 
-		private void TxtChunkFileUrlTextChanged(object sender, EventArgs e)
+		private void DownloadChunkFiles(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrWhiteSpace((sender as TextBox).Text))
-			{
-				btnGetChunkFiles.Enabled = true;
-			}
-			else
-			{
-				btnGetChunkFiles.Enabled = false;
-			}
-		}
-
-		private void GetChunkFiles(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionData = GetBoundMetaData();
-			
-			_presenter.GetChunkFileList(conversionData);
-
-			btnGetChunkFiles.ResetBackColor();
-
-			btnDownloadChunks.BackColor = Color.DarkOrange;
-			btnDownloadChunks.Enabled = true;
+			_presenter.DownloadChunkFiles(GetBoundMetaData());
 		}
 
 		private void DoItAll(object sender, EventArgs e)
@@ -107,9 +119,9 @@ namespace StreamingFileCombineInterface
 		{
 			List<Tuple<Button, bool>> buttons = new List<Tuple<Button, bool>>
 			{
-				new Tuple<Button, bool>(btnGetChunkFiles, false),
+				new Tuple<Button, bool>(btnGetChunkFileList, false),
 				new Tuple<Button, bool>(btnSetTempLocation, true),
-				new Tuple<Button, bool>(btnDownloadChunks, false),
+				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
 				new Tuple<Button, bool>(btnDoItAll, true),
 			};
 
@@ -118,7 +130,7 @@ namespace StreamingFileCombineInterface
 				button.Item1.Enabled = button.Item2;
 			}
 
-			btnGetChunkFiles.BackColor = Color.DarkOrange;			
+			btnGetChunkFileList.BackColor = Color.DarkOrange;			
 		}
 
 		private ConversionMetaData GetBoundMetaData()
