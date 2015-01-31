@@ -28,7 +28,7 @@ namespace StreamingFileCombineInterface
 
 			btnGetChunkFileList.Click += DownloadChunkFileListList;
 			btnDoItAll.Click += DoItAll;
-			btnSetTempLocation.Click += SetTempLocation;
+			btnSetChunkTempLocation.Click += SetTempLocation;
 			btnDownloadChunkFiles.Click += DownloadChunkFiles;
 			txtChunkFileUrl.TextChanged += TxtChunkFileUrlTextChanged;
 
@@ -120,7 +120,7 @@ namespace StreamingFileCombineInterface
 			List<Tuple<Button, bool>> buttons = new List<Tuple<Button, bool>>
 			{
 				new Tuple<Button, bool>(btnGetChunkFileList, false),
-				new Tuple<Button, bool>(btnSetTempLocation, true),
+				new Tuple<Button, bool>(btnSetChunkTempLocation, true),
 				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
 				new Tuple<Button, bool>(btnDoItAll, true),
 			};

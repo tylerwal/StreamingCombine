@@ -163,7 +163,7 @@ namespace FileCombiner
 
 		public ConversionMetaData()
 		{
-			//TempDirectory = ConfigurationManager.AppSettings["tempFileLocation"];
+			TempDirectory = Path.GetTempPath(); ;
 		}
 
 		#endregion Constructor
