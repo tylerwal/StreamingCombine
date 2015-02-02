@@ -32,7 +32,6 @@
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFileList = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
-			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
 			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
@@ -54,10 +53,11 @@
 			this.btnConvertFile = new System.Windows.Forms.Button();
 			this.txtConvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetConvertedFileLocation = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
+			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
 			this.gbxConvertFile.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -89,10 +89,6 @@
 			this.txtChunkFileUrl.Name = "txtChunkFileUrl";
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
-			// 
-			// bsConversionMetaData
-			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
 			// 
 			// gbxChunkFile
 			// 
@@ -252,7 +248,7 @@
 			// 
 			this.txtCombinedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCombinedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "TempDirectory", true));
+			this.txtCombinedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
 			this.txtCombinedFileLocation.Location = new System.Drawing.Point(168, 80);
 			this.txtCombinedFileLocation.Name = "txtCombinedFileLocation";
 			this.txtCombinedFileLocation.ReadOnly = true;
@@ -263,7 +259,7 @@
 			// 
 			this.txtUnconvertedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtUnconvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "TempDirectory", true));
+			this.txtUnconvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
 			this.txtUnconvertedFileLocation.Location = new System.Drawing.Point(168, 19);
 			this.txtUnconvertedFileLocation.Name = "txtUnconvertedFileLocation";
 			this.txtUnconvertedFileLocation.ReadOnly = true;
@@ -277,7 +273,7 @@
 			this.btnSetUnconvertedFileLocation.Name = "btnSetUnconvertedFileLocation";
 			this.btnSetUnconvertedFileLocation.Size = new System.Drawing.Size(155, 23);
 			this.btnSetUnconvertedFileLocation.TabIndex = 11;
-			this.btnSetUnconvertedFileLocation.Text = "Set Unconverted File Location";
+			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location";
 			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
 			// pbFileConversion
@@ -301,7 +297,7 @@
 			// 
 			this.txtConvertedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtConvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "TempDirectory", true));
+			this.txtConvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "ConvertedFilePath", true));
 			this.txtConvertedFileLocation.Location = new System.Drawing.Point(168, 48);
 			this.txtConvertedFileLocation.Name = "txtConvertedFileLocation";
 			this.txtConvertedFileLocation.ReadOnly = true;
@@ -318,6 +314,10 @@
 			this.btnSetConvertedFileLocation.Text = "Set Converted File Location";
 			this.btnSetConvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
+			// bsConversionMetaData
+			// 
+			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
+			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,13 +330,13 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
 			this.gbxChunkFiles.ResumeLayout(false);
 			this.gbxChunkFiles.PerformLayout();
 			this.gbxConvertFile.ResumeLayout(false);
 			this.gbxConvertFile.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
 		}

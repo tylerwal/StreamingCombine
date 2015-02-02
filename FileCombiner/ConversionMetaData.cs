@@ -163,7 +163,12 @@ namespace FileCombiner
 
 		public ConversionMetaData()
 		{
-			TempDirectory = Path.GetTempPath(); ;
+			TempDirectory = Path.GetTempPath();
+
+			if (UnConvertedFilePath == null)
+			{
+				UnConvertedFilePath = TempDirectory;
+			}
 		}
 
 		#endregion Constructor
