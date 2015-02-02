@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 
 namespace Utilities
 {
+// attribute that allows an enum to have an associated string
 	public class StringValueAttribute : Attribute
 	{
 		#region Fields
