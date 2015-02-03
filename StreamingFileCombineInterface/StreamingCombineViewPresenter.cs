@@ -17,6 +17,8 @@ namespace StreamingFileCombineInterface
 		private readonly IChunkFileListService _listService;
 		private readonly IFileCombinerService _fileCombinerService;
 
+		private readonly IChunkDownloader _chunkDownloader;
+
 		private FileInfo _unconvertedFile;
 
 		#endregion Fields
@@ -30,7 +32,8 @@ namespace StreamingFileCombineInterface
 			WebClient webClient = new WebClient();
 
 			_listService = new ChunkFileListService(webClient);
-			_fileCombinerService = new FileCombinerService(webClient);
+			_fileCombinerService = new FileCombinerService();
+			_chunkDownloader = new ChunkDownloader(webClient);
 		} 
 
 		#endregion Constructor
@@ -48,13 +51,8 @@ namespace StreamingFileCombineInterface
 
 		public void DownloadChunkFiles(IConversionMetaData conversionMetaData)
 		{
-			_fileCombinerService.Initialize(conversionMetaData);
-			_fileCombinerService.DownloadFileChunks();
-		}
-
-		public void DoItAll(IConversionMetaData conversionMetaData)
-		{
-			_listService.DoItAll(conversionMetaData);
+			_chunkDownloader.Initialize(conversionMetaData);
+			_chunkDownloader.DownloadFileChunks();
 		}
 
 		#endregion

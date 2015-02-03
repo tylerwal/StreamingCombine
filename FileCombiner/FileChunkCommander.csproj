@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChunkDownloader.cs" />
+    <Compile Include="Contracts\IChunkDownloader.cs" />
     <Compile Include="Contracts\IChunkFileListService.cs" />
     <Compile Include="Contracts\IFileCombinerService.cs" />
     <Compile Include="Contracts\IConversionMetaData.cs" />

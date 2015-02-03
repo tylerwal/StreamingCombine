@@ -85,9 +85,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileCombiner\FileCombiner.csproj">
+    <ProjectReference Include="..\FileCombiner\FileChunkCommander.csproj">
       <Project>{38cd0d1c-c56f-438a-bdfb-092a57aeb1d5}</Project>
-      <Name>FileCombiner</Name>
+      <Name>FileChunkCommander</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

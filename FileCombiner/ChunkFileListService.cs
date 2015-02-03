@@ -21,7 +21,6 @@ namespace FileCombiner
 		
 		public ChunkFileListService(WebClient webClient)
 		{
-			// add webclient to GetFileChunks
 			_webClient = webClient;
 		}
 		
@@ -29,7 +28,7 @@ namespace FileCombiner
 		
 		#region Methods
 
-		public void DoItAll(IConversionMetaData conversionMetaData)
+		/*public void DoItAll(IConversionMetaData conversionMetaData)
 		{
 			Queue<Uri> chunklistFileParser = GetChunkFileList(conversionMetaData).Result;
 
@@ -39,16 +38,16 @@ namespace FileCombiner
 			}
 
 			// take the chunk files and append them together to one combined ts file
-			IFileCombinerService fileCombinerService = new FileCombinerService(_webClient);
-			fileCombinerService.Initialize(conversionMetaData);
-			FileInfo unconvertedTsOutputFile = fileCombinerService.CreateCombinedFile();
+			//IFileCombinerService fileCombinerService = new FileCombinerService(_webClient);
+			//fileCombinerService.Initialize(conversionMetaData);
+			//FileInfo unconvertedTsOutputFile = fileCombinerService.CreateCombinedFile();
 
 			// convert from 'ts' to appropriate file
-			string output = ConvertFile(unconvertedTsOutputFile);
+			//string output = ConvertFile(unconvertedTsOutputFile);
 
 			// delete the unconverted 'ts' file
-			DeleteFile(unconvertedTsOutputFile.FullName);
-		}
+			//DeleteFile(unconvertedTsOutputFile.FullName);
+		}*/
 
 		public async Task<Queue<Uri>> GetChunkFileList(IConversionMetaData conversionMetaData)
 		{

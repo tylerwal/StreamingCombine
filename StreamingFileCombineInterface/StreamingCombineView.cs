@@ -27,8 +27,7 @@ namespace StreamingFileCombineInterface
 			bsConversionMetaData.DataSource = new ConversionMetaData();
 
 			btnGetChunkFileList.Click += DownloadChunkFileListList;
-			btnDoItAll.Click += DoItAll;
-			btnSetChunkTempLocation.Click += SetTempLocation;
+			btnSetChunkFileLocation.Click += SetTempLocation;
 			btnDownloadChunkFiles.Click += DownloadChunkFiles;
 			txtChunkFileUrl.TextChanged += TxtChunkFileUrlTextChanged;
 
@@ -92,7 +91,7 @@ namespace StreamingFileCombineInterface
 			_presenter.DownloadChunkFiles(GetBoundMetaData());
 		}
 
-		private void DoItAll(object sender, EventArgs e)
+		/*private void DoItAll(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 
@@ -109,7 +108,7 @@ namespace StreamingFileCombineInterface
 			conversionData.OutputDirectory = Path.GetDirectoryName(saveDialog.FileName);
 
 			_presenter.DoItAll(conversionData);
-		}
+		}*/
 
 		#endregion Event Handlers
 
@@ -120,9 +119,8 @@ namespace StreamingFileCombineInterface
 			List<Tuple<Button, bool>> buttons = new List<Tuple<Button, bool>>
 			{
 				new Tuple<Button, bool>(btnGetChunkFileList, false),
-				new Tuple<Button, bool>(btnSetChunkTempLocation, true),
+				new Tuple<Button, bool>(btnSetChunkFileLocation, true),
 				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
-				new Tuple<Button, bool>(btnDoItAll, true),
 			};
 
 			foreach (Tuple<Button, bool> button in buttons)

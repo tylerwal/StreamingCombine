@@ -8,10 +8,10 @@ namespace FileCombiner.Contracts
 	{
 		Task<Queue<Uri>> GetChunkFileList(IConversionMetaData conversionMetaData);
 
-		/// <summary>
+		/*/// <summary>
 		/// Delete this, refactor it into smaller pieces.
 		/// </summary>
 		/// <param name="conversionMetaData"></param>
-		void DoItAll(IConversionMetaData conversionMetaData);
+		void DoItAll(IConversionMetaData conversionMetaData);*/
 	}
 }

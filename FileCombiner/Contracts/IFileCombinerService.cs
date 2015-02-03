@@ -1,13 +1,16 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace FileCombiner.Contracts
 {
 	public interface IFileCombinerService
 	{
-		void Initialize(IConversionMetaData conversionMetaData);
+		FileInfo[] GetChunkFileInfos(string chunkFileDirectory);
 
-		void DownloadFileChunks();
+		FileInfo CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath);
 
-		FileInfo CreateCombinedFile();
+		//void Initialize(IConversionMetaData conversionMetaData);
+
+		//FileInfo CreateCombinedFile();
 	}
 }
