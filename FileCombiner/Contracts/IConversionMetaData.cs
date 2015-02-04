@@ -7,8 +7,6 @@ namespace FileCombiner.Contracts
 	{
 		#region Properties
 
-		string OutputDirectory { get; set; }
-
 		Queue<Uri> ParsedChunks { get; set; }
 
 		string ChunkListFileUrl { get; set; }
@@ -17,22 +15,16 @@ namespace FileCombiner.Contracts
 
 		int PercentDoneChunkFileList { get; set; }
 
-		string MediaName { get; set; }
-
 		string TempDirectory { get; set; }
 
-		string UnConvertedFilePath { get; set; }
+		string UnconvertedFilePath { get; set; }
 
 		string ConvertedFilePath { get; set; }
 
+		bool CanDeleteOldChunkFiles { get; set; }
+
+		bool CanDeleteUnconvertedFile { get; set; }
+
 		#endregion Properties
-
-		#region Methods
-
-		string CreateOutputFilePath();
-
-		string GetFilePathCorrectedName();
-
-		#endregion Methods
 	}
 }

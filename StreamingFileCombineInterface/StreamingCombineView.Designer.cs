@@ -52,6 +52,8 @@
 			this.btnConvertFile = new System.Windows.Forms.Button();
 			this.txtConvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetConvertedFileLocation = new System.Windows.Forms.Button();
+			this.chkDeleteOldChunkFiles = new System.Windows.Forms.CheckBox();
+			this.chkDeleteUnconvertedFile = new System.Windows.Forms.CheckBox();
 			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
@@ -137,6 +139,7 @@
 			// 
 			this.gbxChunkFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbxChunkFiles.Controls.Add(this.chkDeleteOldChunkFiles);
 			this.gbxChunkFiles.Controls.Add(this.txtCombinedFileLocation);
 			this.gbxChunkFiles.Controls.Add(this.btnSetCombinedFileLocation);
 			this.gbxChunkFiles.Controls.Add(this.pbCombineChunks);
@@ -202,7 +205,7 @@
 			// 
 			// pbCombineChunks
 			// 
-			this.pbCombineChunks.Location = new System.Drawing.Point(125, 109);
+			this.pbCombineChunks.Location = new System.Drawing.Point(272, 109);
 			this.pbCombineChunks.Name = "pbCombineChunks";
 			this.pbCombineChunks.Size = new System.Drawing.Size(330, 23);
 			this.pbCombineChunks.TabIndex = 8;
@@ -211,6 +214,7 @@
 			// 
 			this.gbxConvertFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbxConvertFile.Controls.Add(this.chkDeleteUnconvertedFile);
 			this.gbxConvertFile.Controls.Add(this.txtConvertedFileLocation);
 			this.gbxConvertFile.Controls.Add(this.btnSetConvertedFileLocation);
 			this.gbxConvertFile.Controls.Add(this.pbFileConversion);
@@ -268,7 +272,7 @@
 			// 
 			// pbFileConversion
 			// 
-			this.pbFileConversion.Location = new System.Drawing.Point(125, 77);
+			this.pbFileConversion.Location = new System.Drawing.Point(279, 77);
 			this.pbFileConversion.Name = "pbFileConversion";
 			this.pbFileConversion.Size = new System.Drawing.Size(330, 23);
 			this.pbFileConversion.TabIndex = 14;
@@ -303,6 +307,28 @@
 			this.btnSetConvertedFileLocation.TabIndex = 15;
 			this.btnSetConvertedFileLocation.Text = "Set Converted File Location";
 			this.btnSetConvertedFileLocation.UseVisualStyleBackColor = true;
+			// 
+			// chkDeleteOldChunkFiles
+			// 
+			this.chkDeleteOldChunkFiles.AutoSize = true;
+			this.chkDeleteOldChunkFiles.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteOldChunkFiles", true));
+			this.chkDeleteOldChunkFiles.Location = new System.Drawing.Point(126, 114);
+			this.chkDeleteOldChunkFiles.Name = "chkDeleteOldChunkFiles";
+			this.chkDeleteOldChunkFiles.Size = new System.Drawing.Size(140, 17);
+			this.chkDeleteOldChunkFiles.TabIndex = 11;
+			this.chkDeleteOldChunkFiles.Text = "Delete Old Chunk Files?";
+			this.chkDeleteOldChunkFiles.UseVisualStyleBackColor = true;
+			// 
+			// chkDeleteUnconvertedFile
+			// 
+			this.chkDeleteUnconvertedFile.AutoSize = true;
+			this.chkDeleteUnconvertedFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteUnconvertedFile", true));
+			this.chkDeleteUnconvertedFile.Location = new System.Drawing.Point(126, 81);
+			this.chkDeleteUnconvertedFile.Name = "chkDeleteUnconvertedFile";
+			this.chkDeleteUnconvertedFile.Size = new System.Drawing.Size(147, 17);
+			this.chkDeleteUnconvertedFile.TabIndex = 17;
+			this.chkDeleteUnconvertedFile.Text = "Delete Unconverted File?";
+			this.chkDeleteUnconvertedFile.UseVisualStyleBackColor = true;
 			// 
 			// bsConversionMetaData
 			// 
@@ -356,6 +382,8 @@
 		private System.Windows.Forms.Button btnConvertFile;
 		private System.Windows.Forms.TextBox txtUnconvertedFileLocation;
 		private System.Windows.Forms.Button btnSetUnconvertedFileLocation;
+		private System.Windows.Forms.CheckBox chkDeleteOldChunkFiles;
+		private System.Windows.Forms.CheckBox chkDeleteUnconvertedFile;
 	}
 }
 

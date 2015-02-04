@@ -20,11 +20,8 @@ namespace StreamingFileCombineInterface
 
 		private readonly IChunkFileListService _listService;
 		private readonly IFileCombinerService _fileCombinerService;
-
 		private readonly IChunkDownloader _chunkDownloader;
-
-		private FileInfo _unconvertedFile;
-
+		
 		#endregion Fields
 
 		#region Constructor
@@ -59,19 +56,36 @@ namespace StreamingFileCombineInterface
 			_chunkDownloader.DownloadFileChunks();
 		}
 
-		public void ConvertFile(string unconvertedFilePath, string convertedFilePath)
+		public void ConvertFile(IConversionMetaData conversionMetaData)
 		{
 			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
 
 			IFfmpegCommand command = new FfmpegConversionCommandBuilder()
-				.AddInputFilePath(unconvertedFilePath)
-				.AddOutputFilePath(convertedFilePath)
+				.AddInputFilePath(conversionMetaData.UnconvertedFilePath)
+				.AddOutputFilePath(conversionMetaData.ConvertedFilePath)
 				.AddBitStreamFilter(BitStreamFilter.AacAdtstoasc)
 				.GetCommand();
 
 			frapperWrapper.ExecuteCommand(command);
+
+			if (conversionMetaData.CanDeleteUnconvertedFile)
+			{
+				DeleteFile(conversionMetaData.UnconvertedFilePath);
+			}
 		}
 
-		#endregion
+		#endregion IStreamingCombinePresenter Members
+
+		#region Helper Methods
+
+		private static void DeleteFile(string filePath)
+		{
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+		} 
+
+		#endregion Helper Methods
 	}
 }

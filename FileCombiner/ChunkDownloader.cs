@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -14,15 +15,13 @@ namespace FileCombiner
 
 		private const string _outputStreamFileExtension = ".ts";
 
-		private const string _tempDirectory = "Temp/";
-
 		private string _tempDirectoryPath;
 
 		private Queue<Uri> _chunkUrls;
 
 		private IConversionMetaData _conversionMetaData;
 
-		private WebClient _webClient;
+		private readonly WebClient _webClient;
 
 		#endregion Fields
 
@@ -37,6 +36,10 @@ namespace FileCombiner
 
 		#region IChunkDownloader Members
 
+		/// <summary>
+		/// Initializes the specified conversion meta data.
+		/// </summary>
+		/// <param name="conversionMetaData">The conversion meta data.</param>
 		public void Initialize(IConversionMetaData conversionMetaData)
 		{
 			_chunkUrls = conversionMetaData.ParsedChunks;

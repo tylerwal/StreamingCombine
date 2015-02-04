@@ -1,36 +1,26 @@
-﻿using System;
+﻿using FileCombiner.Annotations;
+using FileCombiner.Contracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
-
-using FileCombiner.Annotations;
-using FileCombiner.Contracts;
 
 namespace FileCombiner
 {
 	public class ConversionMetaData : IConversionMetaData, INotifyPropertyChanged
 	{
 		#region Fields
-
-		private const string _outputCombinedFileExtension = ".ts";
-
+		
 		private Queue<Uri> _parsedChunks;
 		private string _chunkListFileUrl;
 		private int _numberOfChunkFiles;
 		private int _percentDoneChunkFileList;
-
-		private string _mediaName;
-
-		private string _outputDirectory;
-
 		private string _tempDirectory;
-
 		private string _unconvertedFilePath;
-
 		private string _convertedFilePath;
+		private bool _canDeleteOldChunkFiles;
+		private bool _canDeleteUnconvertedFile;
 
 		#endregion Fields
 
@@ -90,33 +80,7 @@ namespace FileCombiner
 			}
 		}
 
-		#endregion Chunk File List 
-		
-		public string MediaName
-		{
-			get
-			{
-				return _mediaName;
-			}
-			set
-			{
-				_mediaName = value;
-				OnPropertyChanged("MediaName");
-			}
-		}
-
-		public string OutputDirectory
-		{
-			get
-			{
-				return _outputDirectory;
-			}
-			set
-			{
-				_outputDirectory = value;
-				OnPropertyChanged("OutputDirectory");
-			}
-		}
+		#endregion Chunk File List
 
 		public string TempDirectory
 		{
@@ -131,7 +95,7 @@ namespace FileCombiner
 			}
 		}
 
-		public string UnConvertedFilePath
+		public string UnconvertedFilePath
 		{
 			get
 			{
@@ -140,7 +104,7 @@ namespace FileCombiner
 			set
 			{
 				_unconvertedFilePath = value;
-				OnPropertyChanged("UnConvertedFilePath");
+				OnPropertyChanged("UnconvertedFilePath");
 			}
 		}
 
@@ -157,6 +121,32 @@ namespace FileCombiner
 			}
 		}
 
+		public bool CanDeleteOldChunkFiles
+		{
+			get
+			{
+				return _canDeleteOldChunkFiles;
+			}
+			set
+			{
+				_canDeleteOldChunkFiles = value;
+				OnPropertyChanged("CanDeleteOldChunkFiles");
+			}
+		}
+
+		public bool CanDeleteUnconvertedFile
+		{
+			get
+			{
+				return _canDeleteUnconvertedFile;
+			}
+			set
+			{
+				_canDeleteUnconvertedFile = value;
+				OnPropertyChanged("CanDeleteUnconvertedFile");
+			}
+		}
+
 		#endregion Properties
 
 		#region Constructor
@@ -165,31 +155,16 @@ namespace FileCombiner
 		{
 			TempDirectory = Path.GetTempPath();
 
-			if (UnConvertedFilePath == null)
+			if (UnconvertedFilePath == null)
 			{
-				UnConvertedFilePath = TempDirectory;
+				UnconvertedFilePath = Path.Combine(TempDirectory, "StreamingFile.ts");
 			}
+
+			CanDeleteOldChunkFiles = true;
+			CanDeleteUnconvertedFile = true;
 		}
 
 		#endregion Constructor
-
-		#region PublicMethods
-
-		public string GetFilePathCorrectedName()
-		{
-			return MediaName.Replace(" ", string.Empty);
-		}
-
-		public string CreateOutputFilePath()
-		{
-			StringBuilder combinedFilePathBuilder = new StringBuilder();
-			combinedFilePathBuilder.Append(GetFilePathCorrectedName());
-			combinedFilePathBuilder.Append(_outputCombinedFileExtension);
-
-			return Path.Combine(OutputDirectory, combinedFilePathBuilder.ToString());
-		}
-
-		#endregion PublicMethods
 
 		#region Events
 		

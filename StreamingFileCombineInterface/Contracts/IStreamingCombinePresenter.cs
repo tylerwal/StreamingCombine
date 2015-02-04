@@ -9,6 +9,6 @@ namespace StreamingFileCombineInterface.Contracts
 
 		void DownloadChunkFiles(IConversionMetaData conversionMetaData);
 
-		void ConvertFile(string unconvertedFilePath, string convertedFilePath);
+		void ConvertFile(IConversionMetaData conversionMetaData);
 	}
 }

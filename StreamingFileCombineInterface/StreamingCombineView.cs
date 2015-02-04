@@ -35,10 +35,13 @@ namespace StreamingFileCombineInterface
 
 			bsConversionMetaData.DataSource = new ConversionMetaData();
 
-			btnGetChunkFileList.Click += DownloadChunkFileList;
-			btnSetChunkFileLocation.Click += SetTempLocation;
-			btnDownloadChunkFiles.Click += DownloadChunkFiles;
-			btnSetConvertedFileLocation.Click += SetConvertedFilePath;
+			btnGetChunkFileList.Click += DownloadChunkFileListClick;
+			btnSetChunkFileLocation.Click += SetTempLocationClick;
+			btnDownloadChunkFiles.Click += DownloadChunkFilesClick;
+			btnSetCombinedFileLocation.Click += SetCombinedFileLocationClick;
+			btnSetUnconvertedFileLocation.Click += SetCombinedFileLocationClick;
+			btnSetConvertedFileLocation.Click += SetConvertedFilePathClick;
+			btnConvertFile.Click += ConvertFileClick;
 
 			txtChunkFileUrl.TextChanged += ChunkFileUrlTextChanged;
 			txtCombinedFileLocation.TextChanged += ConvertFileTextChanged;
@@ -104,7 +107,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void DownloadChunkFileList(object sender, EventArgs e)
+		private void DownloadChunkFileListClick(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 			
@@ -120,7 +123,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void SetTempLocation(object sender, EventArgs e)
+		private void SetTempLocationClick(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 			string tempDirectory = conversionData.TempDirectory;
@@ -149,7 +152,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void SetConvertedFilePath(object sender, EventArgs e)
+		private void SetConvertedFilePathClick(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 
@@ -172,9 +175,40 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void DownloadChunkFiles(object sender, EventArgs e)
+		private void DownloadChunkFilesClick(object sender, EventArgs e)
 		{
 			_presenter.DownloadChunkFiles(GetBoundMetaData());
+		}
+
+		/// <summary>
+		/// Sets the combined file location click.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		/// <exception cref="System.NotImplementedException"></exception>
+		void SetCombinedFileLocationClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = GetBoundMetaData();
+
+			OpenFileDialog dialog = new OpenFileDialog()
+			{
+				AddExtension = true,
+				DefaultExt = ".ts",
+				Filter = "MPEG Transport Stream File (*.ts)|*.ts"
+			};
+
+			dialog.ShowDialog();
+
+			conversionData.UnconvertedFilePath = dialog.FileName;
+
+			SetSuggestedControl(btnSetConvertedFileLocation, true);
+		}
+
+		private void ConvertFileClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionMetaData = GetBoundMetaData();
+
+			_presenter.ConvertFile(conversionMetaData);
 		}
 
 		#endregion Event Handlers
