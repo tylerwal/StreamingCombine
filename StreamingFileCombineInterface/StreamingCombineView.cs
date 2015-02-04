@@ -1,6 +1,7 @@
 ﻿using FileCombiner;
 using StreamingFileCombineInterface.Contracts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,16 +9,24 @@ using System.Windows.Forms;
 
 namespace StreamingFileCombineInterface
 {
+	/// <summary>
+	/// UI for the application.
+	/// </summary>
 	public partial class StreamingCombineView : Form, IStreamingCombineView
 	{
 		#region Fields
 
-		private readonly IStreamingCombinePresenter _presenter; 
+		private readonly IStreamingCombinePresenter _presenter;
+
+		private List<Tuple<Button, bool>> _buttonsAndInitialStates;
 
 		#endregion Fields
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StreamingCombineView"/> class.
+		/// </summary>
 		public StreamingCombineView()
 		{
 			InitializeComponent();
@@ -26,31 +35,76 @@ namespace StreamingFileCombineInterface
 
 			bsConversionMetaData.DataSource = new ConversionMetaData();
 
-			btnGetChunkFileList.Click += DownloadChunkFileListList;
+			btnGetChunkFileList.Click += DownloadChunkFileList;
 			btnSetChunkFileLocation.Click += SetTempLocation;
 			btnDownloadChunkFiles.Click += DownloadChunkFiles;
-			txtChunkFileUrl.TextChanged += TxtChunkFileUrlTextChanged;
+			btnSetConvertedFileLocation.Click += SetConvertedFilePath;
 
-			InitializeButtons();
+			txtChunkFileUrl.TextChanged += ChunkFileUrlTextChanged;
+			txtCombinedFileLocation.TextChanged += ConvertFileTextChanged;
+			txtConvertedFileLocation.TextChanged += ConvertFileTextChanged;
+			
+			_buttonsAndInitialStates = new List<Tuple<Button, bool>>
+			{
+				new Tuple<Button, bool>(btnGetChunkFileList, false),
+				new Tuple<Button, bool>(btnSetChunkFileLocation, true),
+				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
+				new Tuple<Button, bool>(btnSetCombinedFileLocation, true),
+				new Tuple<Button, bool>(btnCombineChunks, false),
+				new Tuple<Button, bool>(btnSetUnconvertedFileLocation, true),
+				new Tuple<Button, bool>(btnSetConvertedFileLocation, true),
+				new Tuple<Button, bool>(btnConvertFile, false)
+			};
+			
+			InitializeControls();
 		}
 
 		#endregion Constructor
 		
 		#region Event Handlers
 
-		private void TxtChunkFileUrlTextChanged(object sender, EventArgs e)
+		/// <summary>
+		/// The Chunks file URL text has changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void ChunkFileUrlTextChanged(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrWhiteSpace((sender as TextBox).Text))
+			if (!string.IsNullOrWhiteSpace(((TextBox)sender).Text))
 			{
-				btnGetChunkFileList.Enabled = true;
+				SetSuggestedControl(btnGetChunkFileList, true);
 			}
 			else
 			{
+				SetSuggestedControl(txtChunkFileUrl, true);
 				btnGetChunkFileList.Enabled = false;
 			}
 		}
 
-		private void DownloadChunkFileListList(object sender, EventArgs e)
+		/// <summary>
+		/// Enables the 'Convert File' button if both the 'Combined File Location' and 'Converted File Location' are not empty.
+		/// </summary>
+		/// <param name="sender">Not used.</param>
+		/// <param name="e">Not Used.</param>
+		private void ConvertFileTextChanged(object sender, EventArgs e)
+		{
+			if (!string.IsNullOrWhiteSpace(txtCombinedFileLocation.Text)
+				&& !string.IsNullOrWhiteSpace(txtConvertedFileLocation.Text))
+			{
+				btnConvertFile.Enabled = true;
+			}
+			else
+			{
+				btnConvertFile.Enabled = false;
+			}
+		}
+
+		/// <summary>
+		/// Downloads the chunk file list.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void DownloadChunkFileList(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 			
@@ -58,10 +112,14 @@ namespace StreamingFileCombineInterface
 
 			btnGetChunkFileList.ResetBackColor();
 
-			btnDownloadChunkFiles.BackColor = Color.DarkOrange;
-			btnDownloadChunkFiles.Enabled = true;
+			SetSuggestedControl(btnDownloadChunkFiles, true);
 		}
 
+		/// <summary>
+		/// Sets the temporary location.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void SetTempLocation(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
@@ -86,54 +144,95 @@ namespace StreamingFileCombineInterface
 			conversionData.TempDirectory = dialog.SelectedPath;
 		}
 
-		private void DownloadChunkFiles(object sender, EventArgs e)
-		{
-			_presenter.DownloadChunkFiles(GetBoundMetaData());
-		}
-
-		/*private void DoItAll(object sender, EventArgs e)
+		/// <summary>
+		/// Sets the converted file path.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void SetConvertedFilePath(object sender, EventArgs e)
 		{
 			ConversionMetaData conversionData = GetBoundMetaData();
 
-			SaveFileDialog saveDialog = new SaveFileDialog
+			SaveFileDialog dialog = new SaveFileDialog()
 			{
 				AddExtension = true,
 				DefaultExt = ".mp4",
 				Filter = "MP4 File (*.mp4)|*.mp4|MKV File (*.mkv)|*.mkv"
 			};
 
-			saveDialog.ShowDialog();
+			dialog.ShowDialog();
 
-			conversionData.MediaName = Path.GetFileNameWithoutExtension(saveDialog.FileName);
-			conversionData.OutputDirectory = Path.GetDirectoryName(saveDialog.FileName);
+			conversionData.ConvertedFilePath = dialog.FileName;
 
-			_presenter.DoItAll(conversionData);
-		}*/
+			SetSuggestedControl(btnConvertFile, false);
+		}
+
+		/// <summary>
+		/// Downloads the chunk files.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void DownloadChunkFiles(object sender, EventArgs e)
+		{
+			_presenter.DownloadChunkFiles(GetBoundMetaData());
+		}
 
 		#endregion Event Handlers
 
 		#region Helper Methods
 
-		private void InitializeButtons()
+		/// <summary>
+		/// Initializes the controls to their initial starting enabled/disabled state.
+		/// </summary>
+		private void InitializeControls()
 		{
-			List<Tuple<Button, bool>> buttons = new List<Tuple<Button, bool>>
-			{
-				new Tuple<Button, bool>(btnGetChunkFileList, false),
-				new Tuple<Button, bool>(btnSetChunkFileLocation, true),
-				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
-			};
-
-			foreach (Tuple<Button, bool> button in buttons)
+			foreach (Tuple<Button, bool> button in _buttonsAndInitialStates)
 			{
 				button.Item1.Enabled = button.Item2;
 			}
 
-			btnGetChunkFileList.BackColor = Color.DarkOrange;			
+			SetSuggestedControl(txtChunkFileUrl, true);
 		}
 
+		/// <summary>
+		/// Gets the bound meta data.
+		/// </summary>
+		/// <returns>The ConversionMetaData object.</returns>
 		private ConversionMetaData GetBoundMetaData()
 		{
 			return bsConversionMetaData.DataSource as ConversionMetaData;
+		}
+
+		/// <summary>
+		/// Sets the suggested control - by highlighting the particlar control.
+		/// </summary>
+		/// <param name="buttonToColorize">The button to colorize.</param>
+		/// <param name="setControlEnabled">if set to <c>true</c> [set control enabled].</param>
+		private void SetSuggestedControl(Control buttonToColorize, bool setControlEnabled)
+		{
+			ResetBackcolorOfControls(Controls);
+
+			buttonToColorize.BackColor = Color.DarkOrange;
+			buttonToColorize.Enabled = setControlEnabled;
+		}
+
+		/// <summary>
+		/// Resets the backcolor of controls.
+		/// </summary>
+		/// <param name="controls">The controls.</param>
+		private void ResetBackcolorOfControls(IEnumerable controls)
+		{
+			foreach (object control in controls)
+			{
+				if (control is GroupBox)
+				{
+					ResetBackcolorOfControls(((GroupBox)control).Controls);
+				}
+				else if(control is Control)
+				{
+					((Control)control).ResetBackColor();
+				}
+			}
 		}
 
 		#endregion Helper Methods

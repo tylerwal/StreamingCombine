@@ -85,9 +85,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FfmpegCommander\FfmpegCommander.csproj">
+      <Project>{8546a028-cf39-48fb-bc0f-55e4239102ac}</Project>
+      <Name>FfmpegCommander</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileCombiner\FileChunkCommander.csproj">
       <Project>{38cd0d1c-c56f-438a-bdfb-092a57aeb1d5}</Project>
       <Name>FileChunkCommander</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
+      <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>
+      <Name>Frapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

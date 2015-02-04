@@ -2,6 +2,10 @@
 
 using FileCombiner;
 using FileCombiner.Contracts;
+using FileCombiner.Ffmpeg;
+
+using Frapper;
+
 using StreamingFileCombineInterface.Contracts;
 using System.Net;
 using System.Threading.Tasks;
@@ -53,6 +57,19 @@ namespace StreamingFileCombineInterface
 		{
 			_chunkDownloader.Initialize(conversionMetaData);
 			_chunkDownloader.DownloadFileChunks();
+		}
+
+		public void ConvertFile(string unconvertedFilePath, string convertedFilePath)
+		{
+			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
+
+			IFfmpegCommand command = new FfmpegConversionCommandBuilder()
+				.AddInputFilePath(unconvertedFilePath)
+				.AddOutputFilePath(convertedFilePath)
+				.AddBitStreamFilter(BitStreamFilter.AacAdtstoasc)
+				.GetCommand();
+
+			frapperWrapper.ExecuteCommand(command);
 		}
 
 		#endregion
