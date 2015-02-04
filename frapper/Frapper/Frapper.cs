@@ -76,8 +76,8 @@ namespace Frapper
 			{
 				UseShellExecute = false,
 				CreateNoWindow = false,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
+				RedirectStandardOutput = false,
+				RedirectStandardError = false,
 				WindowStyle = ProcessWindowStyle.Normal
 			};
 
@@ -95,7 +95,7 @@ namespace Frapper
 
 				process.Start();
 
-				//process.WaitForExit();
+				process.WaitForExit();
 
 				//get the output
 				processStandardErrorStreamReader = process.StandardError;

@@ -165,9 +165,9 @@ namespace StreamingFileCombineInterface
 
 			dialog.ShowDialog();
 
-			conversionData.ConvertedFilePath = dialog.FileName;
-
 			SetSuggestedControl(btnConvertFile, false);
+
+			conversionData.ConvertedFilePath = dialog.FileName;
 		}
 
 		/// <summary>
