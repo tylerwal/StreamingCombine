@@ -89,7 +89,7 @@ namespace FileCombiner
 			}
 		}*/
 
-		public FileInfo[] GetChunkFileInfos(string chunkFileDirectory)
+		public IEnumerable<FileInfo> GetChunkFileInfos(string chunkFileDirectory)
 		{
 			DirectoryInfo streamFileDirectory = new DirectoryInfo(chunkFileDirectory);
 

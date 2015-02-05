@@ -1,12 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 
 using FileCombiner;
 using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
-
 using Frapper;
-
 using StreamingFileCombineInterface.Contracts;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -26,6 +25,10 @@ namespace StreamingFileCombineInterface
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StreamingCombineViewPresenter"/> class.
+		/// </summary>
+		/// <param name="view">The view.</param>
 		public StreamingCombineViewPresenter(IStreamingCombineView view)
 		{
 			_streamingCombineView = view;
@@ -41,6 +44,11 @@ namespace StreamingFileCombineInterface
 		
 		#region IStreamingCombinePresenter Members
 
+		/// <summary>
+		/// Gets the chunk file list.
+		/// </summary>
+		/// <param name="conversionMetaData">The conversion meta data.</param>
+		/// <returns></returns>
 		public async Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData)
 		{
 			conversionMetaData.ParsedChunks = (await _listService.GetChunkFileList(conversionMetaData));
@@ -50,12 +58,40 @@ namespace StreamingFileCombineInterface
 			return conversionMetaData;
 		}
 
+		/// <summary>
+		/// Downloads the chunk files.
+		/// </summary>
+		/// <param name="conversionMetaData">The conversion meta data.</param>
 		public void DownloadChunkFiles(IConversionMetaData conversionMetaData)
 		{
 			_chunkDownloader.Initialize(conversionMetaData);
 			_chunkDownloader.DownloadFileChunks();
 		}
 
+		/// <summary>
+		/// Combines the chunk files.
+		/// </summary>
+		/// <param name="conversionMetaData">The conversion meta data.</param>
+		/// <exception cref="System.NotImplementedException"></exception>
+		public void CombineChunkFiles(IConversionMetaData conversionMetaData)
+		{
+			IEnumerable<FileInfo> chunkFiles = _fileCombinerService.GetChunkFileInfos(conversionMetaData.TempDirectory);
+
+			_fileCombinerService.CombineChunkFiles(chunkFiles, conversionMetaData.UnconvertedFilePath);
+
+			if (conversionMetaData.CanDeleteOldChunkFiles)
+			{
+				foreach (var chunkFile in chunkFiles)
+				{
+					chunkFile.Delete();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Converts the original '.ts' file into an mp4 file using ffmpeg.
+		/// </summary>
+		/// <param name="conversionMetaData">The conversion meta data.</param>
 		public void ConvertFile(IConversionMetaData conversionMetaData)
 		{
 			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
@@ -78,13 +114,17 @@ namespace StreamingFileCombineInterface
 
 		#region Helper Methods
 
+		/// <summary>
+		/// Deletes the file if it exists.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
 		private static void DeleteFile(string filePath)
 		{
 			if (File.Exists(filePath))
 			{
 				File.Delete(filePath);
 			}
-		} 
+		}
 
 		#endregion Helper Methods
 	}

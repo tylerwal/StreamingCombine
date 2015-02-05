@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StreamingCombineView));
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFileList = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
@@ -37,23 +38,23 @@
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
 			this.pbChunkFileList = new System.Windows.Forms.ProgressBar();
 			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
+			this.chkDeleteOldChunkFiles = new System.Windows.Forms.CheckBox();
+			this.txtCombinedFileLocation = new System.Windows.Forms.TextBox();
+			this.btnSetCombinedFileLocation = new System.Windows.Forms.Button();
+			this.pbCombineChunks = new System.Windows.Forms.ProgressBar();
+			this.btnCombineChunkFiles = new System.Windows.Forms.Button();
 			this.txtChunkFileTempLocation = new System.Windows.Forms.TextBox();
-			this.btnSetChunkFileLocation = new System.Windows.Forms.Button();
+			this.btnSetTempChunkFilesLocation = new System.Windows.Forms.Button();
 			this.pbChunkFiles = new System.Windows.Forms.ProgressBar();
 			this.btnDownloadChunkFiles = new System.Windows.Forms.Button();
-			this.btnCombineChunks = new System.Windows.Forms.Button();
-			this.pbCombineChunks = new System.Windows.Forms.ProgressBar();
 			this.gbxConvertFile = new System.Windows.Forms.GroupBox();
-			this.btnSetCombinedFileLocation = new System.Windows.Forms.Button();
-			this.txtCombinedFileLocation = new System.Windows.Forms.TextBox();
-			this.txtUnconvertedFileLocation = new System.Windows.Forms.TextBox();
-			this.btnSetUnconvertedFileLocation = new System.Windows.Forms.Button();
-			this.pbFileConversion = new System.Windows.Forms.ProgressBar();
-			this.btnConvertFile = new System.Windows.Forms.Button();
+			this.chkDeleteUnconvertedFile = new System.Windows.Forms.CheckBox();
 			this.txtConvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetConvertedFileLocation = new System.Windows.Forms.Button();
-			this.chkDeleteOldChunkFiles = new System.Windows.Forms.CheckBox();
-			this.chkDeleteUnconvertedFile = new System.Windows.Forms.CheckBox();
+			this.pbFileConversion = new System.Windows.Forms.ProgressBar();
+			this.btnConvertFile = new System.Windows.Forms.Button();
+			this.txtUnconvertedFileLocation = new System.Windows.Forms.TextBox();
+			this.btnSetUnconvertedFileLocation = new System.Windows.Forms.Button();
 			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
@@ -143,9 +144,9 @@
 			this.gbxChunkFiles.Controls.Add(this.txtCombinedFileLocation);
 			this.gbxChunkFiles.Controls.Add(this.btnSetCombinedFileLocation);
 			this.gbxChunkFiles.Controls.Add(this.pbCombineChunks);
-			this.gbxChunkFiles.Controls.Add(this.btnCombineChunks);
+			this.gbxChunkFiles.Controls.Add(this.btnCombineChunkFiles);
 			this.gbxChunkFiles.Controls.Add(this.txtChunkFileTempLocation);
-			this.gbxChunkFiles.Controls.Add(this.btnSetChunkFileLocation);
+			this.gbxChunkFiles.Controls.Add(this.btnSetTempChunkFilesLocation);
 			this.gbxChunkFiles.Controls.Add(this.pbChunkFiles);
 			this.gbxChunkFiles.Controls.Add(this.btnDownloadChunkFiles);
 			this.gbxChunkFiles.Location = new System.Drawing.Point(12, 125);
@@ -154,6 +155,55 @@
 			this.gbxChunkFiles.TabIndex = 4;
 			this.gbxChunkFiles.TabStop = false;
 			this.gbxChunkFiles.Text = "Chunk Files";
+			// 
+			// chkDeleteOldChunkFiles
+			// 
+			this.chkDeleteOldChunkFiles.AutoSize = true;
+			this.chkDeleteOldChunkFiles.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteOldChunkFiles", true));
+			this.chkDeleteOldChunkFiles.Location = new System.Drawing.Point(126, 114);
+			this.chkDeleteOldChunkFiles.Name = "chkDeleteOldChunkFiles";
+			this.chkDeleteOldChunkFiles.Size = new System.Drawing.Size(140, 17);
+			this.chkDeleteOldChunkFiles.TabIndex = 11;
+			this.chkDeleteOldChunkFiles.Text = "Delete Old Chunk Files?";
+			this.chkDeleteOldChunkFiles.UseVisualStyleBackColor = true;
+			// 
+			// txtCombinedFileLocation
+			// 
+			this.txtCombinedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCombinedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
+			this.txtCombinedFileLocation.Location = new System.Drawing.Point(239, 80);
+			this.txtCombinedFileLocation.Name = "txtCombinedFileLocation";
+			this.txtCombinedFileLocation.ReadOnly = true;
+			this.txtCombinedFileLocation.Size = new System.Drawing.Size(701, 20);
+			this.txtCombinedFileLocation.TabIndex = 10;
+			// 
+			// btnSetCombinedFileLocation
+			// 
+			this.btnSetCombinedFileLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnSetCombinedFileLocation.Location = new System.Drawing.Point(6, 80);
+			this.btnSetCombinedFileLocation.Name = "btnSetCombinedFileLocation";
+			this.btnSetCombinedFileLocation.Size = new System.Drawing.Size(227, 23);
+			this.btnSetCombinedFileLocation.TabIndex = 9;
+			this.btnSetCombinedFileLocation.Text = "Set Combined File Location (unconverted)";
+			this.btnSetCombinedFileLocation.UseVisualStyleBackColor = true;
+			// 
+			// pbCombineChunks
+			// 
+			this.pbCombineChunks.Location = new System.Drawing.Point(272, 109);
+			this.pbCombineChunks.Name = "pbCombineChunks";
+			this.pbCombineChunks.Size = new System.Drawing.Size(330, 23);
+			this.pbCombineChunks.TabIndex = 8;
+			// 
+			// btnCombineChunkFiles
+			// 
+			this.btnCombineChunkFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnCombineChunkFiles.Location = new System.Drawing.Point(6, 109);
+			this.btnCombineChunkFiles.Name = "btnCombineChunkFiles";
+			this.btnCombineChunkFiles.Size = new System.Drawing.Size(113, 23);
+			this.btnCombineChunkFiles.TabIndex = 7;
+			this.btnCombineChunkFiles.Text = "Combine Chunks";
+			this.btnCombineChunkFiles.UseVisualStyleBackColor = true;
 			// 
 			// txtChunkFileTempLocation
 			// 
@@ -166,15 +216,15 @@
 			this.txtChunkFileTempLocation.Size = new System.Drawing.Size(736, 20);
 			this.txtChunkFileTempLocation.TabIndex = 6;
 			// 
-			// btnSetChunkFileLocation
+			// btnSetTempChunkFilesLocation
 			// 
-			this.btnSetChunkFileLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSetChunkFileLocation.Location = new System.Drawing.Point(9, 20);
-			this.btnSetChunkFileLocation.Name = "btnSetChunkFileLocation";
-			this.btnSetChunkFileLocation.Size = new System.Drawing.Size(189, 23);
-			this.btnSetChunkFileLocation.TabIndex = 5;
-			this.btnSetChunkFileLocation.Text = "Set Chunk File Download Directory";
-			this.btnSetChunkFileLocation.UseVisualStyleBackColor = true;
+			this.btnSetTempChunkFilesLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnSetTempChunkFilesLocation.Location = new System.Drawing.Point(9, 20);
+			this.btnSetTempChunkFilesLocation.Name = "btnSetTempChunkFilesLocation";
+			this.btnSetTempChunkFilesLocation.Size = new System.Drawing.Size(189, 23);
+			this.btnSetTempChunkFilesLocation.TabIndex = 5;
+			this.btnSetTempChunkFilesLocation.Text = "Set Chunk File Download Directory";
+			this.btnSetTempChunkFilesLocation.UseVisualStyleBackColor = true;
 			// 
 			// pbChunkFiles
 			// 
@@ -192,23 +242,6 @@
 			this.btnDownloadChunkFiles.TabIndex = 0;
 			this.btnDownloadChunkFiles.Text = "Download Chunks";
 			this.btnDownloadChunkFiles.UseVisualStyleBackColor = true;
-			// 
-			// btnCombineChunks
-			// 
-			this.btnCombineChunks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnCombineChunks.Location = new System.Drawing.Point(6, 109);
-			this.btnCombineChunks.Name = "btnCombineChunks";
-			this.btnCombineChunks.Size = new System.Drawing.Size(113, 23);
-			this.btnCombineChunks.TabIndex = 7;
-			this.btnCombineChunks.Text = "Combine Chunks";
-			this.btnCombineChunks.UseVisualStyleBackColor = true;
-			// 
-			// pbCombineChunks
-			// 
-			this.pbCombineChunks.Location = new System.Drawing.Point(272, 109);
-			this.pbCombineChunks.Name = "pbCombineChunks";
-			this.pbCombineChunks.Size = new System.Drawing.Size(330, 23);
-			this.pbCombineChunks.TabIndex = 8;
 			// 
 			// gbxConvertFile
 			// 
@@ -228,64 +261,16 @@
 			this.gbxConvertFile.TabStop = false;
 			this.gbxConvertFile.Text = "File Conversion";
 			// 
-			// btnSetCombinedFileLocation
+			// chkDeleteUnconvertedFile
 			// 
-			this.btnSetCombinedFileLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSetCombinedFileLocation.Location = new System.Drawing.Point(6, 80);
-			this.btnSetCombinedFileLocation.Name = "btnSetCombinedFileLocation";
-			this.btnSetCombinedFileLocation.Size = new System.Drawing.Size(227, 23);
-			this.btnSetCombinedFileLocation.TabIndex = 9;
-			this.btnSetCombinedFileLocation.Text = "Set Combined File Location (unconverted)";
-			this.btnSetCombinedFileLocation.UseVisualStyleBackColor = true;
-			// 
-			// txtCombinedFileLocation
-			// 
-			this.txtCombinedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtCombinedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
-			this.txtCombinedFileLocation.Location = new System.Drawing.Point(239, 80);
-			this.txtCombinedFileLocation.Name = "txtCombinedFileLocation";
-			this.txtCombinedFileLocation.ReadOnly = true;
-			this.txtCombinedFileLocation.Size = new System.Drawing.Size(701, 20);
-			this.txtCombinedFileLocation.TabIndex = 10;
-			// 
-			// txtUnconvertedFileLocation
-			// 
-			this.txtUnconvertedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtUnconvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
-			this.txtUnconvertedFileLocation.Location = new System.Drawing.Point(239, 19);
-			this.txtUnconvertedFileLocation.Name = "txtUnconvertedFileLocation";
-			this.txtUnconvertedFileLocation.ReadOnly = true;
-			this.txtUnconvertedFileLocation.Size = new System.Drawing.Size(701, 20);
-			this.txtUnconvertedFileLocation.TabIndex = 12;
-			// 
-			// btnSetUnconvertedFileLocation
-			// 
-			this.btnSetUnconvertedFileLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSetUnconvertedFileLocation.Location = new System.Drawing.Point(6, 19);
-			this.btnSetUnconvertedFileLocation.Name = "btnSetUnconvertedFileLocation";
-			this.btnSetUnconvertedFileLocation.Size = new System.Drawing.Size(227, 23);
-			this.btnSetUnconvertedFileLocation.TabIndex = 11;
-			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location (unconverted)";
-			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
-			// 
-			// pbFileConversion
-			// 
-			this.pbFileConversion.Location = new System.Drawing.Point(279, 77);
-			this.pbFileConversion.Name = "pbFileConversion";
-			this.pbFileConversion.Size = new System.Drawing.Size(330, 23);
-			this.pbFileConversion.TabIndex = 14;
-			// 
-			// btnConvertFile
-			// 
-			this.btnConvertFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnConvertFile.Location = new System.Drawing.Point(6, 77);
-			this.btnConvertFile.Name = "btnConvertFile";
-			this.btnConvertFile.Size = new System.Drawing.Size(113, 23);
-			this.btnConvertFile.TabIndex = 13;
-			this.btnConvertFile.Text = "Convert File";
-			this.btnConvertFile.UseVisualStyleBackColor = true;
+			this.chkDeleteUnconvertedFile.AutoSize = true;
+			this.chkDeleteUnconvertedFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteUnconvertedFile", true));
+			this.chkDeleteUnconvertedFile.Location = new System.Drawing.Point(126, 81);
+			this.chkDeleteUnconvertedFile.Name = "chkDeleteUnconvertedFile";
+			this.chkDeleteUnconvertedFile.Size = new System.Drawing.Size(147, 17);
+			this.chkDeleteUnconvertedFile.TabIndex = 17;
+			this.chkDeleteUnconvertedFile.Text = "Delete Unconverted File?";
+			this.chkDeleteUnconvertedFile.UseVisualStyleBackColor = true;
 			// 
 			// txtConvertedFileLocation
 			// 
@@ -308,27 +293,43 @@
 			this.btnSetConvertedFileLocation.Text = "Set Converted File Location";
 			this.btnSetConvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
-			// chkDeleteOldChunkFiles
+			// pbFileConversion
 			// 
-			this.chkDeleteOldChunkFiles.AutoSize = true;
-			this.chkDeleteOldChunkFiles.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteOldChunkFiles", true));
-			this.chkDeleteOldChunkFiles.Location = new System.Drawing.Point(126, 114);
-			this.chkDeleteOldChunkFiles.Name = "chkDeleteOldChunkFiles";
-			this.chkDeleteOldChunkFiles.Size = new System.Drawing.Size(140, 17);
-			this.chkDeleteOldChunkFiles.TabIndex = 11;
-			this.chkDeleteOldChunkFiles.Text = "Delete Old Chunk Files?";
-			this.chkDeleteOldChunkFiles.UseVisualStyleBackColor = true;
+			this.pbFileConversion.Location = new System.Drawing.Point(279, 77);
+			this.pbFileConversion.Name = "pbFileConversion";
+			this.pbFileConversion.Size = new System.Drawing.Size(330, 23);
+			this.pbFileConversion.TabIndex = 14;
 			// 
-			// chkDeleteUnconvertedFile
+			// btnConvertFile
 			// 
-			this.chkDeleteUnconvertedFile.AutoSize = true;
-			this.chkDeleteUnconvertedFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bsConversionMetaData, "CanDeleteUnconvertedFile", true));
-			this.chkDeleteUnconvertedFile.Location = new System.Drawing.Point(126, 81);
-			this.chkDeleteUnconvertedFile.Name = "chkDeleteUnconvertedFile";
-			this.chkDeleteUnconvertedFile.Size = new System.Drawing.Size(147, 17);
-			this.chkDeleteUnconvertedFile.TabIndex = 17;
-			this.chkDeleteUnconvertedFile.Text = "Delete Unconverted File?";
-			this.chkDeleteUnconvertedFile.UseVisualStyleBackColor = true;
+			this.btnConvertFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnConvertFile.Location = new System.Drawing.Point(6, 77);
+			this.btnConvertFile.Name = "btnConvertFile";
+			this.btnConvertFile.Size = new System.Drawing.Size(113, 23);
+			this.btnConvertFile.TabIndex = 13;
+			this.btnConvertFile.Text = "Convert File";
+			this.btnConvertFile.UseVisualStyleBackColor = true;
+			// 
+			// txtUnconvertedFileLocation
+			// 
+			this.txtUnconvertedFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtUnconvertedFileLocation.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bsConversionMetaData, "UnConvertedFilePath", true));
+			this.txtUnconvertedFileLocation.Location = new System.Drawing.Point(239, 19);
+			this.txtUnconvertedFileLocation.Name = "txtUnconvertedFileLocation";
+			this.txtUnconvertedFileLocation.ReadOnly = true;
+			this.txtUnconvertedFileLocation.Size = new System.Drawing.Size(701, 20);
+			this.txtUnconvertedFileLocation.TabIndex = 12;
+			// 
+			// btnSetUnconvertedFileLocation
+			// 
+			this.btnSetUnconvertedFileLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnSetUnconvertedFileLocation.Location = new System.Drawing.Point(6, 19);
+			this.btnSetUnconvertedFileLocation.Name = "btnSetUnconvertedFileLocation";
+			this.btnSetUnconvertedFileLocation.Size = new System.Drawing.Size(227, 23);
+			this.btnSetUnconvertedFileLocation.TabIndex = 11;
+			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location (unconverted)";
+			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
 			// bsConversionMetaData
 			// 
@@ -343,6 +344,7 @@
 			this.Controls.Add(this.gbxChunkFiles);
 			this.Controls.Add(this.gbxChunkFile);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
 			this.gbxChunkFile.ResumeLayout(false);
@@ -370,9 +372,9 @@
 		private System.Windows.Forms.Button btnDownloadChunkFiles;
 		private System.Windows.Forms.ProgressBar pbChunkFiles;
 		private System.Windows.Forms.TextBox txtChunkFileTempLocation;
-		private System.Windows.Forms.Button btnSetChunkFileLocation;
+		private System.Windows.Forms.Button btnSetTempChunkFilesLocation;
 		private System.Windows.Forms.ProgressBar pbCombineChunks;
-		private System.Windows.Forms.Button btnCombineChunks;
+		private System.Windows.Forms.Button btnCombineChunkFiles;
 		private System.Windows.Forms.GroupBox gbxConvertFile;
 		private System.Windows.Forms.TextBox txtCombinedFileLocation;
 		private System.Windows.Forms.Button btnSetCombinedFileLocation;

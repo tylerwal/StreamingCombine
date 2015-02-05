@@ -35,12 +35,14 @@ namespace StreamingFileCombineInterface
 
 			bsConversionMetaData.DataSource = new ConversionMetaData();
 
-			btnGetChunkFileList.Click += DownloadChunkFileListClick;
-			btnSetChunkFileLocation.Click += SetTempLocationClick;
-			btnDownloadChunkFiles.Click += DownloadChunkFilesClick;
+			btnSetTempChunkFilesLocation.Click += SetTempChunkFilesLocationClick;
 			btnSetCombinedFileLocation.Click += SetCombinedFileLocationClick;
 			btnSetUnconvertedFileLocation.Click += SetCombinedFileLocationClick;
 			btnSetConvertedFileLocation.Click += SetConvertedFilePathClick;
+
+			btnGetChunkFileList.Click += DownloadChunkFileListClick;
+			btnDownloadChunkFiles.Click += DownloadChunkFilesClick;
+			btnCombineChunkFiles.Click += CombineChunkFilesClick;
 			btnConvertFile.Click += ConvertFileClick;
 
 			txtChunkFileUrl.TextChanged += ChunkFileUrlTextChanged;
@@ -50,10 +52,10 @@ namespace StreamingFileCombineInterface
 			_buttonsAndInitialStates = new List<Tuple<Button, bool>>
 			{
 				new Tuple<Button, bool>(btnGetChunkFileList, false),
-				new Tuple<Button, bool>(btnSetChunkFileLocation, true),
+				new Tuple<Button, bool>(btnSetTempChunkFilesLocation, true),
 				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
 				new Tuple<Button, bool>(btnSetCombinedFileLocation, true),
-				new Tuple<Button, bool>(btnCombineChunks, false),
+				new Tuple<Button, bool>(btnCombineChunkFiles, false),
 				new Tuple<Button, bool>(btnSetUnconvertedFileLocation, true),
 				new Tuple<Button, bool>(btnSetConvertedFileLocation, true),
 				new Tuple<Button, bool>(btnConvertFile, false)
@@ -61,11 +63,146 @@ namespace StreamingFileCombineInterface
 			
 			InitializeControls();
 		}
-
+		
 		#endregion Constructor
 		
 		#region Event Handlers
 
+		#region File Set Locations
+		
+		/// <summary>
+		/// Sets the temporary location.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void SetTempChunkFilesLocationClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = GetBoundMetaData();
+			string tempDirectory = conversionData.TempDirectory;
+
+			FolderBrowserDialog dialog = new FolderBrowserDialog()
+			{
+				ShowNewFolderButton = true,
+			};
+
+			if (Directory.Exists(tempDirectory))
+			{
+				dialog.SelectedPath = tempDirectory;
+			}
+			else
+			{
+				dialog.RootFolder = Environment.SpecialFolder.Desktop;
+			}
+
+			dialog.ShowDialog();
+
+			conversionData.TempDirectory = dialog.SelectedPath;
+		} 
+
+		/// <summary>
+		/// Sets the combined file location click.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		/// <exception cref="System.NotImplementedException"></exception>
+		void SetCombinedFileLocationClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = GetBoundMetaData();
+
+			OpenFileDialog dialog = new OpenFileDialog()
+			{
+				AddExtension = true,
+				DefaultExt = ".ts",
+				Filter = "MPEG Transport Stream File (*.ts)|*.ts"
+			};
+
+			dialog.ShowDialog();
+
+			conversionData.UnconvertedFilePath = dialog.FileName;
+
+			SetSuggestedControl(btnSetConvertedFileLocation, true);
+		}
+
+		/// <summary>
+		/// Sets the converted file path.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void SetConvertedFilePathClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionData = GetBoundMetaData();
+
+			SaveFileDialog dialog = new SaveFileDialog()
+			{
+				AddExtension = true,
+				DefaultExt = ".mp4",
+				Filter = "MP4 File (*.mp4)|*.mp4|MKV File (*.mkv)|*.mkv"
+			};
+
+			dialog.ShowDialog();
+
+			SetSuggestedControl(btnConvertFile, false);
+
+			conversionData.ConvertedFilePath = dialog.FileName;
+		}
+
+		#endregion File Set Locations
+
+		#region Action Buttons
+
+		/// <summary>
+		/// Downloads the chunk file list.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void DownloadChunkFileListClick(object sender, EventArgs e)
+		{
+			_presenter.GetChunkFileList(GetBoundMetaData());
+
+			SetSuggestedControl(btnDownloadChunkFiles, true);
+		}
+
+		/// <summary>
+		/// Downloads the chunk files.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void DownloadChunkFilesClick(object sender, EventArgs e)
+		{
+			_presenter.DownloadChunkFiles(GetBoundMetaData());
+
+			SetSuggestedControl(btnCombineChunkFiles, true);
+		}
+
+		/// <summary>
+		/// Combines the chunks files.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		/// <exception cref="System.NotImplementedException"></exception>
+		void CombineChunkFilesClick(object sender, EventArgs e)
+		{
+			_presenter.CombineChunkFiles(GetBoundMetaData());
+
+			SetSuggestedControl(btnSetConvertedFileLocation, true);
+		}
+		
+		/// <summary>
+		/// Converts the file.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void ConvertFileClick(object sender, EventArgs e)
+		{
+			ConversionMetaData conversionMetaData = GetBoundMetaData();
+
+			_presenter.ConvertFile(conversionMetaData);
+		}
+
+		#endregion Action Buttons
+
+		#region Text Box Related
+		
 		/// <summary>
 		/// The Chunks file URL text has changed.
 		/// </summary>
@@ -100,117 +237,10 @@ namespace StreamingFileCombineInterface
 			{
 				btnConvertFile.Enabled = false;
 			}
-		}
+		} 
 
-		/// <summary>
-		/// Downloads the chunk file list.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void DownloadChunkFileListClick(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionData = GetBoundMetaData();
-			
-			_presenter.GetChunkFileList(conversionData);
-
-			btnGetChunkFileList.ResetBackColor();
-
-			SetSuggestedControl(btnDownloadChunkFiles, true);
-		}
-
-		/// <summary>
-		/// Sets the temporary location.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void SetTempLocationClick(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionData = GetBoundMetaData();
-			string tempDirectory = conversionData.TempDirectory;
-
-			FolderBrowserDialog dialog = new FolderBrowserDialog()
-			{
-				ShowNewFolderButton = true,
-			};
-
-			if (Directory.Exists(tempDirectory))
-			{
-				dialog.SelectedPath = tempDirectory;
-			}
-			else
-			{
-				dialog.RootFolder = Environment.SpecialFolder.Desktop;
-			}
-
-			dialog.ShowDialog();
-
-			conversionData.TempDirectory = dialog.SelectedPath;
-		}
-
-		/// <summary>
-		/// Sets the converted file path.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void SetConvertedFilePathClick(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionData = GetBoundMetaData();
-
-			SaveFileDialog dialog = new SaveFileDialog()
-			{
-				AddExtension = true,
-				DefaultExt = ".mp4",
-				Filter = "MP4 File (*.mp4)|*.mp4|MKV File (*.mkv)|*.mkv"
-			};
-
-			dialog.ShowDialog();
-
-			SetSuggestedControl(btnConvertFile, false);
-
-			conversionData.ConvertedFilePath = dialog.FileName;
-		}
-
-		/// <summary>
-		/// Downloads the chunk files.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void DownloadChunkFilesClick(object sender, EventArgs e)
-		{
-			_presenter.DownloadChunkFiles(GetBoundMetaData());
-		}
-
-		/// <summary>
-		/// Sets the combined file location click.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		/// <exception cref="System.NotImplementedException"></exception>
-		void SetCombinedFileLocationClick(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionData = GetBoundMetaData();
-
-			OpenFileDialog dialog = new OpenFileDialog()
-			{
-				AddExtension = true,
-				DefaultExt = ".ts",
-				Filter = "MPEG Transport Stream File (*.ts)|*.ts"
-			};
-
-			dialog.ShowDialog();
-
-			conversionData.UnconvertedFilePath = dialog.FileName;
-
-			SetSuggestedControl(btnSetConvertedFileLocation, true);
-		}
-
-		private void ConvertFileClick(object sender, EventArgs e)
-		{
-			ConversionMetaData conversionMetaData = GetBoundMetaData();
-
-			_presenter.ConvertFile(conversionMetaData);
-		}
-
+		#endregion Text Box Related
+		
 		#endregion Event Handlers
 
 		#region Helper Methods

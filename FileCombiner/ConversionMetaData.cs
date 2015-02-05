@@ -153,7 +153,7 @@ namespace FileCombiner
 
 		public ConversionMetaData()
 		{
-			TempDirectory = Path.GetTempPath();
+			TempDirectory = Path.Combine(Path.GetTempPath(), "StreamingCombine");
 
 			if (UnconvertedFilePath == null)
 			{
