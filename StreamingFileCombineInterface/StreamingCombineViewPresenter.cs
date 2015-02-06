@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-using FileCombiner;
+﻿using FileCombiner;
 using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using Frapper;
 using StreamingFileCombineInterface.Contracts;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;

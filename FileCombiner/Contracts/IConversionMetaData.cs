@@ -13,8 +13,6 @@ namespace FileCombiner.Contracts
 
 		int NumberOfChunkFiles { get; set; }
 
-		int PercentDoneChunkFileList { get; set; }
-
 		string TempDirectory { get; set; }
 
 		string UnconvertedFilePath { get; set; }

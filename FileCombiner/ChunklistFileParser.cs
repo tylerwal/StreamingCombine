@@ -1,26 +1,28 @@
-﻿using System.Threading.Tasks;
-
-using FileCombiner.Contracts;
+﻿using FileCombiner.Contracts;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace FileCombiner
 {
 	public class ChunklistFileParser : IParser
 	{
+		#region Fields
+
 		private const char NewLineCharacter = '\n';
 		private const char ForwardSlash = '/';
 		private const string MetaDataLine = "#EXT";
 
 		private readonly Uri _baseAddress;
-
 		private readonly string _chunkListUrl;
+		private readonly WebClient _webClient; 
 
-		private readonly WebClient _webClient;
-		
+		#endregion Fields
+
+		#region Constructor
+
 		public ChunklistFileParser(string chunkListUrl, WebClient webClient)
 		{
 			_webClient = webClient;
@@ -31,7 +33,11 @@ namespace FileCombiner
 			string baseAddress = _chunkListUrl.Remove(lastSlashLocation + 1);
 
 			_baseAddress = new Uri(baseAddress);
-		}
+		} 
+
+		#endregion Constructor
+
+		#region IParserMethods
 
 		public async Task<Queue<Uri>> GetChunksInOrder()
 		{
@@ -46,10 +52,17 @@ namespace FileCombiner
 			string[] allFileLines = completeDocument.Split(NewLineCharacter);*/
 
 			return ProcessUnparsedFileIntoUris(allFileLines);
-		}
+		} 
+
+		#endregion IParserMethods
 		
 		#region Helper Methods
 
+		/// <summary>
+		/// Processes the unparsed file into uris.
+		/// </summary>
+		/// <param name="allFileLines">All file lines.</param>
+		/// <returns>A colllection of lines contained within in the Chunk File.</returns>
 		private Queue<Uri> ProcessUnparsedFileIntoUris(IEnumerable<string> allFileLines)
 		{
 			var streamingFileLines = ParseStreamFiles(allFileLines);
@@ -57,6 +70,11 @@ namespace FileCombiner
 			return GetStreamFileUris(streamingFileLines);
 		}
 
+		/// <summary>
+		/// Gets the stream file uris.
+		/// </summary>
+		/// <param name="streamingFileLines">The streaming file lines.</param>
+		/// <returns>The collection of Uri's parsed from the input lines.</returns>
 		private Queue<Uri> GetStreamFileUris(IEnumerable<string> streamingFileLines)
 		{
 			Queue<Uri> orderedStreamFileUris = new Queue<Uri>();

@@ -28,6 +28,12 @@ namespace FileCombiner
 
 		#region Chunk File List
 
+		/// <summary>
+		/// Gets or sets the parsed chunks.
+		/// </summary>
+		/// <value>
+		/// The parsed chunks.
+		/// </value>
 		public Queue<Uri> ParsedChunks
 		{
 			get
@@ -41,6 +47,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the chunk list file URL.
+		/// </summary>
+		/// <value>
+		/// The chunk list file URL.
+		/// </value>
 		public string ChunkListFileUrl
 		{
 			get
@@ -54,6 +66,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the number of chunk files.
+		/// </summary>
+		/// <value>
+		/// The number of chunk files.
+		/// </value>
 		public int NumberOfChunkFiles
 		{
 			get
@@ -67,21 +85,14 @@ namespace FileCombiner
 			}
 		}
 
-		public int PercentDoneChunkFileList
-		{
-			get
-			{
-				return _percentDoneChunkFileList;
-			}
-			set
-			{
-				_percentDoneChunkFileList = value;
-				OnPropertyChanged("PercentDoneChunkFileList");
-			}
-		}
-
 		#endregion Chunk File List
 
+		/// <summary>
+		/// Gets or sets the temporary directory.
+		/// </summary>
+		/// <value>
+		/// The temporary directory.
+		/// </value>
 		public string TempDirectory
 		{
 			get
@@ -95,6 +106,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the unconverted file path.
+		/// </summary>
+		/// <value>
+		/// The unconverted file path.
+		/// </value>
 		public string UnconvertedFilePath
 		{
 			get
@@ -108,6 +125,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the converted file path.
+		/// </summary>
+		/// <value>
+		/// The converted file path.
+		/// </value>
 		public string ConvertedFilePath
 		{
 			get
@@ -121,6 +144,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance can delete old chunk files.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if this instance can delete old chunk files; otherwise, <c>false</c>.
+		/// </value>
 		public bool CanDeleteOldChunkFiles
 		{
 			get
@@ -134,6 +163,12 @@ namespace FileCombiner
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance can delete unconverted file.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if this instance can delete unconverted file; otherwise, <c>false</c>.
+		/// </value>
 		public bool CanDeleteUnconvertedFile
 		{
 			get
@@ -151,6 +186,9 @@ namespace FileCombiner
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConversionMetaData"/> class.
+		/// </summary>
 		public ConversionMetaData()
 		{
 			TempDirectory = Path.Combine(Path.GetTempPath(), "StreamingCombine");
@@ -167,9 +205,16 @@ namespace FileCombiner
 		#endregion Constructor
 
 		#region Events
-		
+
+		/// <summary>
+		/// Occurs when a property value changes.
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		/// <summary>
+		/// Called when [property changed].
+		/// </summary>
+		/// <param name="propertyName">Name of the property.</param>
 		[NotifyPropertyChangedInvocator]
 		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
