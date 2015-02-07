@@ -45,7 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IStreamingCombinePresenter.cs" />
+    <Compile Include="Contracts\IStreamingCombineUiModel.cs" />
     <Compile Include="Contracts\IStreamingCombineView.cs" />
+    <Compile Include="Domain\StreamingCombineUiModel.cs" />
     <Compile Include="StreamingCombineView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,9 +91,9 @@
       <Project>{8546a028-cf39-48fb-bc0f-55e4239102ac}</Project>
       <Name>FfmpegCommander</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileCombiner\FileChunkCommander.csproj">
+    <ProjectReference Include="..\FileCombiner\FileCombiner.csproj">
       <Project>{38cd0d1c-c56f-438a-bdfb-092a57aeb1d5}</Project>
-      <Name>FileChunkCommander</Name>
+      <Name>FileCombiner</Name>
     </ProjectReference>
     <ProjectReference Include="..\frapper\Frapper\Frapper.csproj">
       <Project>{db80bb06-3c17-43f7-9226-fef3de6f7617}</Project>

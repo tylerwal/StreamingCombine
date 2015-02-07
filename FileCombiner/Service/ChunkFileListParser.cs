@@ -1,14 +1,14 @@
-﻿using System.Linq;
-
-using FileCombiner.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace FileCombiner
+using FileCombiner.Contracts;
+
+namespace FileCombiner.Service
 {
-	public class ChunkFileListService : IChunkFileListService
+	public class ChunkFileListParser : IChunkFileListParser
 	{
 		#region Fields
 
@@ -24,10 +24,10 @@ namespace FileCombiner
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ChunkFileListService"/> class.
+		/// Initializes a new instance of the <see cref="ChunkFileListParser"/> class.
 		/// </summary>
 		/// <param name="webClient">The web client.</param>
-		public ChunkFileListService(WebClient webClient)
+		public ChunkFileListParser(WebClient webClient)
 		{
 			_webClient = webClient;
 		}

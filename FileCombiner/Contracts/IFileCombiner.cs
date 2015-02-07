@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FileCombiner.Contracts
 {
-	public interface IFileCombinerService
+	public interface IFileCombiner
 	{
 		IEnumerable<FileInfo> GetChunkFileInfos(string chunkFileDirectory);
 

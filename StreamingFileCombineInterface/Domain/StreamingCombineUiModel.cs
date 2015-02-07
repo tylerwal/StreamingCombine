@@ -6,12 +6,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace FileCombiner
+using StreamingFileCombineInterface.Contracts;
+
+namespace StreamingFileCombineInterface.Domain
 {
 	public class StreamingCombineUiModel : IStreamingCombineUiModel, INotifyPropertyChanged
 	{
 		#region Fields
-		
+
 		private Queue<Uri> _parsedChunks;
 		private string _chunkListFileUrl;
 		private int _numberOfChunkFiles;
@@ -223,7 +225,7 @@ namespace FileCombiner
 			{
 				handler(this, new PropertyChangedEventArgs(propertyName));
 			}
-		} 
+		}
 
 		#endregion Events
 	}

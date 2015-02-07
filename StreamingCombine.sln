@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileChunkCommander", "FileCombiner\FileChunkCommander.csproj", "{38CD0D1C-C56F-438A-BDFB-092A57AEB1D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCombiner", "FileCombiner\FileCombiner.csproj", "{38CD0D1C-C56F-438A-BDFB-092A57AEB1D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frapper", "frapper\Frapper\Frapper.csproj", "{DB80BB06-3C17-43F7-9226-FEF3DE6F7617}"
 EndProject

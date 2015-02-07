@@ -7,6 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
+using StreamingFileCombineInterface.Domain;
+
 namespace StreamingFileCombineInterface
 {
 	/// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FileCombiner.Contracts
+namespace StreamingFileCombineInterface.Contracts
 {
 	public interface IStreamingCombineUiModel
 	{

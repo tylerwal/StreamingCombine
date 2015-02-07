@@ -1,10 +1,11 @@
-﻿using FileCombiner.Contracts;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
-namespace FileCombiner
+using FileCombiner.Contracts;
+
+namespace FileCombiner.Service
 {
-	public class FileCombinerService : IFileCombinerService
+	public class FileCombiner : IFileCombiner
 	{
 		#region IFileCombinerService Members
 

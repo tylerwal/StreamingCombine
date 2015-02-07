@@ -45,14 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChunkDownloader.cs" />
+    <Compile Include="Service\ChunkDownloader.cs" />
+    <Compile Include="Service\ChunkFileListParser.cs" />
     <Compile Include="Contracts\IChunkDownloader.cs" />
-    <Compile Include="Contracts\IChunkFileListService.cs" />
-    <Compile Include="Contracts\IFileCombinerService.cs" />
-    <Compile Include="Contracts\IStreamingCombineUiModel.cs" />
-    <Compile Include="FileCombinerService.cs" />
-    <Compile Include="StreamingCombineUiModel.cs" />
-    <Compile Include="ChunkFileListService.cs" />
+    <Compile Include="Contracts\IChunkFileListParser.cs" />
+    <Compile Include="Contracts\IFileCombiner.cs" />
+    <Compile Include="Service\FileCombiner.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +67,7 @@
       <Name>Frapper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

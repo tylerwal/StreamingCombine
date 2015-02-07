@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FileCombiner.Contracts
 {
-	public interface IChunkFileListService
+	public interface IChunkFileListParser
 	{
 		Task<Queue<Uri>> GetChunkFileList(string chunkListUrl);
 	}

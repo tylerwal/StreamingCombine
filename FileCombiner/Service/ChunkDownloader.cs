@@ -5,7 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace FileCombiner
+namespace FileCombiner.Service
 {
 	/// <summary>
 	/// Class to download the inidivudal Chunk Files.
@@ -77,6 +77,7 @@ namespace FileCombiner
 		/// Creates the 'small' chunk file names that are incremented by 1.
 		/// Output name = %outputDirectory%/Temp/%nameWithoutSpaces%_%padding%%increment$.ts
 		/// </summary>
+		/// <param name="tempDirectory">The temporary directory.</param>
 		/// <param name="uniqueIteration">the iteration in the for loop</param>
 		/// <param name="requiredPadding">The required padding.</param>
 		/// <param name="streamingFilePathBuilder">a StringBuilder that is being reused</param>

@@ -1,4 +1,6 @@
-﻿namespace StreamingFileCombineInterface
+﻿using StreamingFileCombineInterface.Domain;
+
+namespace StreamingFileCombineInterface
 {
 	partial class StreamingCombineView
 	{
@@ -94,7 +96,7 @@
 			// 
 			// bsConversionMetaData
 			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.StreamingCombineUiModel);
+			this.bsConversionMetaData.DataSource = typeof(StreamingCombineUiModel);
 			// 
 			// gbxChunkFile
 			// 
