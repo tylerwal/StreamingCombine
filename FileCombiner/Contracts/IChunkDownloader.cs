@@ -5,6 +5,6 @@ namespace FileCombiner.Contracts
 {
 	public interface IChunkDownloader
 	{
-		void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory);
+		void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator);
 	}
 }

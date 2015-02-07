@@ -5,7 +5,7 @@ using FileCombiner.Contracts;
 
 namespace FileCombiner.Service
 {
-	public class FileCombiner : IFileCombiner
+	public class ChunkFileCombiner : IChunkFileCombiner
 	{
 		#region IFileCombinerService Members
 

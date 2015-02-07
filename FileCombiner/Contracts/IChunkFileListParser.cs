@@ -6,6 +6,6 @@ namespace FileCombiner.Contracts
 {
 	public interface IChunkFileListParser
 	{
-		Task<Queue<Uri>> GetChunkFileList(string chunkListUrl);
+		Task<Queue<Uri>> GetChunkFileList(string chunkListUrl, IProgress<int> progressIndicator);
 	}
 }

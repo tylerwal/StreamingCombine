@@ -6,9 +6,9 @@ namespace StreamingFileCombineInterface.Contracts
 {
 	public interface IStreamingCombinePresenter
 	{
-		Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator);
+		Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator);
 
-		void DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator);
+		Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator);
 
 		void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel);
 

@@ -159,7 +159,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private async void DownloadChunkFileListClick(object sender, EventArgs e)
 		{
-			Progress<int> progressIndicator = new Progress<int>(ReportChunkFileListProgress);
+			IProgress<int> progressIndicator = new Progress<int>(ReportChunkFileListProgress);
 
 			await _presenter.GetChunkFileList(GetBoundMetaData(), progressIndicator);
 
@@ -175,7 +175,7 @@ namespace StreamingFileCombineInterface
 		{
 			Progress<int> progressIndicator = new Progress<int>(ReportChunkFilesProgress);
 
-			_presenter.DownloadChunkFiles(GetBoundMetaData(), progressIndicator);
+			await _presenter.DownloadChunkFiles(GetBoundMetaData(), progressIndicator);
 
 			SetSuggestedControl(btnCombineChunkFiles, true);
 		}

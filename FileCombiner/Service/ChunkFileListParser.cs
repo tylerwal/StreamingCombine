@@ -40,15 +40,16 @@ namespace FileCombiner.Service
 		/// Gets the chunk file list.
 		/// </summary>
 		/// <param name="chunkListUrl">The chunk list URL.</param>
+		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns></returns>
-		public async Task<Queue<Uri>> GetChunkFileList(string chunkListUrl)
+		public async Task<Queue<Uri>> GetChunkFileList(string chunkListUrl, IProgress<int> progressIndicator)
 		{
 			int lastSlashLocation = chunkListUrl.LastIndexOf(ForwardSlash);
 			string baseAddress = chunkListUrl.Remove(lastSlashLocation + 1);
 
 			_baseAddress = new Uri(baseAddress);
 
-			//WebClient webClient = new WebClient();
+			progressIndicator.Report(75);
 
 			string[] allFileLines = _webClient.DownloadString(chunkListUrl).Split(NewLineCharacter);
 

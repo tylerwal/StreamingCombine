@@ -20,7 +20,7 @@ namespace StreamingFileCombineInterface
 		private IStreamingCombineView _streamingCombineView;
 
 		private readonly IChunkFileListParser _chunkFileListParser;
-		private readonly IFileCombiner _fileCombiner;
+		private readonly IChunkFileCombiner _chunkFileCombiner;
 		private readonly IChunkDownloader _chunkDownloader;
 		
 		#endregion Fields
@@ -39,7 +39,7 @@ namespace StreamingFileCombineInterface
 
 			_chunkFileListParser = new ChunkFileListParser(webClient);
 			_chunkDownloader = new ChunkDownloader(webClient);
-			_fileCombiner = new FileCombiner.Service.FileCombiner();
+			_chunkFileCombiner = new ChunkFileCombiner();
 		} 
 
 		#endregion Constructor
@@ -52,9 +52,9 @@ namespace StreamingFileCombineInterface
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns></returns>
-		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator)
+		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			streamingCombineUiModel.ParsedChunks = (await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl));
+			streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
 
 			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
 
@@ -66,9 +66,9 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The streaming combine UI model.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
-		public void DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator)
+		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory);
+			_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator);
 		}
 
 		/// <summary>
@@ -77,9 +77,9 @@ namespace StreamingFileCombineInterface
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		public void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel)
 		{
-			IEnumerable<FileInfo> chunkFiles = _fileCombiner.GetChunkFileInfos(streamingCombineUiModel.TempDirectory);
+			IEnumerable<FileInfo> chunkFiles = _chunkFileCombiner.GetChunkFileInfos(streamingCombineUiModel.TempDirectory);
 
-			_fileCombiner.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
+			_chunkFileCombiner.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
 
 			if (streamingCombineUiModel.CanDeleteOldChunkFiles)
 			{

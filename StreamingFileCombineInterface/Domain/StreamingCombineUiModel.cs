@@ -1,15 +1,16 @@
 ﻿using FileCombiner.Annotations;
-using FileCombiner.Contracts;
+using StreamingFileCombineInterface.Contracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using StreamingFileCombineInterface.Contracts;
-
 namespace StreamingFileCombineInterface.Domain
 {
+	/// <summary>
+	/// The view model used to pass data between view and presenter.
+	/// </summary>
 	public class StreamingCombineUiModel : IStreamingCombineUiModel, INotifyPropertyChanged
 	{
 		#region Fields

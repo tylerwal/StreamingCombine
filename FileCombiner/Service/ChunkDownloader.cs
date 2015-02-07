@@ -38,7 +38,7 @@ namespace FileCombiner.Service
 		/// <summary>
 		/// Downloads the indivual chunks files to a directory of choosing.
 		/// </summary>
-		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory)
+		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator)
 		{
 			Directory.CreateDirectory(tempDirectory);
 

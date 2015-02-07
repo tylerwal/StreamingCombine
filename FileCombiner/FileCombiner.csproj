@@ -49,8 +49,8 @@
     <Compile Include="Service\ChunkFileListParser.cs" />
     <Compile Include="Contracts\IChunkDownloader.cs" />
     <Compile Include="Contracts\IChunkFileListParser.cs" />
-    <Compile Include="Contracts\IFileCombiner.cs" />
-    <Compile Include="Service\FileCombiner.cs" />
+    <Compile Include="Contracts\IChunkFileCombiner.cs" />
+    <Compile Include="Service\ChunkFileCombiner.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
