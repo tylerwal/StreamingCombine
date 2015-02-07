@@ -1,14 +1,15 @@
-﻿using System;
+﻿using FileCombiner.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
 
-using FileCombiner.Contracts;
-
 namespace FileCombiner
 {
+	/// <summary>
+	/// Class to download the inidivudal Chunk Files.
+	/// </summary>
 	public class ChunkDownloader : IChunkDownloader
 	{
 		#region Fields
@@ -27,6 +28,10 @@ namespace FileCombiner
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ChunkDownloader"/> class.
+		/// </summary>
+		/// <param name="webClient">The web client.</param>
 		public ChunkDownloader(WebClient webClient)
 		{
 			_webClient = webClient;

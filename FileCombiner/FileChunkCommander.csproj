@@ -50,9 +50,7 @@
     <Compile Include="Contracts\IChunkFileListService.cs" />
     <Compile Include="Contracts\IFileCombinerService.cs" />
     <Compile Include="Contracts\IConversionMetaData.cs" />
-    <Compile Include="Contracts\IParser.cs" />
     <Compile Include="FileCombinerService.cs" />
-    <Compile Include="ChunklistFileParser.cs" />
     <Compile Include="ConversionMetaData.cs" />
     <Compile Include="ChunkFileListService.cs" />
     <Compile Include="Properties\Annotations.cs" />

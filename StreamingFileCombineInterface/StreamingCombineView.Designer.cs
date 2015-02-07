@@ -33,6 +33,7 @@
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFileList = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
+			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
 			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
@@ -55,11 +56,10 @@
 			this.btnConvertFile = new System.Windows.Forms.Button();
 			this.txtUnconvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetUnconvertedFileLocation = new System.Windows.Forms.Button();
-			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
 			this.gbxConvertFile.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -91,6 +91,10 @@
 			this.txtChunkFileUrl.Name = "txtChunkFileUrl";
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
+			// 
+			// bsConversionMetaData
+			// 
+			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
 			// 
 			// gbxChunkFile
 			// 
@@ -130,7 +134,6 @@
 			// 
 			// pbChunkFileList
 			// 
-			this.pbChunkFileList.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bsConversionMetaData, "PercentDoneChunkFileList", true));
 			this.pbChunkFileList.Location = new System.Drawing.Point(126, 45);
 			this.pbChunkFileList.Name = "pbChunkFileList";
 			this.pbChunkFileList.Size = new System.Drawing.Size(330, 23);
@@ -331,10 +334,6 @@
 			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location (unconverted)";
 			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
-			// bsConversionMetaData
-			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
-			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,13 +346,13 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
 			this.gbxChunkFiles.ResumeLayout(false);
 			this.gbxChunkFiles.PerformLayout();
 			this.gbxConvertFile.ResumeLayout(false);
 			this.gbxConvertFile.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
 		}

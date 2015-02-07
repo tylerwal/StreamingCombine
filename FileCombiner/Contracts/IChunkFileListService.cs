@@ -6,6 +6,6 @@ namespace FileCombiner.Contracts
 {
 	public interface IChunkFileListService
 	{
-		Task<Queue<Uri>> GetChunkFileList(IConversionMetaData conversionMetaData);
+		Task<Queue<Uri>> GetChunkFileList(string chunkListUrl);
 	}
 }

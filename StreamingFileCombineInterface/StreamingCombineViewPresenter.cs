@@ -3,6 +3,7 @@ using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using Frapper;
 using StreamingFileCombineInterface.Contracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -47,10 +48,11 @@ namespace StreamingFileCombineInterface
 		/// Gets the chunk file list.
 		/// </summary>
 		/// <param name="conversionMetaData">The conversion meta data.</param>
+		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns></returns>
-		public async Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData)
+		public async Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData, Progress<int> progressIndicator)
 		{
-			conversionMetaData.ParsedChunks = (await _listService.GetChunkFileList(conversionMetaData));
+			conversionMetaData.ParsedChunks = (await _listService.GetChunkFileList(conversionMetaData.ChunkListFileUrl));
 
 			conversionMetaData.NumberOfChunkFiles = conversionMetaData.ParsedChunks.Count;
 
