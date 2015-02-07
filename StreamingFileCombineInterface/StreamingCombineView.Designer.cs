@@ -94,7 +94,7 @@
 			// 
 			// bsConversionMetaData
 			// 
-			this.bsConversionMetaData.DataSource = typeof(FileCombiner.ConversionMetaData);
+			this.bsConversionMetaData.DataSource = typeof(FileCombiner.StreamingCombineUiModel);
 			// 
 			// gbxChunkFile
 			// 

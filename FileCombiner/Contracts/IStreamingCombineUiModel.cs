@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileCombiner.Contracts
 {
-	public interface IConversionMetaData
+	public interface IStreamingCombineUiModel
 	{
 		#region Properties
 

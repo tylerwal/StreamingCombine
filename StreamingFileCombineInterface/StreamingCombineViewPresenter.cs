@@ -17,7 +17,7 @@ namespace StreamingFileCombineInterface
 
 		private IStreamingCombineView _streamingCombineView;
 
-		private readonly IChunkFileListService _listService;
+		private readonly IChunkFileListService _chunkFileListService;
 		private readonly IFileCombinerService _fileCombinerService;
 		private readonly IChunkDownloader _chunkDownloader;
 		
@@ -35,9 +35,9 @@ namespace StreamingFileCombineInterface
 
 			WebClient webClient = new WebClient();
 
-			_listService = new ChunkFileListService(webClient);
-			_fileCombinerService = new FileCombinerService();
+			_chunkFileListService = new ChunkFileListService(webClient);
 			_chunkDownloader = new ChunkDownloader(webClient);
+			_fileCombinerService = new FileCombinerService();
 		} 
 
 		#endregion Constructor
@@ -47,40 +47,40 @@ namespace StreamingFileCombineInterface
 		/// <summary>
 		/// Gets the chunk file list.
 		/// </summary>
-		/// <param name="conversionMetaData">The conversion meta data.</param>
+		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns></returns>
-		public async Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData, Progress<int> progressIndicator)
+		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator)
 		{
-			conversionMetaData.ParsedChunks = (await _listService.GetChunkFileList(conversionMetaData.ChunkListFileUrl));
+			streamingCombineUiModel.ParsedChunks = (await _chunkFileListService.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl));
 
-			conversionMetaData.NumberOfChunkFiles = conversionMetaData.ParsedChunks.Count;
+			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
 
-			return conversionMetaData;
+			return streamingCombineUiModel;
 		}
 
 		/// <summary>
 		/// Downloads the chunk files.
 		/// </summary>
 		/// <param name="conversionMetaData">The conversion meta data.</param>
-		public void DownloadChunkFiles(IConversionMetaData conversionMetaData)
+		/// <param name="progressIndicator">The progress indicator.</param>
+		public void DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator)
 		{
-			_chunkDownloader.Initialize(conversionMetaData);
-			_chunkDownloader.DownloadFileChunks();
+			_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory);
 		}
 
 		/// <summary>
 		/// Combines the chunk files.
 		/// </summary>
-		/// <param name="conversionMetaData">The conversion meta data.</param>
+		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public void CombineChunkFiles(IConversionMetaData conversionMetaData)
+		public void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel)
 		{
-			IEnumerable<FileInfo> chunkFiles = _fileCombinerService.GetChunkFileInfos(conversionMetaData.TempDirectory);
+			IEnumerable<FileInfo> chunkFiles = _fileCombinerService.GetChunkFileInfos(streamingCombineUiModel.TempDirectory);
 
-			_fileCombinerService.CombineChunkFiles(chunkFiles, conversionMetaData.UnconvertedFilePath);
+			_fileCombinerService.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
 
-			if (conversionMetaData.CanDeleteOldChunkFiles)
+			if (streamingCombineUiModel.CanDeleteOldChunkFiles)
 			{
 				foreach (var chunkFile in chunkFiles)
 				{
@@ -92,22 +92,22 @@ namespace StreamingFileCombineInterface
 		/// <summary>
 		/// Converts the original '.ts' file into an mp4 file using ffmpeg.
 		/// </summary>
-		/// <param name="conversionMetaData">The conversion meta data.</param>
-		public void ConvertFile(IConversionMetaData conversionMetaData)
+		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
+		public void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel)
 		{
 			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
 
 			IFfmpegCommand command = new FfmpegConversionCommandBuilder()
-				.AddInputFilePath(conversionMetaData.UnconvertedFilePath)
-				.AddOutputFilePath(conversionMetaData.ConvertedFilePath)
+				.AddInputFilePath(streamingCombineUiModel.UnconvertedFilePath)
+				.AddOutputFilePath(streamingCombineUiModel.ConvertedFilePath)
 				.AddBitStreamFilter(BitStreamFilter.AacAdtstoasc)
 				.GetCommand();
 
 			frapperWrapper.ExecuteCommand(command);
 
-			if (conversionMetaData.CanDeleteUnconvertedFile)
+			if (streamingCombineUiModel.CanDeleteUnconvertedFile)
 			{
-				DeleteFile(conversionMetaData.UnconvertedFilePath);
+				DeleteFile(streamingCombineUiModel.UnconvertedFilePath);
 			}
 		}
 

@@ -33,7 +33,7 @@ namespace StreamingFileCombineInterface
 
 			_presenter = new StreamingCombineViewPresenter(this);
 
-			bsConversionMetaData.DataSource = new ConversionMetaData();
+			bsConversionMetaData.DataSource = new StreamingCombineUiModel();
 
 			btnSetTempChunkFilesLocation.Click += SetTempChunkFilesLocationClick;
 			btnSetCombinedFileLocation.Click += SetCombinedFileLocationClick;
@@ -77,7 +77,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void SetTempChunkFilesLocationClick(object sender, EventArgs e)
 		{
-			ConversionMetaData conversionData = GetBoundMetaData();
+			StreamingCombineUiModel conversionData = GetBoundMetaData();
 			string tempDirectory = conversionData.TempDirectory;
 
 			FolderBrowserDialog dialog = new FolderBrowserDialog()
@@ -107,7 +107,7 @@ namespace StreamingFileCombineInterface
 		/// <exception cref="System.NotImplementedException"></exception>
 		void SetCombinedFileLocationClick(object sender, EventArgs e)
 		{
-			ConversionMetaData conversionData = GetBoundMetaData();
+			StreamingCombineUiModel conversionData = GetBoundMetaData();
 
 			OpenFileDialog dialog = new OpenFileDialog()
 			{
@@ -130,7 +130,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void SetConvertedFilePathClick(object sender, EventArgs e)
 		{
-			ConversionMetaData conversionData = GetBoundMetaData();
+			StreamingCombineUiModel conversionData = GetBoundMetaData();
 
 			SaveFileDialog dialog = new SaveFileDialog()
 			{
@@ -157,7 +157,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private async void DownloadChunkFileListClick(object sender, EventArgs e)
 		{
-			var progressIndicator = new Progress<int>(ReportChunkFileProgress);
+			Progress<int> progressIndicator = new Progress<int>(ReportChunkFileListProgress);
 
 			await _presenter.GetChunkFileList(GetBoundMetaData(), progressIndicator);
 
@@ -169,9 +169,11 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		private void DownloadChunkFilesClick(object sender, EventArgs e)
+		private async void DownloadChunkFilesClick(object sender, EventArgs e)
 		{
-			_presenter.DownloadChunkFiles(GetBoundMetaData());
+			Progress<int> progressIndicator = new Progress<int>(ReportChunkFilesProgress);
+
+			_presenter.DownloadChunkFiles(GetBoundMetaData(), progressIndicator);
 
 			SetSuggestedControl(btnCombineChunkFiles, true);
 		}
@@ -196,9 +198,9 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void ConvertFileClick(object sender, EventArgs e)
 		{
-			ConversionMetaData conversionMetaData = GetBoundMetaData();
+			StreamingCombineUiModel streamingCombineUiModel = GetBoundMetaData();
 
-			_presenter.ConvertFile(conversionMetaData);
+			_presenter.ConvertFile(streamingCombineUiModel);
 		}
 
 		#endregion Action Buttons
@@ -264,9 +266,9 @@ namespace StreamingFileCombineInterface
 		/// Gets the bound meta data.
 		/// </summary>
 		/// <returns>The ConversionMetaData object.</returns>
-		private ConversionMetaData GetBoundMetaData()
+		private StreamingCombineUiModel GetBoundMetaData()
 		{
-			return bsConversionMetaData.DataSource as ConversionMetaData;
+			return bsConversionMetaData.DataSource as StreamingCombineUiModel;
 		}
 
 		/// <summary>
@@ -303,9 +305,22 @@ namespace StreamingFileCombineInterface
 
 		#endregion Helper Methods
 
-		void ReportChunkFileProgress(int value)
+		/// <summary>
+		/// Reports the chunk file list progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		void ReportChunkFileListProgress(int value)
 		{
 			pbChunkFileList.Value = value;
+		}
+
+		/// <summary>
+		/// Reports the chunk files progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		void ReportChunkFilesProgress(int value)
+		{
+			pbChunkFiles.Value = value;
 		}
 	}
 }

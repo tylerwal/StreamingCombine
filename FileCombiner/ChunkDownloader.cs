@@ -16,12 +16,6 @@ namespace FileCombiner
 
 		private const string _outputStreamFileExtension = ".ts";
 
-		private string _tempDirectoryPath;
-
-		private Queue<Uri> _chunkUrls;
-
-		private IConversionMetaData _conversionMetaData;
-
 		private readonly WebClient _webClient;
 
 		#endregion Fields
@@ -42,31 +36,22 @@ namespace FileCombiner
 		#region IChunkDownloader Members
 
 		/// <summary>
-		/// Initializes the specified conversion meta data.
-		/// </summary>
-		/// <param name="conversionMetaData">The conversion meta data.</param>
-		public void Initialize(IConversionMetaData conversionMetaData)
-		{
-			_chunkUrls = conversionMetaData.ParsedChunks;
-			_conversionMetaData = conversionMetaData;
-		}
-
-		/// <summary>
 		/// Downloads the indivual chunks files to a directory of choosing.
 		/// </summary>
-		public void DownloadFileChunks()
+		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory)
 		{
-			Directory.CreateDirectory(_conversionMetaData.TempDirectory);
+			Directory.CreateDirectory(tempDirectory);
 
-			int numberOfUris = _chunkUrls.Count;
+			int numberOfUris = chunkUrls.Count;
 
 			StringBuilder streamingFilePathBuilder = new StringBuilder();
 
 			for (int i = 0; i < numberOfUris; i++)
 			{
-				Uri currentUri = _chunkUrls.Dequeue();
+				Uri currentUri = chunkUrls.Dequeue();
 
 				string filePath = GetIndividualChunkFileName(
+					tempDirectory,
 					i,
 					numberOfUris.ToString().Length,
 					streamingFilePathBuilder
@@ -98,7 +83,7 @@ namespace FileCombiner
 		/// <returns>
 		/// The name of the file.
 		/// </returns>
-		private string GetIndividualChunkFileName(int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
+		private string GetIndividualChunkFileName(string tempDirectory, int uniqueIteration, int requiredPadding, StringBuilder streamingFilePathBuilder)
 		{
 			streamingFilePathBuilder.Clear();
 			streamingFilePathBuilder.Append("chunk");
@@ -107,7 +92,7 @@ namespace FileCombiner
 			streamingFilePathBuilder.Append(_outputStreamFileExtension);
 
 			return Path.Combine(
-				_conversionMetaData.TempDirectory,
+				tempDirectory,
 				streamingFilePathBuilder.ToString()
 				);
 		} 

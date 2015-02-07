@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace FileCombiner
 {
-	public class ConversionMetaData : IConversionMetaData, INotifyPropertyChanged
+	public class StreamingCombineUiModel : IStreamingCombineUiModel, INotifyPropertyChanged
 	{
 		#region Fields
 		
@@ -187,9 +187,9 @@ namespace FileCombiner
 		#region Constructor
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ConversionMetaData"/> class.
+		/// Initializes a new instance of the <see cref="StreamingCombineUiModel"/> class.
 		/// </summary>
-		public ConversionMetaData()
+		public StreamingCombineUiModel()
 		{
 			TempDirectory = Path.Combine(Path.GetTempPath(), "StreamingCombine");
 

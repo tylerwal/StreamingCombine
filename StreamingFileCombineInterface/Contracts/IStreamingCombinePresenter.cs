@@ -6,12 +6,12 @@ namespace StreamingFileCombineInterface.Contracts
 {
 	public interface IStreamingCombinePresenter
 	{
-		Task<IConversionMetaData> GetChunkFileList(IConversionMetaData conversionMetaData, Progress<int> progressIndicator);
+		Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator);
 
-		void DownloadChunkFiles(IConversionMetaData conversionMetaData);
+		void DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, Progress<int> progressIndicator);
 
-		void CombineChunkFiles(IConversionMetaData conversionMetaData);
+		void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel);
 
-		void ConvertFile(IConversionMetaData conversionMetaData);
+		void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel);
 	}
 }

@@ -1,9 +1,10 @@
-﻿namespace FileCombiner.Contracts
+﻿using System;
+using System.Collections.Generic;
+
+namespace FileCombiner.Contracts
 {
 	public interface IChunkDownloader
 	{
-		void Initialize(IConversionMetaData conversionMetaData);
-
-		void DownloadFileChunks();
+		void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory);
 	}
 }

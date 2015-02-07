@@ -49,9 +49,9 @@
     <Compile Include="Contracts\IChunkDownloader.cs" />
     <Compile Include="Contracts\IChunkFileListService.cs" />
     <Compile Include="Contracts\IFileCombinerService.cs" />
-    <Compile Include="Contracts\IConversionMetaData.cs" />
+    <Compile Include="Contracts\IStreamingCombineUiModel.cs" />
     <Compile Include="FileCombinerService.cs" />
-    <Compile Include="ConversionMetaData.cs" />
+    <Compile Include="StreamingCombineUiModel.cs" />
     <Compile Include="ChunkFileListService.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
