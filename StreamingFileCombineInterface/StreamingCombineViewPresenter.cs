@@ -1,8 +1,8 @@
-﻿using FileCombiner;
+﻿using System.Threading;
+
 using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using FileCombiner.Service;
-
 using Frapper;
 using StreamingFileCombineInterface.Contracts;
 using System;
@@ -54,6 +54,8 @@ namespace StreamingFileCombineInterface
 		/// <returns></returns>
 		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
+			await Task.Factory.StartNew(() => Thread.Sleep(100));
+
 			streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
 
 			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
