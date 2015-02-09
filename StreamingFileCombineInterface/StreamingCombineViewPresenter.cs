@@ -54,12 +54,19 @@ namespace StreamingFileCombineInterface
 		/// <returns></returns>
 		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			// example
-			await Task.Factory.StartNew(() => Thread.Sleep(100));
+			Queue<Uri> chunkFiles = await Task.Factory.StartNew(() => 
+				_chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator)
+			);
 
-			streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
+			//Queue<Uri> chunkFiles = chunkListTask.Result;
+
+			streamingCombineUiModel.ParsedChunks = chunkFiles;
 
 			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
+
+			//streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
+
+			//streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
 
 			return streamingCombineUiModel;
 		}
