@@ -1,8 +1,9 @@
-﻿using FileCombiner;
+﻿
+using System.Threading;
+
 using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using FileCombiner.Service;
-
 using Frapper;
 using StreamingFileCombineInterface.Contracts;
 using System;
@@ -49,12 +50,16 @@ namespace StreamingFileCombineInterface
 		/// <summary>
 		/// Gets the chunk file list.
 		/// </summary>
-		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
+		/// <param name="streamingCombineUiModel">The view model.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
-		/// <returns></returns>
+		/// <returns>The view model.</returns>
 		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
+			Queue<Uri> chunkFiles = await Task.Factory.StartNew(() => 
+				_chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator)
+			);
+
+			streamingCombineUiModel.ParsedChunks = chunkFiles;
 
 			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
 
@@ -68,7 +73,12 @@ namespace StreamingFileCombineInterface
 		/// <param name="progressIndicator">The progress indicator.</param>
 		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator);
+			var tokenSource = new CancellationTokenSource();
+			var token = tokenSource.Token;
+
+			await Task.Factory.StartNew(() => 
+				_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator)
+			);
 		}
 
 		/// <summary>

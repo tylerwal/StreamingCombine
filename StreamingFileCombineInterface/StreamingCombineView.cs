@@ -313,7 +313,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="value">The value.</param>
 		void ReportChunkFileListProgress(int value)
 		{
-			pbChunkFileList.Value = value;
+			UpdateProgressBar(pbChunkFileList, value);
 		}
 
 		/// <summary>
@@ -322,7 +322,20 @@ namespace StreamingFileCombineInterface
 		/// <param name="value">The value.</param>
 		void ReportChunkFilesProgress(int value)
 		{
-			pbChunkFiles.Value = value;
+			UpdateProgressBar(pbChunkFiles, value);
+		}
+
+		/// <summary>
+		/// Updates the progress bar.
+		/// </summary>
+		/// <param name="progressBar">The progress bar.</param>
+		/// <param name="value">The value.</param>
+		void UpdateProgressBar(ProgressBar progressBar, int value)
+		{
+			if (value >= 0 || value <= 100)
+			{
+				progressBar.Value = value;
+			}
 		}
 	}
 }
