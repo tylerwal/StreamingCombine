@@ -1,5 +1,4 @@
-﻿using System.Threading;
-
+﻿
 using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using FileCombiner.Service;
@@ -58,15 +57,9 @@ namespace StreamingFileCombineInterface
 				_chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator)
 			);
 
-			//Queue<Uri> chunkFiles = chunkListTask.Result;
-
 			streamingCombineUiModel.ParsedChunks = chunkFiles;
 
 			streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
-
-			//streamingCombineUiModel.ParsedChunks = await _chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator);
-
-			//streamingCombineUiModel.NumberOfChunkFiles = streamingCombineUiModel.ParsedChunks.Count;
 
 			return streamingCombineUiModel;
 		}
@@ -78,7 +71,9 @@ namespace StreamingFileCombineInterface
 		/// <param name="progressIndicator">The progress indicator.</param>
 		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator);
+			await Task.Factory.StartNew(() => 
+				_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator)
+			);
 		}
 
 		/// <summary>

@@ -40,19 +40,21 @@ namespace FileCombiner.Service
 		/// </summary>
 		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator)
 		{
+			progressIndicator.Report(0);
+
 			Directory.CreateDirectory(tempDirectory);
 
 			int numberOfUris = chunkUrls.Count;
 
 			StringBuilder streamingFilePathBuilder = new StringBuilder();
 
-			for (int i = 0; i < numberOfUris; i++)
+			for (int uriIteration = 0; uriIteration < numberOfUris; uriIteration++)
 			{
 				Uri currentUri = chunkUrls.Dequeue();
 
 				string filePath = GetIndividualChunkFileName(
 					tempDirectory,
-					i,
+					uriIteration,
 					numberOfUris.ToString().Length,
 					streamingFilePathBuilder
 					);
@@ -66,7 +68,14 @@ namespace FileCombiner.Service
 				{
 					Console.WriteLine("Exception caught");
 				}
+				finally
+				{
+					decimal percentDone = ((decimal)((decimal)uriIteration / (decimal)numberOfUris) * (decimal)100);
+					progressIndicator.Report(Convert.ToInt32(percentDone));
+				}
 			}
+
+			progressIndicator.Report(100);
 		}
 
 		#endregion IChunkDownloader Members
