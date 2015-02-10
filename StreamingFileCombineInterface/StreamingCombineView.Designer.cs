@@ -35,12 +35,13 @@ namespace StreamingFileCombineInterface
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFileList = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
-			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
 			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
 			this.pbChunkFileList = new System.Windows.Forms.ProgressBar();
 			this.gbxChunkFiles = new System.Windows.Forms.GroupBox();
+			this.btnCancelCombineChunks = new System.Windows.Forms.Button();
+			this.btnCancelDownloadChunks = new System.Windows.Forms.Button();
 			this.chkDeleteOldChunkFiles = new System.Windows.Forms.CheckBox();
 			this.txtCombinedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetCombinedFileLocation = new System.Windows.Forms.Button();
@@ -58,12 +59,11 @@ namespace StreamingFileCombineInterface
 			this.btnConvertFile = new System.Windows.Forms.Button();
 			this.txtUnconvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetUnconvertedFileLocation = new System.Windows.Forms.Button();
-			this.btnCancelDownloadChunks = new System.Windows.Forms.Button();
-			this.btnCancelCombineChunks = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
+			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
 			this.gbxConvertFile.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -95,10 +95,6 @@ namespace StreamingFileCombineInterface
 			this.txtChunkFileUrl.Name = "txtChunkFileUrl";
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
-			// 
-			// bsConversionMetaData
-			// 
-			this.bsConversionMetaData.DataSource = typeof(StreamingFileCombineInterface.Domain.StreamingCombineUiModel);
 			// 
 			// gbxChunkFile
 			// 
@@ -164,6 +160,26 @@ namespace StreamingFileCombineInterface
 			this.gbxChunkFiles.TabIndex = 4;
 			this.gbxChunkFiles.TabStop = false;
 			this.gbxChunkFiles.Text = "Chunk Files";
+			// 
+			// btnCancelCombineChunks
+			// 
+			this.btnCancelCombineChunks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnCancelCombineChunks.Location = new System.Drawing.Point(608, 110);
+			this.btnCancelCombineChunks.Name = "btnCancelCombineChunks";
+			this.btnCancelCombineChunks.Size = new System.Drawing.Size(75, 23);
+			this.btnCancelCombineChunks.TabIndex = 13;
+			this.btnCancelCombineChunks.Text = "Cancel";
+			this.btnCancelCombineChunks.UseVisualStyleBackColor = true;
+			// 
+			// btnCancelDownloadChunks
+			// 
+			this.btnCancelDownloadChunks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnCancelDownloadChunks.Location = new System.Drawing.Point(462, 49);
+			this.btnCancelDownloadChunks.Name = "btnCancelDownloadChunks";
+			this.btnCancelDownloadChunks.Size = new System.Drawing.Size(75, 23);
+			this.btnCancelDownloadChunks.TabIndex = 12;
+			this.btnCancelDownloadChunks.Text = "Cancel";
+			this.btnCancelDownloadChunks.UseVisualStyleBackColor = true;
 			// 
 			// chkDeleteOldChunkFiles
 			// 
@@ -340,23 +356,9 @@ namespace StreamingFileCombineInterface
 			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location (unconverted)";
 			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
-			// btnCancelDownloadChunks
+			// bsConversionMetaData
 			// 
-			this.btnCancelDownloadChunks.Location = new System.Drawing.Point(463, 48);
-			this.btnCancelDownloadChunks.Name = "btnCancelDownloadChunks";
-			this.btnCancelDownloadChunks.Size = new System.Drawing.Size(75, 23);
-			this.btnCancelDownloadChunks.TabIndex = 12;
-			this.btnCancelDownloadChunks.Text = "Cancel";
-			this.btnCancelDownloadChunks.UseVisualStyleBackColor = true;
-			// 
-			// btnCancelCombineChunks
-			// 
-			this.btnCancelCombineChunks.Location = new System.Drawing.Point(608, 108);
-			this.btnCancelCombineChunks.Name = "btnCancelCombineChunks";
-			this.btnCancelCombineChunks.Size = new System.Drawing.Size(75, 23);
-			this.btnCancelCombineChunks.TabIndex = 13;
-			this.btnCancelCombineChunks.Text = "Cancel";
-			this.btnCancelCombineChunks.UseVisualStyleBackColor = true;
+			this.bsConversionMetaData.DataSource = typeof(StreamingFileCombineInterface.Domain.StreamingCombineUiModel);
 			// 
 			// StreamingCombineView
 			// 
@@ -370,13 +372,13 @@ namespace StreamingFileCombineInterface
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
 			this.gbxChunkFiles.ResumeLayout(false);
 			this.gbxChunkFiles.PerformLayout();
 			this.gbxConvertFile.ResumeLayout(false);
 			this.gbxConvertFile.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
 
 		}

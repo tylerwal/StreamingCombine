@@ -1,7 +1,4 @@
-﻿
-using System.Threading;
-
-using FileCombiner.Contracts;
+﻿using FileCombiner.Contracts;
 using FileCombiner.Ffmpeg;
 using FileCombiner.Service;
 using Frapper;
@@ -10,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StreamingFileCombineInterface
@@ -23,6 +21,12 @@ namespace StreamingFileCombineInterface
 		private readonly IChunkFileListParser _chunkFileListParser;
 		private readonly IChunkFileCombiner _chunkFileCombiner;
 		private readonly IChunkDownloader _chunkDownloader;
+
+		private CancellationTokenSource _downloadChunksCancellationTokenSource;
+		private CancellationToken _downloadChunksCancellationToken;
+
+		private CancellationTokenSource _combineChunksCancellationTokenSource;
+		private CancellationToken _combineChunksCancellationToken;
 		
 		#endregion Fields
 
@@ -73,11 +77,16 @@ namespace StreamingFileCombineInterface
 		/// <param name="progressIndicator">The progress indicator.</param>
 		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
-			var tokenSource = new CancellationTokenSource();
-			var token = tokenSource.Token;
+			_downloadChunksCancellationTokenSource = new CancellationTokenSource();
+			_downloadChunksCancellationToken = _downloadChunksCancellationTokenSource.Token;
 
 			await Task.Factory.StartNew(() => 
-				_chunkDownloader.DownloadFileChunks(streamingCombineUiModel.ParsedChunks, streamingCombineUiModel.TempDirectory, progressIndicator)
+				_chunkDownloader.DownloadFileChunks(
+					streamingCombineUiModel.ParsedChunks, 
+					streamingCombineUiModel.TempDirectory, 
+					progressIndicator,
+					_downloadChunksCancellationToken), 
+				_downloadChunksCancellationToken
 			);
 		}
 
@@ -85,11 +94,24 @@ namespace StreamingFileCombineInterface
 		/// Combines the chunk files.
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
-		public void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel)
+		/// <param name="progressIndicator">The progress indicator.</param>
+		public async void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
+			_combineChunksCancellationTokenSource = new CancellationTokenSource();
+			_combineChunksCancellationToken = _downloadChunksCancellationTokenSource.Token;
+
 			IEnumerable<FileInfo> chunkFiles = _chunkFileCombiner.GetChunkFileInfos(streamingCombineUiModel.TempDirectory);
 
-			_chunkFileCombiner.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
+			//_chunkFileCombiner.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
+
+			await Task.Factory.StartNew(() =>
+				_chunkFileCombiner.CombineChunkFiles(
+					chunkFiles, 
+					streamingCombineUiModel.UnconvertedFilePath,
+					progressIndicator,
+					_combineChunksCancellationToken),
+				_combineChunksCancellationToken
+			);
 
 			if (streamingCombineUiModel.CanDeleteOldChunkFiles)
 			{
@@ -104,7 +126,8 @@ namespace StreamingFileCombineInterface
 		/// Converts the original '.ts' file into an mp4 file using ffmpeg.
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
-		public void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel)
+		/// <param name="progressIndicator">The progress indicator.</param>
+		public void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
 		{
 			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
 
@@ -116,10 +139,24 @@ namespace StreamingFileCombineInterface
 
 			frapperWrapper.ExecuteCommand(command);
 
+			progressIndicator.Report(95);
+
 			if (streamingCombineUiModel.CanDeleteUnconvertedFile)
 			{
 				DeleteFile(streamingCombineUiModel.UnconvertedFilePath);
 			}
+
+			progressIndicator.Report(100);
+		}
+
+		public void CancelDownloadChunks()
+		{
+			_downloadChunksCancellationTokenSource.Cancel();
+		}
+
+		public void CancelCombineChunks()
+		{
+			
 		}
 
 		#endregion IStreamingCombinePresenter Members

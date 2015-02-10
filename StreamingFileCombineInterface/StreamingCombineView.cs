@@ -1,13 +1,11 @@
-﻿using FileCombiner;
-using StreamingFileCombineInterface.Contracts;
+﻿using StreamingFileCombineInterface.Contracts;
+using StreamingFileCombineInterface.Domain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-
-using StreamingFileCombineInterface.Domain;
 
 namespace StreamingFileCombineInterface
 {
@@ -47,6 +45,9 @@ namespace StreamingFileCombineInterface
 			btnCombineChunkFiles.Click += CombineChunkFilesClick;
 			btnConvertFile.Click += ConvertFileClick;
 
+			btnCancelDownloadChunks.Click += CancelDownloadChunksClick;
+			btnCancelCombineChunks.Click += CancelCombineChunksClick;
+
 			txtChunkFileUrl.TextChanged += ChunkFileUrlTextChanged;
 			txtCombinedFileLocation.TextChanged += ConvertFileTextChanged;
 			txtConvertedFileLocation.TextChanged += ConvertFileTextChanged;
@@ -82,7 +83,7 @@ namespace StreamingFileCombineInterface
 			StreamingCombineUiModel conversionData = GetBoundMetaData();
 			string tempDirectory = conversionData.TempDirectory;
 
-			FolderBrowserDialog dialog = new FolderBrowserDialog()
+			FolderBrowserDialog dialog = new FolderBrowserDialog
 			{
 				ShowNewFolderButton = true,
 			};
@@ -111,7 +112,7 @@ namespace StreamingFileCombineInterface
 		{
 			StreamingCombineUiModel conversionData = GetBoundMetaData();
 
-			OpenFileDialog dialog = new OpenFileDialog()
+			OpenFileDialog dialog = new OpenFileDialog
 			{
 				AddExtension = true,
 				DefaultExt = ".ts",
@@ -134,7 +135,7 @@ namespace StreamingFileCombineInterface
 		{
 			StreamingCombineUiModel conversionData = GetBoundMetaData();
 
-			SaveFileDialog dialog = new SaveFileDialog()
+			SaveFileDialog dialog = new SaveFileDialog
 			{
 				AddExtension = true,
 				DefaultExt = ".mp4",
@@ -188,7 +189,9 @@ namespace StreamingFileCombineInterface
 		/// <exception cref="System.NotImplementedException"></exception>
 		void CombineChunkFilesClick(object sender, EventArgs e)
 		{
-			_presenter.CombineChunkFiles(GetBoundMetaData());
+			Progress<int> progressIndicator = new Progress<int>(ReportCombineFileProgress);
+
+			_presenter.CombineChunkFiles(GetBoundMetaData(), progressIndicator);
 
 			SetSuggestedControl(btnSetConvertedFileLocation, true);
 		}
@@ -200,9 +203,11 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void ConvertFileClick(object sender, EventArgs e)
 		{
+			Progress<int> progressIndicator = new Progress<int>(ReportFileConversionProgress);
+
 			StreamingCombineUiModel streamingCombineUiModel = GetBoundMetaData();
 
-			_presenter.ConvertFile(streamingCombineUiModel);
+			_presenter.ConvertFile(streamingCombineUiModel, progressIndicator);
 		}
 
 		#endregion Action Buttons
@@ -246,6 +251,20 @@ namespace StreamingFileCombineInterface
 		} 
 
 		#endregion Text Box Related
+
+		#region Cancellation Buttons
+		
+		void CancelDownloadChunksClick(object sender, EventArgs e)
+		{
+			_presenter.CancelDownloadChunks();
+		}
+
+		void CancelCombineChunksClick(object sender, EventArgs e)
+		{
+			_presenter.CancelCombineChunks();
+		}
+		
+		#endregion Cancellation Buttons
 		
 		#endregion Event Handlers
 
@@ -311,7 +330,7 @@ namespace StreamingFileCombineInterface
 		/// Reports the chunk file list progress.
 		/// </summary>
 		/// <param name="value">The value.</param>
-		void ReportChunkFileListProgress(int value)
+		private void ReportChunkFileListProgress(int value)
 		{
 			UpdateProgressBar(pbChunkFileList, value);
 		}
@@ -320,9 +339,27 @@ namespace StreamingFileCombineInterface
 		/// Reports the chunk files progress.
 		/// </summary>
 		/// <param name="value">The value.</param>
-		void ReportChunkFilesProgress(int value)
+		private void ReportChunkFilesProgress(int value)
 		{
 			UpdateProgressBar(pbChunkFiles, value);
+		}
+
+		/// <summary>
+		/// Reports the combine file progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportCombineFileProgress(int value)
+		{
+			UpdateProgressBar(pbCombineChunks, value);
+		}
+
+		/// <summary>
+		/// Reports the file conversion progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportFileConversionProgress(int value)
+		{
+			UpdateProgressBar(pbFileConversion, value);
 		}
 
 		/// <summary>
@@ -330,7 +367,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="progressBar">The progress bar.</param>
 		/// <param name="value">The value.</param>
-		void UpdateProgressBar(ProgressBar progressBar, int value)
+		private void UpdateProgressBar(ProgressBar progressBar, int value)
 		{
 			if (value >= 0 || value <= 100)
 			{

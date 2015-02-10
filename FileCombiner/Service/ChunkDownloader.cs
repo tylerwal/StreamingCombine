@@ -1,4 +1,6 @@
-﻿using FileCombiner.Contracts;
+﻿using System.Threading;
+
+using FileCombiner.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +40,7 @@ namespace FileCombiner.Service
 		/// <summary>
 		/// Downloads the indivual chunks files to a directory of choosing.
 		/// </summary>
-		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator)
+		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator, CancellationToken cancellationToken)
 		{
 			progressIndicator.Report(0);
 
@@ -50,6 +52,11 @@ namespace FileCombiner.Service
 
 			for (int uriIteration = 0; uriIteration < numberOfUris; uriIteration++)
 			{
+				if (cancellationToken.IsCancellationRequested)
+				{
+					return;
+				}
+
 				Uri currentUri = chunkUrls.Dequeue();
 
 				string filePath = GetIndividualChunkFileName(
