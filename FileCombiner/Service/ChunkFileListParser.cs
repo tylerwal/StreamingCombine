@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
+using FileCombiner.Domain;
+
 namespace FileCombiner.Service
 {
 	public class ChunkFileListParser : IChunkFileListParser
@@ -42,28 +44,11 @@ namespace FileCombiner.Service
 		/// <param name="chunkListUrl">The chunk list URL.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns></returns>
-		/*public async Task<Queue<Uri>> GetChunkFileList(string chunkListUrl, IProgress<int> progressIndicator)
+		public Queue<Uri> GetChunkFileList(string chunkListUrl, IProgress<IProgressData> progressIndicator)
 		{
-			int lastSlashLocation = chunkListUrl.LastIndexOf(ForwardSlash);
-			string baseAddress = chunkListUrl.Remove(lastSlashLocation + 1);
+			IProgressData progressData = new ProgressData(0);
 
-			_baseAddress = new Uri(baseAddress);
-
-			progressIndicator.Report(75);
-
-			string[] allFileLines = _webClient.DownloadString(chunkListUrl).Split(NewLineCharacter);
-
-			/*Task<string> downloadTask = webClient.DownloadStringTaskAsync(_chunkListUrl);
-			
-			string completeDocument = await downloadTask;
-
-			string[] allFileLines = completeDocument.Split(NewLineCharacter);#1#
-
-			return ProcessUnparsedFileIntoUris(allFileLines);
-		}*/
-		public Queue<Uri> GetChunkFileList(string chunkListUrl, IProgress<int> progressIndicator)
-		{
-			progressIndicator.Report(0);
+			progressIndicator.Report(progressData);
 
 			int lastSlashLocation = chunkListUrl.LastIndexOf(ForwardSlash);
 			string baseAddress = chunkListUrl.Remove(lastSlashLocation + 1);
@@ -76,7 +61,8 @@ namespace FileCombiner.Service
 
 			string[] allFileLines = chunkFileList.Split(NewLineCharacter);
 
-			progressIndicator.Report(100);
+			progressData.PercentDone = 100;
+			progressIndicator.Report(progressData);
 
 			return ProcessUnparsedFileIntoUris(allFileLines);
 		}

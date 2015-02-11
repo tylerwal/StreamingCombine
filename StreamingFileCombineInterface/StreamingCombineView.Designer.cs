@@ -35,6 +35,7 @@ namespace StreamingFileCombineInterface
 			this.lblChunkFileUrl = new System.Windows.Forms.Label();
 			this.btnGetChunkFileList = new System.Windows.Forms.Button();
 			this.txtChunkFileUrl = new System.Windows.Forms.TextBox();
+			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
 			this.gbxChunkFile = new System.Windows.Forms.GroupBox();
 			this.txtNumberOfChunks = new System.Windows.Forms.TextBox();
 			this.lblNumberOfChunks = new System.Windows.Forms.Label();
@@ -59,11 +60,11 @@ namespace StreamingFileCombineInterface
 			this.btnConvertFile = new System.Windows.Forms.Button();
 			this.txtUnconvertedFileLocation = new System.Windows.Forms.TextBox();
 			this.btnSetUnconvertedFileLocation = new System.Windows.Forms.Button();
-			this.bsConversionMetaData = new System.Windows.Forms.BindingSource(this.components);
+			this.txtProgressStatus = new System.Windows.Forms.TextBox();
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.gbxChunkFile.SuspendLayout();
 			this.gbxChunkFiles.SuspendLayout();
 			this.gbxConvertFile.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblChunkFileUrl
@@ -95,6 +96,10 @@ namespace StreamingFileCombineInterface
 			this.txtChunkFileUrl.Name = "txtChunkFileUrl";
 			this.txtChunkFileUrl.Size = new System.Drawing.Size(814, 20);
 			this.txtChunkFileUrl.TabIndex = 2;
+			// 
+			// bsConversionMetaData
+			// 
+			this.bsConversionMetaData.DataSource = typeof(StreamingFileCombineInterface.Domain.StreamingCombineUiModel);
 			// 
 			// gbxChunkFile
 			// 
@@ -356,15 +361,24 @@ namespace StreamingFileCombineInterface
 			this.btnSetUnconvertedFileLocation.Text = "Set Combined File Location (unconverted)";
 			this.btnSetUnconvertedFileLocation.UseVisualStyleBackColor = true;
 			// 
-			// bsConversionMetaData
+			// txtProgressStatus
 			// 
-			this.bsConversionMetaData.DataSource = typeof(StreamingFileCombineInterface.Domain.StreamingCombineUiModel);
+			this.txtProgressStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtProgressStatus.Location = new System.Drawing.Point(12, 397);
+			this.txtProgressStatus.Multiline = true;
+			this.txtProgressStatus.Name = "txtProgressStatus";
+			this.txtProgressStatus.ReadOnly = true;
+			this.txtProgressStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtProgressStatus.Size = new System.Drawing.Size(947, 109);
+			this.txtProgressStatus.TabIndex = 7;
 			// 
 			// StreamingCombineView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(971, 451);
+			this.ClientSize = new System.Drawing.Size(971, 514);
+			this.Controls.Add(this.txtProgressStatus);
 			this.Controls.Add(this.gbxConvertFile);
 			this.Controls.Add(this.gbxChunkFiles);
 			this.Controls.Add(this.gbxChunkFile);
@@ -372,14 +386,15 @@ namespace StreamingFileCombineInterface
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "StreamingCombineView";
 			this.Text = "Streaming Combine";
+			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.gbxChunkFile.ResumeLayout(false);
 			this.gbxChunkFile.PerformLayout();
 			this.gbxChunkFiles.ResumeLayout(false);
 			this.gbxChunkFiles.PerformLayout();
 			this.gbxConvertFile.ResumeLayout(false);
 			this.gbxConvertFile.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.bsConversionMetaData)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -413,6 +428,7 @@ namespace StreamingFileCombineInterface
 		private System.Windows.Forms.CheckBox chkDeleteUnconvertedFile;
 		private System.Windows.Forms.Button btnCancelDownloadChunks;
 		private System.Windows.Forms.Button btnCancelCombineChunks;
+		private System.Windows.Forms.TextBox txtProgressStatus;
 	}
 }
 

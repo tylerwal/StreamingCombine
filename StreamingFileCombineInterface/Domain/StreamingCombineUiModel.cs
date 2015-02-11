@@ -18,7 +18,6 @@ namespace StreamingFileCombineInterface.Domain
 		private Queue<Uri> _parsedChunks;
 		private string _chunkListFileUrl;
 		private int _numberOfChunkFiles;
-		private int _percentDoneChunkFileList;
 		private string _tempDirectory;
 		private string _unconvertedFilePath;
 		private string _convertedFilePath;

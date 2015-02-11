@@ -1,4 +1,7 @@
-﻿using FileCombiner.Contracts;
+﻿using FfmpegCommander;
+
+using FileCombiner.Contracts;
+using FileCombiner.Domain;
 using FileCombiner.Ffmpeg;
 using FileCombiner.Service;
 using Frapper;
@@ -57,7 +60,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="streamingCombineUiModel">The view model.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
 		/// <returns>The view model.</returns>
-		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
+		public async Task<IStreamingCombineUiModel> GetChunkFileList(IStreamingCombineUiModel streamingCombineUiModel, IProgress<IProgressData> progressIndicator)
 		{
 			Queue<Uri> chunkFiles = await Task.Factory.StartNew(() => 
 				_chunkFileListParser.GetChunkFileList(streamingCombineUiModel.ChunkListFileUrl, progressIndicator)
@@ -75,7 +78,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The streaming combine UI model.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
-		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
+		public async Task DownloadChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<IProgressData> progressIndicator)
 		{
 			_downloadChunksCancellationTokenSource = new CancellationTokenSource();
 			_downloadChunksCancellationToken = _downloadChunksCancellationTokenSource.Token;
@@ -95,15 +98,13 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
-		public async void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
+		public async void CombineChunkFiles(IStreamingCombineUiModel streamingCombineUiModel, IProgress<IProgressData> progressIndicator)
 		{
 			_combineChunksCancellationTokenSource = new CancellationTokenSource();
-			_combineChunksCancellationToken = _downloadChunksCancellationTokenSource.Token;
+			_combineChunksCancellationToken = _combineChunksCancellationTokenSource.Token;
 
 			IEnumerable<FileInfo> chunkFiles = _chunkFileCombiner.GetChunkFileInfos(streamingCombineUiModel.TempDirectory);
-
-			//_chunkFileCombiner.CombineChunkFiles(chunkFiles, streamingCombineUiModel.UnconvertedFilePath);
-
+			
 			await Task.Factory.StartNew(() =>
 				_chunkFileCombiner.CombineChunkFiles(
 					chunkFiles, 
@@ -127,7 +128,7 @@ namespace StreamingFileCombineInterface
 		/// </summary>
 		/// <param name="streamingCombineUiModel">The conversion meta data.</param>
 		/// <param name="progressIndicator">The progress indicator.</param>
-		public void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel, IProgress<int> progressIndicator)
+		public void ConvertFile(IStreamingCombineUiModel streamingCombineUiModel, IProgress<IProgressData> progressIndicator)
 		{
 			FrapperWrapper frapperWrapper = new FrapperWrapper(new FFMPEG());
 
@@ -139,24 +140,35 @@ namespace StreamingFileCombineInterface
 
 			frapperWrapper.ExecuteCommand(command);
 
-			progressIndicator.Report(95);
+			IProgressData progressData = new ProgressData
+			{
+				PercentDone = 95
+			};
+			progressIndicator.Report(progressData);
 
 			if (streamingCombineUiModel.CanDeleteUnconvertedFile)
 			{
 				DeleteFile(streamingCombineUiModel.UnconvertedFilePath);
 			}
 
-			progressIndicator.Report(100);
+			progressData.PercentDone = 100;
+			progressIndicator.Report(progressData);
 		}
 
+		/// <summary>
+		/// Cancels the download chunks.
+		/// </summary>
 		public void CancelDownloadChunks()
 		{
 			_downloadChunksCancellationTokenSource.Cancel();
 		}
 
+		/// <summary>
+		/// Cancels the combine chunks.
+		/// </summary>
 		public void CancelCombineChunks()
 		{
-			
+			_combineChunksCancellationTokenSource.Cancel();
 		}
 
 		#endregion IStreamingCombinePresenter Members

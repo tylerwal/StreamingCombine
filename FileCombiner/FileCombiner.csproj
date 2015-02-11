@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IProgressData.cs" />
+    <Compile Include="Domain\ProgressData.cs" />
     <Compile Include="Service\ChunkDownloader.cs" />
     <Compile Include="Service\ChunkFileListParser.cs" />
     <Compile Include="Contracts\IChunkDownloader.cs" />

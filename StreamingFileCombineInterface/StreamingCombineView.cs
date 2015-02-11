@@ -1,4 +1,8 @@
-﻿using StreamingFileCombineInterface.Contracts;
+﻿using System.Linq;
+
+using FileCombiner.Contracts;
+
+using StreamingFileCombineInterface.Contracts;
 using StreamingFileCombineInterface.Domain;
 using System;
 using System.Collections;
@@ -160,7 +164,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private async void DownloadChunkFileListClick(object sender, EventArgs e)
 		{
-			IProgress<int> progressIndicator = new Progress<int>(ReportChunkFileListProgress);
+			IProgress<IProgressData> progressIndicator = new Progress<IProgressData>(ReportChunkFileListProgress);
 
 			await _presenter.GetChunkFileList(GetBoundMetaData(), progressIndicator);
 
@@ -174,7 +178,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private async void DownloadChunkFilesClick(object sender, EventArgs e)
 		{
-			Progress<int> progressIndicator = new Progress<int>(ReportChunkFilesProgress);
+			Progress<IProgressData> progressIndicator = new Progress<IProgressData>(ReportDownloadChunkFilesProgress);
 
 			await _presenter.DownloadChunkFiles(GetBoundMetaData(), progressIndicator);
 
@@ -189,7 +193,7 @@ namespace StreamingFileCombineInterface
 		/// <exception cref="System.NotImplementedException"></exception>
 		void CombineChunkFilesClick(object sender, EventArgs e)
 		{
-			Progress<int> progressIndicator = new Progress<int>(ReportCombineFileProgress);
+			Progress<IProgressData> progressIndicator = new Progress<IProgressData>(ReportCombineFileProgress);
 
 			_presenter.CombineChunkFiles(GetBoundMetaData(), progressIndicator);
 
@@ -203,7 +207,7 @@ namespace StreamingFileCombineInterface
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void ConvertFileClick(object sender, EventArgs e)
 		{
-			Progress<int> progressIndicator = new Progress<int>(ReportFileConversionProgress);
+			Progress<IProgressData> progressIndicator = new Progress<IProgressData>(ReportFileConversionProgress);
 
 			StreamingCombineUiModel streamingCombineUiModel = GetBoundMetaData();
 
@@ -253,12 +257,22 @@ namespace StreamingFileCombineInterface
 		#endregion Text Box Related
 
 		#region Cancellation Buttons
-		
+
+		/// <summary>
+		/// Cancels the download chunks click.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		void CancelDownloadChunksClick(object sender, EventArgs e)
 		{
 			_presenter.CancelDownloadChunks();
 		}
 
+		/// <summary>
+		/// Cancels the combine chunks click.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		void CancelCombineChunksClick(object sender, EventArgs e)
 		{
 			_presenter.CancelCombineChunks();
@@ -324,44 +338,6 @@ namespace StreamingFileCombineInterface
 			}
 		}
 
-		#endregion Helper Methods
-
-		/// <summary>
-		/// Reports the chunk file list progress.
-		/// </summary>
-		/// <param name="value">The value.</param>
-		private void ReportChunkFileListProgress(int value)
-		{
-			UpdateProgressBar(pbChunkFileList, value);
-		}
-
-		/// <summary>
-		/// Reports the chunk files progress.
-		/// </summary>
-		/// <param name="value">The value.</param>
-		private void ReportChunkFilesProgress(int value)
-		{
-			UpdateProgressBar(pbChunkFiles, value);
-		}
-
-		/// <summary>
-		/// Reports the combine file progress.
-		/// </summary>
-		/// <param name="value">The value.</param>
-		private void ReportCombineFileProgress(int value)
-		{
-			UpdateProgressBar(pbCombineChunks, value);
-		}
-
-		/// <summary>
-		/// Reports the file conversion progress.
-		/// </summary>
-		/// <param name="value">The value.</param>
-		private void ReportFileConversionProgress(int value)
-		{
-			UpdateProgressBar(pbFileConversion, value);
-		}
-
 		/// <summary>
 		/// Updates the progress bar.
 		/// </summary>
@@ -374,5 +350,74 @@ namespace StreamingFileCombineInterface
 				progressBar.Value = value;
 			}
 		}
+
+		#endregion Helper Methods
+		
+		#region Progress Reporting
+
+		/// <summary>
+		/// Reports the chunk file list progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportChunkFileListProgress(IProgressData value)
+		{
+			AddToProgressStatus(value.Status);
+			UpdateProgressBar(pbChunkFileList, value.PercentDone);
+		}
+
+		/// <summary>
+		/// Reports the chunk files progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportDownloadChunkFilesProgress(IProgressData value)
+		{
+			AddToProgressStatus(value.Status);
+			UpdateProgressBar(pbChunkFiles, value.PercentDone);
+		}
+
+		/// <summary>
+		/// Reports the combine file progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportCombineFileProgress(IProgressData value)
+		{
+			AddToProgressStatus(value.Status);
+			UpdateProgressBar(pbCombineChunks, value.PercentDone);
+		}
+
+		/// <summary>
+		/// Reports the file conversion progress.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		private void ReportFileConversionProgress(IProgressData value)
+		{
+			AddToProgressStatus(value.Status);
+			UpdateProgressBar(pbFileConversion, value.PercentDone);
+		} 
+
+		#endregion Progress Reporting 
+	
+		#region IStreamingCombineView Members
+
+		/// <summary>
+		/// Adds to progress status.
+		/// </summary>
+		/// <param name="newestInput">The newest input.</param>
+		public void AddToProgressStatus(string newestInput)
+		{
+			// don't update the status if status field wasn't used
+			if (string.IsNullOrWhiteSpace(newestInput))
+			{
+				return;
+			}
+
+			List<string> progressStatusList = txtProgressStatus.Lines.ToList();
+			progressStatusList.Add(newestInput);
+			progressStatusList.Reverse();
+
+			txtProgressStatus.Lines = progressStatusList.ToArray();
+		}
+
+		#endregion IStreamingCombineView Members
 	}
 }

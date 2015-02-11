@@ -24,6 +24,6 @@ namespace FileCombiner.Contracts
 		/// <returns>
 		/// The combined file.
 		/// </returns>
-		FileInfo CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath, IProgress<int> progressIndicator, CancellationToken cancellationToken);
+		FileInfo CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath, IProgress<IProgressData> progressIndicator, CancellationToken cancellationToken);
 	}
 }

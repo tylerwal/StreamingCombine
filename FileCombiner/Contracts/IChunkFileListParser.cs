@@ -5,6 +5,12 @@ namespace FileCombiner.Contracts
 {
 	public interface IChunkFileListParser
 	{
-		Queue<Uri> GetChunkFileList(string chunkListUrl, IProgress<int> progressIndicator);
+		/// <summary>
+		/// Gets the chunk file list.
+		/// </summary>
+		/// <param name="chunkListUrl">The chunk list URL.</param>
+		/// <param name="progressIndicator">The progress indicator.</param>
+		/// <returns>A queue of uri's.</returns>
+		Queue<Uri> GetChunkFileList(string chunkListUrl, IProgress<IProgressData> progressIndicator);
 	}
 }

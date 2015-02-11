@@ -7,6 +7,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 
+using FileCombiner.Domain;
+
 namespace FileCombiner.Service
 {
 	/// <summary>
@@ -40,9 +42,11 @@ namespace FileCombiner.Service
 		/// <summary>
 		/// Downloads the indivual chunks files to a directory of choosing.
 		/// </summary>
-		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<int> progressIndicator, CancellationToken cancellationToken)
+		public void DownloadFileChunks(Queue<Uri> chunkUrls, string tempDirectory, IProgress<IProgressData> progressIndicator, CancellationToken cancellationToken)
 		{
-			progressIndicator.Report(0);
+			IProgressData progressData = new ProgressData();
+
+			progressIndicator.Report(progressData);
 
 			Directory.CreateDirectory(tempDirectory);
 
@@ -78,11 +82,16 @@ namespace FileCombiner.Service
 				finally
 				{
 					decimal percentDone = ((decimal)((decimal)uriIteration / (decimal)numberOfUris) * (decimal)100);
-					progressIndicator.Report(Convert.ToInt32(percentDone));
+
+					progressData.Status = string.Format("{0} Downloaded: {1}", uriIteration, filePath);
+
+					progressData.PercentDone = Convert.ToInt32(percentDone);
+					progressIndicator.Report(progressData);
 				}
 			}
 
-			progressIndicator.Report(100);
+			progressData.PercentDone = 100;
+			progressIndicator.Report(progressData);
 		}
 
 		#endregion IChunkDownloader Members

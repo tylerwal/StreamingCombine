@@ -13,7 +13,7 @@ namespace FfmpegCommanderUtilities
 
 		public static StringBuilder addFilePath(this StringBuilder builder, string path)
 		{
-			return builder.Append(" " + path);
+			return builder.Append(" \"" + path + "\"");
 		}
 		
 		public static StringBuilder addVideoCopy(this StringBuilder builder)

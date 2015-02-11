@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-
 using FileCombiner.Contracts;
+using FileCombiner.Domain;
 
 namespace FileCombiner.Service
 {
@@ -36,10 +35,12 @@ namespace FileCombiner.Service
 		/// The combined file.
 		/// </returns>
 		/// <exception cref="System.Threading.Tasks.TaskCanceledException"></exception>
-		public FileInfo CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath, IProgress<int> progressIndicator, CancellationToken cancellationToken)
+		public FileInfo CombineChunkFiles(IEnumerable<FileInfo> chunkFiles, string outputFilePath, IProgress<IProgressData> progressIndicator, CancellationToken cancellationToken)
 		{
 			int iteration = 0;
 			int numberOfChunkFiles = chunkFiles.Count();
+
+			IProgressData progressData = new ProgressData();
 
 			foreach (FileInfo chunkFile in chunkFiles)
 			{
@@ -57,11 +58,15 @@ namespace FileCombiner.Service
 					fileStream.Write(chunkBytes, 0, chunkBytes.Length);
 				}
 
+				progressData.Status = string.Format("{0} Combined: {1}", iteration, chunkFile.FullName);
+
 				decimal percentDone = ((decimal)((decimal)iteration / (decimal)numberOfChunkFiles) * (decimal)100);
-				progressIndicator.Report(Convert.ToInt32(percentDone));
+				progressData.PercentDone = Convert.ToInt32(percentDone);
+				progressIndicator.Report(progressData);
 			}
 
-			progressIndicator.Report(100);
+			progressData.PercentDone = 100;
+			progressIndicator.Report(progressData);
 			return new FileInfo(outputFilePath);
 		}
 
