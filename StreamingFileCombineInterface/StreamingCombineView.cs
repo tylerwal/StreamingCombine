@@ -62,7 +62,7 @@ namespace StreamingFileCombineInterface
 				new Tuple<Button, bool>(btnSetTempChunkFilesLocation, true),
 				new Tuple<Button, bool>(btnDownloadChunkFiles, false),
 				new Tuple<Button, bool>(btnSetCombinedFileLocation, true),
-				new Tuple<Button, bool>(btnCombineChunkFiles, false),
+				new Tuple<Button, bool>(btnCombineChunkFiles, true),
 				new Tuple<Button, bool>(btnSetUnconvertedFileLocation, true),
 				new Tuple<Button, bool>(btnSetConvertedFileLocation, true),
 				new Tuple<Button, bool>(btnConvertFile, false)
@@ -104,7 +104,7 @@ namespace StreamingFileCombineInterface
 			dialog.ShowDialog();
 
 			conversionData.TempDirectory = dialog.SelectedPath;
-		} 
+		}
 
 		/// <summary>
 		/// Sets the combined file location click.
