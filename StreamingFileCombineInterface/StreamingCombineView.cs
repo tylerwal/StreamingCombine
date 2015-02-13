@@ -1,7 +1,4 @@
-﻿using System.Linq;
-
-using FileCombiner.Contracts;
-
+﻿using FileCombiner.Contracts;
 using StreamingFileCombineInterface.Contracts;
 using StreamingFileCombineInterface.Domain;
 using System;
@@ -9,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace StreamingFileCombineInterface
